@@ -1,159 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rosina's Catering - Order Menu</title>
-<style>
-  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#fff; color:#333; }
-  header { background:#a83232; color:#fff; padding:1rem; text-align:center; }
-  h1,h2 { margin:0.5rem 0; }
-  .category { margin:2rem 1rem; }
-  .item { border-bottom:1px solid #ccc; padding:1rem 0; display:flex; flex-direction:column; }
-  .item img { max-width:200px; margin-bottom:0.5rem; }
-  label, select, input { margin:0.2rem 0; }
-  .cart { position:fixed; top:10px; right:10px; background:#fff; border:1px solid #ccc; padding:1rem; width:300px; max-height:90vh; overflow-y:auto; }
-  .cart h3 { margin-top:0; }
-  .cart-item { border-bottom:1px solid #eee; margin-bottom:0.5rem; }
-  .total { font-weight:bold; }
-  button { background:#a83232; color:#fff; border:none; padding:0.5rem 1rem; cursor:pointer; margin-top:0.5rem; }
-  button:hover { background:#8b2626; }
-  form { margin:2rem 1rem; max-width:500px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rosina’s Catering | Authentic Ghanaian Cuisine</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      color: #222;
+      line-height: 1.6;
+    }
+    a {
+      color: #005f73;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Header */
+    header {
+      background: #fff;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    header img {
+      height: 80px;
+      width: auto;
+      object-fit: contain;
+    }
+    header .contact {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #222;
+      margin-top: 0.4rem;
+    }
+
+    /* Hero */
+    .hero {
+      background: #f0efeb;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: 'Georgia', serif;
+      font-weight: 700;
+      font-size: 3rem;
+      margin-bottom: 0.25rem;
+      color: #1b1b1b;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: #555;
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 960px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    /* Menu */
+    .menu-category {
+      margin-bottom: 3rem;
+    }
+    .menu-category h2 {
+      border-bottom: 2px solid #005f73;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
+      color: #005f73;
+    }
+    .menu-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #ddd;
+      align-items: center;
+    }
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+    .item-info {
+      flex: 1 1 250px;
+    }
+    .item-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #222;
+    }
+    .item-desc {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0.25rem 0 0;
+    }
+    .item-prices {
+      display: flex;
+      gap: 1rem;
+      font-weight: 600;
+      color: #005f73;
+      min-width: 180px;
+      justify-content: flex-end;
+    }
+    .price-label {
+      font-size: 0.85rem;
+      color: #333;
+    }
+    .price-value {
+      font-size: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #005f73;
+      color: #fff;
+      text-align: center;
+      padding: 1rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        justify-content: center;
+        text-align: center;
+      }
+      header .contact {
+        margin-top: 0.75rem;
+      }
+      .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .item-prices {
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+        min-width: unset;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>Rosina's Catering</h1>
-  <p>Authentic Ghanaian cuisine for every celebration - Woodbridge, VA</p>
-  <p>Call/Text: 571-774-0967</p>
-</header>
+  <header>
+    <img src="https://www.jotform.com/uploads/loverosinaskitchen/form_files/logo.6907af7c44cab3.08695190.png" alt="Rosina's Catering Logo" />
+    <div class="contact">Call or Text: <a href="tel:+15717740967">571-774-0967</a></div>
+  </header>
 
-<div id="menu-container">
+  <section class="hero">
+    <h1>Authentic Ghanaian Cuisine</h1>
+    <p>Delicious, traditional dishes for every celebration. Order online for easy pickup in Woodbridge, VA.</p>
+  </section>
 
-  <!-- Categories and items will be injected here -->
-</div>
+  <main class="container">
 
-<div class="cart">
-  <h3>Your Order</h3>
-  <div id="cart-items"></div>
-  <p class="total">Total: $<span id="cart-total">0.00</span></p>
-  <button id="checkout-btn">Checkout (Stripe)</button>
-</div>
+    <section class="menu-category">
+      <h2>Appetizers | Sides</h2>
+      <article class="menu-item">
+        <div class="item-info">
+          <div class="item-name">Bofrot</div>
+          <p class="item-desc">A sweet, deep-fried Ghanaian dough ball. Crispy outside, soft and fluffy inside, with hints of nutmeg and vanilla.</p>
+        </div>
+        <div class="item-prices">
+          <div><span class="price-label">1/2 Tray:</span> <span class="price-value">$25.00</span></div>
+          <div><span class="price-label">1 Tray:</span> <span class="price-value">$45.00</span></div>
+          <div><span class="price-label">2 Trays:</span> <span class="price-value">$85.00</span></div>
+        </div>
+      </article>
+      <article class="menu-item">
+        <div class="item-info">
+          <div class="item-name">Meat Pie</div>
+          <p class="item-desc">A savory Ghanaian pastry filled with seasoned corned beef, onions, and peppers, wrapped in a flaky golden crust.</p>
+        </div>
+        <div class="item-prices">
+          <div><span class="price-label">Individual:</span> <span class="price-value">$2.00</span></div>
+        </div>
+      </article>
+      <!-- Add more menu items here following the same structure -->
 
-<form id="customer-form">
-  <h2>Customer Information</h2>
-  <label for="name">Name*</label>
-  <input type="text" id="name" required>
-  <label for="email">Email*</label>
-  <input type="email" id="email" required>
-  <label for="phone">Phone*</label>
-  <input type="tel" id="phone" required>
-  <label for="comments">Comments / Special Instructions</label>
-  <textarea id="comments" rows="3"></textarea>
-  <button type="submit">Place Order</button>
-</form>
+    </section>
 
-<script>
-// Sample data from Jotform (you can extend with all items)
-const menu = [
-  {
-    category: "Appetizers | Sides",
-    items: [
-      { name:"Bofrot", description:"Sweet Ghanaian dough ball, crispy outside, soft inside.", sizes:[{label:"1/2 Tray", price:25}] },
-      { name:"Meat Pie", description:"Savory pastry with seasoned corned beef.", sizes:[{label:"Individual", price:2}] },
-      { name:"Ghana Chips", description:"Crunchy spiced fried snacks.", sizes:[{label:"32oz", price:10}] },
-      { name:"Kelewele", description:"Spicy fried plantains.", sizes:[{label:"1/2 Tray", price:45}] },
-      { name:"Plantains", description:"Fried and seasoned.", sizes:[{label:"1/2 Tray", price:35}] },
-    ]
-  },
-  {
-    category: "Soups",
-    items: [
-      { name:"Light Soup", description:"Tomatoes, choice protein & spices.", sizes:[{label:"Medium", price:80}] },
-      { name:"Abenkwan (Palm nut) Soup", description:"Palm fruit soup with meat.", sizes:[{label:"Mixed Meat", price:120}] },
-    ]
-  },
-  // Add other categories here
-];
+    <!-- Add more categories similarly -->
 
-let cart = [];
+  </main>
 
-// Function to render menu
-const menuContainer = document.getElementById('menu-container');
+  <footer>
+    &copy; 2026 Rosina’s Catering — Woodbridge, VA | Call or Text 571-774-0967
+  </footer>
 
-menu.forEach(cat=>{
-  const catDiv = document.createElement('div');
-  catDiv.className="category";
-  catDiv.innerHTML = `<h2>${cat.category}</h2>`;
-  cat.items.forEach(item=>{
-    const itemDiv = document.createElement('div');
-    itemDiv.className="item";
-    itemDiv.innerHTML = `
-      <strong>${item.name}</strong>
-      <p>${item.description}</p>
-      <label>Size:</label>
-      <select class="size-select">
-        ${item.sizes.map(s=>`<option value="${s.price}">${s.label} - $${s.price}</option>`).join('')}
-      </select>
-      <label>Quantity:</label>
-      <input type="number" class="qty" value="1" min="1">
-      <button class="add-btn">Add to Cart</button>
-    `;
-    catDiv.appendChild(itemDiv);
-
-    // Add event listener
-    const addBtn = itemDiv.querySelector(".add-btn");
-    addBtn.addEventListener("click",(e)=>{
-      e.preventDefault();
-      const sizeSelect = itemDiv.querySelector(".size-select");
-      const qty = parseInt(itemDiv.querySelector(".qty").value);
-      const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
-      const price = parseFloat(sizeSelect.value);
-      const cartItem = {name:item.name, size:selectedSize, price, qty};
-      cart.push(cartItem);
-      updateCart();
-    });
-  });
-  menuContainer.appendChild(catDiv);
-});
-
-// Update cart display
-function updateCart(){
-  const cartItems = document.getElementById('cart-items');
-  cartItems.innerHTML = "";
-  let total = 0;
-  cart.forEach((c,i)=>{
-    const div = document.createElement('div');
-    div.className="cart-item";
-    div.innerHTML = `${c.name} (${c.size}) x${c.qty} = $${(c.price*c.qty).toFixed(2)}`;
-    cartItems.appendChild(div);
-    total += c.price*c.qty;
-  });
-  document.getElementById('cart-total').textContent = total.toFixed(2);
-}
-
-// Handle customer form submit
-document.getElementById('customer-form').addEventListener("submit", function(e){
-  e.preventDefault();
-  if(cart.length===0){ alert("Your cart is empty!"); return; }
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const phone = document.getElementById('phone').value;
-  const comments = document.getElementById('comments').value;
-
-  const orderData = {
-    customer:{name,email,phone,comments},
-    cart:cart
-  };
-
-  // Placeholder for EmailJS or Stripe integration
-  console.log("Order submitted:", orderData);
-  alert("Thank you! Your order has been received. We will contact you for payment.");
-  cart=[];
-  updateCart();
-  document.getElementById('customer-form').reset();
-});
-</script>
 </body>
 </html>
