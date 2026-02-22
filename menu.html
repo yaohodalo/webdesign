@@ -1,206 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rosina’s Catering | Authentic Ghanaian Cuisine</title>
-  <style>
-    /* Reset and base */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #fff;
-      color: #222;
-      line-height: 1.6;
-    }
-    a {
-      color: #005f73;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rosina's Catering Menu</title>
+<style>
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff8f0; color: #333; margin: 0; padding: 0; }
+header { text-align: center; background-color: #f5e4d3; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+header img { max-width: 200px; margin-bottom: 0.5rem; }
+header h1 { margin: 0; font-size: 2rem; color: #6b4c1d; }
 
-    /* Header */
-    header {
-      background: #fff;
-      padding: 1.5rem 2rem;
-      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    header img {
-      height: 80px;
-      width: auto;
-      object-fit: contain;
-    }
-    header .contact {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #222;
-      margin-top: 0.4rem;
-    }
+.container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+.category { margin-bottom: 3rem; }
+.category h2 { border-bottom: 2px solid #c49a6c; padding-bottom: 0.5rem; color: #6b4c1d; margin-bottom: 1rem; font-size: 1.8rem; }
 
-    /* Hero */
-    .hero {
-      background: #f0efeb;
-      padding: 3rem 1.5rem;
-      text-align: center;
-    }
-    .hero h1 {
-      font-family: 'Georgia', serif;
-      font-weight: 700;
-      font-size: 3rem;
-      margin-bottom: 0.25rem;
-      color: #1b1b1b;
-    }
-    .hero p {
-      font-size: 1.25rem;
-      color: #555;
-      margin: 0 auto;
-      max-width: 600px;
-    }
+.menu-item { background: #fff; border-radius: 10px; padding: 1rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
+.menu-item:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+.menu-item h3 { margin: 0 0 0.3rem 0; color: #3e2f1c; }
+.menu-item p { margin: 0 0 0.5rem 0; font-size: 0.95rem; color: #555; }
 
-    /* Container */
-    .container {
-      max-width: 960px;
-      margin: 2rem auto 4rem;
-      padding: 0 1rem;
-    }
+.tray-options { margin-top: 0.5rem; }
+.tray-options label { display: inline-block; margin-right: 1.5rem; font-weight: 600; font-size: 0.95rem; }
+select { margin-left: 0.5rem; padding: 0.25rem 0.5rem; font-size: 0.95rem; border-radius: 4px; border: 1px solid #ccc; }
 
-    /* Menu */
-    .menu-category {
-      margin-bottom: 3rem;
-    }
-    .menu-category h2 {
-      border-bottom: 2px solid #005f73;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
-      font-size: 1.75rem;
-      color: #005f73;
-    }
-    .menu-item {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #ddd;
-      align-items: center;
-    }
-    .menu-item:last-child {
-      border-bottom: none;
-    }
-    .item-info {
-      flex: 1 1 250px;
-    }
-    .item-name {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #222;
-    }
-    .item-desc {
-      font-size: 0.9rem;
-      color: #555;
-      margin: 0.25rem 0 0;
-    }
-    .item-prices {
-      display: flex;
-      gap: 1rem;
-      font-weight: 600;
-      color: #005f73;
-      min-width: 180px;
-      justify-content: flex-end;
-    }
-    .price-label {
-      font-size: 0.85rem;
-      color: #333;
-    }
-    .price-value {
-      font-size: 1rem;
-    }
+.submit-button { display: block; margin: 2rem auto; background-color: #c49a6c; color: white; font-size: 1.2rem; padding: 0.8rem 2rem; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+.submit-button:hover { background-color: #b17f44; }
 
-    /* Footer */
-    footer {
-      background: #005f73;
-      color: #fff;
-      text-align: center;
-      padding: 1rem 1rem;
-      font-size: 0.9rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      header {
-        justify-content: center;
-        text-align: center;
-      }
-      header .contact {
-        margin-top: 0.75rem;
-      }
-      .menu-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .item-prices {
-        justify-content: flex-start;
-        margin-top: 0.5rem;
-        min-width: unset;
-      }
-    }
-  </style>
+@media (max-width: 600px) {
+  .menu-item { padding: 0.8rem 1rem; }
+  header h1 { font-size: 1.5rem; }
+  .category h2 { font-size: 1.4rem; }
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <img src="https://www.jotform.com/uploads/loverosinaskitchen/form_files/logo.6907af7c44cab3.08695190.png" alt="Rosina's Catering Logo" />
-    <div class="contact">Call or Text: <a href="tel:+15717740967">571-774-0967</a></div>
-  </header>
+<header>
+  <img src="https://www.jotform.com/uploads/loverosinaskitchen/form_files/logo.6907af7c44cab3.08695190.png" alt="Rosina's Catering Logo">
+  <h1>Rosina's Catering Menu</h1>
+</header>
 
-  <section class="hero">
-    <h1>Authentic Ghanaian Cuisine</h1>
-    <p>Delicious, traditional dishes for every celebration. Order online for easy pickup in Woodbridge, VA.</p>
-  </section>
+<div class="container">
+<form id="orderForm">
 
-  <main class="container">
+<!-- Example Category -->
+<div class="category">
+<h2>Appetizers | Sides</h2>
 
-    <section class="menu-category">
-      <h2>Appetizers | Sides</h2>
-      <article class="menu-item">
-        <div class="item-info">
-          <div class="item-name">Bofrot</div>
-          <p class="item-desc">A sweet, deep-fried Ghanaian dough ball. Crispy outside, soft and fluffy inside, with hints of nutmeg and vanilla.</p>
-        </div>
-        <div class="item-prices">
-          <div><span class="price-label">1/2 Tray:</span> <span class="price-value">$25.00</span></div>
-          <div><span class="price-label">1 Tray:</span> <span class="price-value">$45.00</span></div>
-          <div><span class="price-label">2 Trays:</span> <span class="price-value">$85.00</span></div>
-        </div>
-      </article>
-      <article class="menu-item">
-        <div class="item-info">
-          <div class="item-name">Meat Pie</div>
-          <p class="item-desc">A savory Ghanaian pastry filled with seasoned corned beef, onions, and peppers, wrapped in a flaky golden crust.</p>
-        </div>
-        <div class="item-prices">
-          <div><span class="price-label">Individual:</span> <span class="price-value">$2.00</span></div>
-        </div>
-      </article>
-      <!-- Add more menu items here following the same structure -->
+<div class="menu-item">
+<h3>Bofrot</h3>
+<p>A sweet, deep-fried Ghanaian dough ball. Crispy outside, soft and fluffy inside, with hints of nutmeg and vanilla.</p>
+<div class="tray-options">
+<label>½ Tray: $25<select name="bofrot_half"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+<label>1 Tray: $45<select name="bofrot_full"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
+<label>2 Trays: $85<select name="bofrot_two"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
 
-    </section>
+<div class="menu-item">
+<h3>Meat Pie</h3>
+<p>Savory Ghanaian pastry filled with seasoned corned beef, onions, and peppers, wrapped in a flaky golden crust.</p>
+<div class="tray-options">
+<label>Individual: $2<select name="meatpie_individual"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
+</div>
+</div>
 
-    <!-- Add more categories similarly -->
+<div class="menu-item">
+<h3>Ghana Chips</h3>
+<p>Crunchy, spiced fried snacks made from flour and butter, flavored with nutmeg or pepper.</p>
+<label>32oz: $10<select name="ghana_chips_32oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
 
-  </main>
+<div class="menu-item">
+<h3>Chin Chin</h3>
+<p>Crunchy West African snack made from fried dough, lightly sweet and spiced with nutmeg.</p>
+<label>32oz: $10<select name="chin_chin_32oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
 
-  <footer>
-    &copy; 2026 Rosina’s Catering — Woodbridge, VA | Call or Text 571-774-0967
-  </footer>
+<div class="menu-item">
+<h3>Kelewele</h3>
+<p>Spicy Ghanaian street snack made from ripe plantains tossed in ginger, pepper, and aromatic spices.</p>
+<label>½ Tray: $45<select name="kelewele_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Plantains</h3>
+<p>Fried and seasoned to perfection.</p>
+<label>½ Tray: $35<select name="plantains_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Chinchinga (Beef Suya)</h3>
+<p>Ghana’s take on kebabs. Grilled skewers of spicy, marinated meat.</p>
+<label>Individual: $0<select name="chinchinga_individual"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Ghana Salad</h3>
+<p>Hearty mix of lettuce, tomatoes, onions, eggs, baked beans, and corned beef, topped with mayonnaise.</p>
+<label>½ Tray: $25<select name="ghana_salad_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Poloo</h3>
+<p>Crispy Ghanaian coconut biscuit made from flour, sugar, and grated coconut.</p>
+<label>½ Tray: $45<select name="poloo_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Turkey Tail | Chofi Bites</h3>
+<p>Turkey tail bites.</p>
+<label>½ Tray: $50<select name="turkeytail_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Fish Pie</h3>
+<p>Savory Ghanaian pastry filled with seasoned tuna, onions, and peppers.</p>
+<label>Individual: $2<select name="fishpie_individual"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<!-- Soups -->
+<div class="category">
+<h2>Soups</h2>
+
+<div class="menu-item">
+<h3>Light Soup</h3>
+<p>Tomatoes, choice protein & spices.</p>
+<label>Goat & Tripe (Medium): $80<select name="light_soup_goat"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Abenkwan (Palm nut) Soup</h3>
+<p>Rich soup made from palm fruit extract, simmered with meats and spices.</p>
+<label>Mixed meat: $120<select name="abenkwan_mixed"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+
+<div class="menu-item">
+<h3>Okra Soup</h3>
+<p>Fresh okra, palm oil, meats or fish, and bold spices.</p>
+<label>Mixed meat: $120<select name="okra_mixed"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<!-- Rice Dishes -->
+<div class="category">
+<h2>Rice Dishes</h2>
+<div class="menu-item">
+<h3>Jollof Rice</h3>
+<p>Rice simmered in a rich tomato stew with onions, peppers, and spices.</p>
+<label>Fish Only Individual: $14<select name="jollof_fish"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Waakye Combo</h3>
+<p>Rice & beans cooked with millet leaves, served with stew, gari, boiled eggs, and fried plantains.</p>
+<label>½ Tray Combo: $100<select name="waakye_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Fried Rice</h3>
+<p>Seasoned rice with veggies, eggs, and spiced meats or shrimp.</p>
+<label>½ Tray: $35<select name="friedrice_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<!-- Meat / Fish -->
+<div class="category">
+<h2>Meat | Fish</h2>
+<div class="menu-item">
+<h3>Chicken Drumsticks | Thigh | Leg</h3>
+<p>Seasoned to perfection.</p>
+<label>½ Tray: $40<select name="chicken_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Chicken Wings</h3>
+<p>Seasoned to perfection.</p>
+<label>½ Tray: $67.50<select name="wings_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Fried Crocker</h3>
+<p>Seasoned to perfection.</p>
+<label>½ Tray: $45<select name="crocker_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Pompano</h3>
+<p>Seasoned to perfection.</p>
+<label>½ Tray: $50<select name="pompano_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<!-- Local -->
+<div class="category">
+<h2>Local</h2>
+<div class="menu-item">
+<h3>Kenkey & Fish</h3>
+<p>Fermented corn dough with grilled fish, served with spicy sauce.</p>
+<label>½ Tray: $77.55<select name="kenkey_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Banku & Fish</h3>
+<p>Fermented corn and cassava dough paired with grilled fish, spicy pepper sauce, and fresh veggies.</p>
+<label>½ Tray: $62.55<select name="banku_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Tuo Zafi</h3>
+<p>Maize or millet flour, paired with rich green leafy soups like ayoyo.</p>
+<label>Individual: $17<select name="tuo_individual"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Attieke</h3>
+<p>Fermented cassava couscous served with grilled fish, spicy sauces, and salad.</p>
+<label>Individual: $20<select name="attieke_individual"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<!-- Stews -->
+<div class="category">
+<h2>Stews</h2>
+<div class="menu-item">
+<h3>Spinach Stew</h3>
+<p>Deep fried halibut and thick cut fries served with tartar sauce.</p>
+<label>½ Tray: $60<select name="spinach_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Beans Stew</h3>
+<p>Black-eyed peas simmered in tomato & onion sauce, paired with plantains or gari.</p>
+<label>½ Tray: $45<select name="beans_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Fish Stew</h3>
+<p>Spicy tomato sauce simmered with fried or grilled fish.</p>
+<label>½ Tray: $50<select name="fishstew_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Chicken Stew</h3>
+<p>Spicy tomato sauce with tender chicken.</p>
+<label>½ Tray: $40<select name="chickenstew_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Waakye Stew</h3>
+<p>Spicy tomato sauce with seasoned fried or grilled fish.</p>
+<label>½ Tray: $55<select name="waakye_stew_half"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<!-- Drinks -->
+<div class="category">
+<h2>Drinks</h2>
+<div class="menu-item">
+<h3>Our Homemade Lemonade</h3>
+<p>Our famous lemonade.</p>
+<label>8oz: $1.50<select name="lemonade_8oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Ginger Drink</h3>
+<p>Blend of ginger, lemon & sugar.</p>
+<label>8oz: $1.50<select name="ginger_8oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Lamugee</h3>
+<p>Refreshing Ghanaian drink made from millet or rice, blended with ginger, cloves, and tamarind.</p>
+<label>8oz: $2<select name="lamugee_8oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Sobolo</h3>
+<p>Hibiscus petals drink infused with ginger, cloves, and pineapple.</p>
+<label>8oz: $2<select name="sobolo_8oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Watermelon Juice</h3>
+<p>Blend of mint & watermelon.</p>
+<label>8oz: $1.50<select name="watermelon_8oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+<div class="menu-item">
+<h3>Winter Punch</h3>
+<p>Blend of fresh fruits & ginger ale.</p>
+<label>8oz: $2<select name="winterpunch_8oz"><option value="0">0</option><option value="1">1</option></select></label>
+</div>
+</div>
+
+<button type="submit" class="submit-button">Place Order</button>
+
+</form>
+
+<script>
+const form = document.getElementById('orderForm');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const formData = new FormData(form);
+  let summary = 'Your Order Summary:\n';
+  for (const [name, value] of formData.entries()) {
+    if (value !== '0') summary += `${name.replace(/_/g,' ')}: ${value}\n`;
+  }
+  alert(summary || 'No items selected.');
+});
+</script>
 
 </body>
 </html>
