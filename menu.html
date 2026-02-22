@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu — Rosina's Catering</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="cart.js" defer></script>
+</head>
+<body>
+
+<h1>Our Menu</h1>
+
+<div class="menu-item">
+  <img src="https://pci.jotform.com/form/253054957927166?example1" alt="Jollof Rice">
+  <h3>Jollof Rice (Full Tray)</h3>
+  <p>$60.00</p>
+  <button onclick="addToCart('Jollof Rice', 60)">Add to Cart</button>
+</div>
+
+<div class="menu-item">
+  <img src="https://pci.jotform.com/form/253054957927166?example2" alt="Waakye">
+  <h3>Waakye (Full Tray)</h3>
+  <p>$65.00</p>
+  <button onclick="addToCart('Waakye', 65)">Add to Cart</button>
+</div>
+
+<!-- Repeat for all trays from your menu -->
+
+<a href="order.html" class="button">Go to Checkout</a>
+
+</body>
+</html>

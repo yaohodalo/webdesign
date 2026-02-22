@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout — Rosina's Catering</title>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="cart.js" defer></script>
+</head>
+<body>
+
+<h1>Your Order</h1>
+<div id="cart-list"></div>
+
+<h3>Pickup Date & Time</h3>
+<input type="date" id="pickupDate" required>
+<input type="time" id="pickupTime" required>
+
+<h3>Contact Info</h3>
+<input type="text" id="customerName" placeholder="Your Name" required>
+<input type="email" id="customerEmail" placeholder="Your Email" required>
+<input type="text" id="customerPhone" placeholder="Phone Number" required>
+
+<button id="sendOrder">Place Order</button>
+
+<script>
+  emailjs.init('UCbvFmuz7os_v8PDaLjaq');
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function displayCart() {
+    const list = document.getElementById("cart-list");
+    list.innerHTML = "";
+    cart.forEach(item => {
+      list.innerHTML += `<p>${item.quantity} × ${item.name} — $${item.price}</p>`;
+    });
+  }
+  displayCart();
+
+  document.getElementById("sendOrder").addEventListener("click", function() {
+    const customerName = document.getElementById("customerName").value;
+    const customerEmail = document.getElementById("customerEmail").value;
+    const customerPhone = document.getElementById("customerPhone").value;
+    const pickupDate = document.getElementById("pickupDate").value;
+    const pickupTime = document.getElementById("pickupTime").value;
+
+    if (!customerName || !customerEmail || !pickupDate || !pickupTime) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const orderItems = cart.map(item => `${item.quantity} × ${item.name} — $${item.price}`).join("\n");
+
+    emailjs.send('default_service','template_ktn1jd6',{
+      customer_name: customerName,
+      customer_email: customerEmail,
+      customer_phone: customerPhone,
+      order_items: orderItems,
+      pickup_date: pickupDate,
+      pickup_time: pickupTime
+    }).then(function(){
+      alert('Order placed! Confirmation email sent.');
+      localStorage.removeItem("cart");
+      window.location.href = "success.html";
+    }, function(error){
+      alert('Failed to send email. Please try again.');
+      console.error(error);
+    });
+  });
+</script>
+
+</body>
+</html>

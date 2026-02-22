@@ -1,0 +1,7 @@
+body { font-family: Arial, sans-serif; padding: 20px; }
+.hero { text-align: center; padding: 50px; background-color: #f8e6d8; }
+.logo { width: 150px; margin-bottom: 20px; }
+.button { background: #b22222; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+.menu-item { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+.menu-item img { width: 200px; height: auto; }
+input { padding: 5px; margin: 5px 0; display: block; }
