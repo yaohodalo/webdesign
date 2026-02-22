@@ -1,32 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Menu — Rosina's Catering</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="cart.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosina's Catering - Order Menu</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#fff; color:#333; }
+  header { background:#a83232; color:#fff; padding:1rem; text-align:center; }
+  h1,h2 { margin:0.5rem 0; }
+  .category { margin:2rem 1rem; }
+  .item { border-bottom:1px solid #ccc; padding:1rem 0; display:flex; flex-direction:column; }
+  .item img { max-width:200px; margin-bottom:0.5rem; }
+  label, select, input { margin:0.2rem 0; }
+  .cart { position:fixed; top:10px; right:10px; background:#fff; border:1px solid #ccc; padding:1rem; width:300px; max-height:90vh; overflow-y:auto; }
+  .cart h3 { margin-top:0; }
+  .cart-item { border-bottom:1px solid #eee; margin-bottom:0.5rem; }
+  .total { font-weight:bold; }
+  button { background:#a83232; color:#fff; border:none; padding:0.5rem 1rem; cursor:pointer; margin-top:0.5rem; }
+  button:hover { background:#8b2626; }
+  form { margin:2rem 1rem; max-width:500px; }
+</style>
 </head>
 <body>
 
-<h1>Our Menu</h1>
+<header>
+  <h1>Rosina's Catering</h1>
+  <p>Authentic Ghanaian cuisine for every celebration - Woodbridge, VA</p>
+  <p>Call/Text: 571-774-0967</p>
+</header>
 
-<div class="menu-item">
-  <img src="https://pci.jotform.com/form/253054957927166?example1" alt="Jollof Rice">
-  <h3>Jollof Rice (Full Tray)</h3>
-  <p>$60.00</p>
-  <button onclick="addToCart('Jollof Rice', 60)">Add to Cart</button>
+<div id="menu-container">
+
+  <!-- Categories and items will be injected here -->
 </div>
 
-<div class="menu-item">
-  <img src="https://pci.jotform.com/form/253054957927166?example2" alt="Waakye">
-  <h3>Waakye (Full Tray)</h3>
-  <p>$65.00</p>
-  <button onclick="addToCart('Waakye', 65)">Add to Cart</button>
+<div class="cart">
+  <h3>Your Order</h3>
+  <div id="cart-items"></div>
+  <p class="total">Total: $<span id="cart-total">0.00</span></p>
+  <button id="checkout-btn">Checkout (Stripe)</button>
 </div>
 
-<!-- Repeat for all trays from your menu -->
+<form id="customer-form">
+  <h2>Customer Information</h2>
+  <label for="name">Name*</label>
+  <input type="text" id="name" required>
+  <label for="email">Email*</label>
+  <input type="email" id="email" required>
+  <label for="phone">Phone*</label>
+  <input type="tel" id="phone" required>
+  <label for="comments">Comments / Special Instructions</label>
+  <textarea id="comments" rows="3"></textarea>
+  <button type="submit">Place Order</button>
+</form>
 
-<a href="order.html" class="button">Go to Checkout</a>
+<script>
+// Sample data from Jotform (you can extend with all items)
+const menu = [
+  {
+    category: "Appetizers | Sides",
+    items: [
+      { name:"Bofrot", description:"Sweet Ghanaian dough ball, crispy outside, soft inside.", sizes:[{label:"1/2 Tray", price:25}] },
+      { name:"Meat Pie", description:"Savory pastry with seasoned corned beef.", sizes:[{label:"Individual", price:2}] },
+      { name:"Ghana Chips", description:"Crunchy spiced fried snacks.", sizes:[{label:"32oz", price:10}] },
+      { name:"Kelewele", description:"Spicy fried plantains.", sizes:[{label:"1/2 Tray", price:45}] },
+      { name:"Plantains", description:"Fried and seasoned.", sizes:[{label:"1/2 Tray", price:35}] },
+    ]
+  },
+  {
+    category: "Soups",
+    items: [
+      { name:"Light Soup", description:"Tomatoes, choice protein & spices.", sizes:[{label:"Medium", price:80}] },
+      { name:"Abenkwan (Palm nut) Soup", description:"Palm fruit soup with meat.", sizes:[{label:"Mixed Meat", price:120}] },
+    ]
+  },
+  // Add other categories here
+];
 
+let cart = [];
+
+// Function to render menu
+const menuContainer = document.getElementById('menu-container');
+
+menu.forEach(cat=>{
+  const catDiv = document.createElement('div');
+  catDiv.className="category";
+  catDiv.innerHTML = `<h2>${cat.category}</h2>`;
+  cat.items.forEach(item=>{
+    const itemDiv = document.createElement('div');
+    itemDiv.className="item";
+    itemDiv.innerHTML = `
+      <strong>${item.name}</strong>
+      <p>${item.description}</p>
+      <label>Size:</label>
+      <select class="size-select">
+        ${item.sizes.map(s=>`<option value="${s.price}">${s.label} - $${s.price}</option>`).join('')}
+      </select>
+      <label>Quantity:</label>
+      <input type="number" class="qty" value="1" min="1">
+      <button class="add-btn">Add to Cart</button>
+    `;
+    catDiv.appendChild(itemDiv);
+
+    // Add event listener
+    const addBtn = itemDiv.querySelector(".add-btn");
+    addBtn.addEventListener("click",(e)=>{
+      e.preventDefault();
+      const sizeSelect = itemDiv.querySelector(".size-select");
+      const qty = parseInt(itemDiv.querySelector(".qty").value);
+      const selectedSize = sizeSelect.options[sizeSelect.selectedIndex].text;
+      const price = parseFloat(sizeSelect.value);
+      const cartItem = {name:item.name, size:selectedSize, price, qty};
+      cart.push(cartItem);
+      updateCart();
+    });
+  });
+  menuContainer.appendChild(catDiv);
+});
+
+// Update cart display
+function updateCart(){
+  const cartItems = document.getElementById('cart-items');
+  cartItems.innerHTML = "";
+  let total = 0;
+  cart.forEach((c,i)=>{
+    const div = document.createElement('div');
+    div.className="cart-item";
+    div.innerHTML = `${c.name} (${c.size}) x${c.qty} = $${(c.price*c.qty).toFixed(2)}`;
+    cartItems.appendChild(div);
+    total += c.price*c.qty;
+  });
+  document.getElementById('cart-total').textContent = total.toFixed(2);
+}
+
+// Handle customer form submit
+document.getElementById('customer-form').addEventListener("submit", function(e){
+  e.preventDefault();
+  if(cart.length===0){ alert("Your cart is empty!"); return; }
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const comments = document.getElementById('comments').value;
+
+  const orderData = {
+    customer:{name,email,phone,comments},
+    cart:cart
+  };
+
+  // Placeholder for EmailJS or Stripe integration
+  console.log("Order submitted:", orderData);
+  alert("Thank you! Your order has been received. We will contact you for payment.");
+  cart=[];
+  updateCart();
+  document.getElementById('customer-form').reset();
+});
+</script>
 </body>
 </html>
