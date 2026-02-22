@@ -6,26 +6,62 @@
 <title>Rosina's Catering | Authentic Ghanaian Cuisine</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { margin: 0; font-family: 'Roboto', sans-serif; line-height: 1.6; color: #333; }
-  header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-  header img { height: 60px; }
-  nav a { margin-left: 1.5rem; text-decoration: none; color: #333; font-weight: bold; }
-  nav a:hover { color: #c0392b; }
-  .hero { background: url('hero-food.jpg') center/cover no-repeat; height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; text-align: center; padding: 0 1rem; }
-  .hero h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-  .hero p { font-size: 1.5rem; margin-bottom: 2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-  .btn { padding: 0.8rem 2rem; background: #c0392b; color: #fff; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; text-decoration: none; }
-  .btn:hover { background: #e74c3c; }
-  section { padding: 4rem 2rem; max-width: 1200px; margin: auto; }
-  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-  .menu-item { border: 1px solid #eee; border-radius: 10px; overflow: hidden; text-align: center; transition: transform 0.2s; }
-  .menu-item:hover { transform: scale(1.05); }
-  .menu-item img { width: 100%; height: 200px; object-fit: cover; }
-  .menu-item h3 { margin: 1rem 0 0.5rem 0; }
-  .menu-item p { margin: 0 1rem 1rem 1rem; color: #555; }
-  footer { background: #333; color: #fff; text-align: center; padding: 2rem 1rem; }
-  footer a { color: #fff; margin: 0 0.5rem; text-decoration: none; }
-  footer a:hover { color: #c0392b; }
+  /* Reset & body */
+  body { margin:0; font-family: 'Roboto', sans-serif; line-height:1.6; color:#333; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Header */
+  header { display: flex; justify-content: space-between; align-items: center; padding:1rem 2rem; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); position: sticky; top:0; z-index:100; }
+  header img { height:60px; }
+  nav a { margin-left:1.5rem; font-weight:bold; color:#333; }
+  nav a:hover { color:#c0392b; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('hero-food.jpg') center/cover no-repeat;
+    height:90vh; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#fff; text-align:center; padding:0 1rem;
+  }
+  .hero h1 { font-size:3rem; margin-bottom:1rem; text-shadow:2px 2px 4px rgba(0,0,0,0.5); }
+  .hero p { font-size:1.5rem; margin-bottom:2rem; text-shadow:1px 1px 2px rgba(0,0,0,0.5); }
+  .hero .btn { padding:0.8rem 2rem; background:#c0392b; color:#fff; font-weight:bold; border:none; border-radius:5px; cursor:pointer; }
+  .hero .btn:hover { background:#e74c3c; }
+
+  /* Sections */
+  section { padding:4rem 2rem; max-width:1200px; margin:auto; }
+  h2 { text-align:center; margin-bottom:2rem; font-size:2rem; color:#c0392b; }
+
+  /* About */
+  .about p { max-width:800px; margin:auto; text-align:center; font-size:1.1rem; }
+
+  /* Services / Core Values */
+  .services-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:2rem; text-align:center; }
+  .service-item { padding:2rem; border:1px solid #eee; border-radius:10px; transition:transform 0.2s; background:#fff; }
+  .service-item:hover { transform:scale(1.05); background:#f9f9f9; }
+
+  /* Menu Grid */
+  .menu-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:2rem; }
+  .menu-item { border:1px solid #eee; border-radius:10px; overflow:hidden; text-align:center; transition: transform 0.2s; background:#fff; }
+  .menu-item:hover { transform:scale(1.05); }
+  .menu-item img { width:100%; height:200px; object-fit:cover; }
+  .menu-item h3 { margin:1rem 0 0.5rem 0; }
+  .menu-item p { margin:0 1rem 1rem 1rem; color:#555; }
+  .menu-item .btn { margin-bottom:1rem; }
+
+  /* Events Grid */
+  .events-grid { display:flex; flex-wrap:wrap; justify-content:space-around; gap:1rem; }
+  .event-item { flex:1 1 200px; padding:2rem; background:#f8f8f8; text-align:center; border-radius:10px; font-weight:bold; cursor:pointer; transition:transform 0.2s; }
+  .event-item:hover { transform:scale(1.05); background:#c0392b; color:#fff; }
+
+  /* Contact Form */
+  form { display:flex; flex-direction:column; gap:1rem; max-width:500px; margin:auto; }
+  form input, form textarea { padding:0.8rem; border-radius:5px; border:1px solid #ccc; width:100%; }
+  form button { padding:0.8rem; background:#c0392b; color:#fff; font-weight:bold; border:none; border-radius:5px; cursor:pointer; }
+  form button:hover { background:#e74c3c; }
+
+  /* Footer */
+  footer { background:#333; color:#fff; text-align:center; padding:2rem 1rem; }
+  footer a { color:#fff; margin:0 0.5rem; }
+  footer a:hover { color:#c0392b; }
 </style>
 </head>
 <body>
@@ -40,17 +76,39 @@
   </nav>
 </header>
 
+<!-- Hero Section -->
 <section class="hero">
   <h1>Authentic Ghanaian Cuisine in Woodbridge, VA</h1>
-  <p>Delicious meals for every celebration. Pickup & pre-order available!</p>
+  <p>Exquisite Food | Memorable Events | Pickup & Pre-order Available</p>
   <a href="menu.html" class="btn">Order Now</a>
 </section>
 
-<section>
+<!-- About Section -->
+<section class="about">
   <h2>About Rosina's Catering</h2>
-  <p>Rosina’s Catering brings authentic Ghanaian flavors to your table for every celebration. From traditional appetizers to hearty main dishes, our meals are made with love and quality ingredients.</p>
+  <p>Rosina’s Catering brings authentic Ghanaian flavors to your table for every celebration. From traditional appetizers to hearty main dishes, our meals are made with love and quality ingredients. Experience food that makes your events truly special.</p>
 </section>
 
+<!-- Core Values / Services -->
+<section>
+  <h2>Why Choose Rosina's Catering</h2>
+  <div class="services-grid">
+    <div class="service-item">
+      <h3>Authentic Flavors</h3>
+      <p>Experience true Ghanaian cuisine with fresh, quality ingredients.</p>
+    </div>
+    <div class="service-item">
+      <h3>Event Catering</h3>
+      <p>From birthdays to weddings, we make your event memorable.</p>
+    </div>
+    <div class="service-item">
+      <h3>Flexible Orders</h3>
+      <p>Pickup or pre-order trays for your convenience.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Menu Items -->
 <section>
   <h2>Featured Menu Items</h2>
   <div class="menu-grid">
@@ -58,42 +116,56 @@
       <img src="https://i0.wp.com/travelandmunchies.com/wp-content/uploads/2022/11/IMG_0039.jpg?resize=1536%2C1097&ssl=1" alt="Bofrot">
       <h3>Bofrot</h3>
       <p>$25 per 1/2 tray</p>
+      <a href="menu.html" class="btn">Order Now</a>
     </div>
     <div class="menu-item">
       <img src="https://travelfoodatlas.com/wp-content/uploads/2019/08/Ghanaian-Kelewele-fried-plantains-recipe.jpeg" alt="Kelewele">
       <h3>Kelewele</h3>
       <p>$45 per 1/2 tray</p>
+      <a href="menu.html" class="btn">Order Now</a>
     </div>
     <div class="menu-item">
       <img src="https://flawlessfood.co.uk/wp-content/uploads/2023/01/Jollof-Rice-04-1024x1024.jpg" alt="Jollof Rice">
       <h3>Jollof Rice</h3>
       <p>$14 per individual</p>
+      <a href="menu.html" class="btn">Order Now</a>
     </div>
     <div class="menu-item">
       <img src="https://i.pinimg.com/originals/38/00/60/38006012f58a4bd1fce0986e656c485d.jpg" alt="Light Soup">
       <h3>Light Soup</h3>
       <p>$80 per medium tray</p>
+      <a href="menu.html" class="btn">Order Now</a>
     </div>
   </div>
-  <a href="menu.html" class="btn" style="margin-top: 2rem; display: inline-block;">See Full Menu</a>
+  <a href="menu.html" class="btn" style="margin-top:2rem; display:inline-block;">See Full Menu</a>
 </section>
 
+<!-- Events Section -->
 <section>
-  <h2>How It Works</h2>
-  <ol>
-    <li>Choose your food & tray size</li>
-    <li>Book your date & time</li>
-    <li>Pay online securely (Stripe coming soon)</li>
-    <li>Pickup at Woodbridge, VA</li>
-  </ol>
+  <h2>We Cater Your Special Events</h2>
+  <div class="events-grid">
+    <div class="event-item">Weddings</div>
+    <div class="event-item">Birthday Parties</div>
+    <div class="event-item">Corporate Events</div>
+    <div class="event-item">Family Gatherings</div>
+  </div>
 </section>
 
+<!-- Contact Form Section -->
 <section id="contact">
-  <h2>Contact Us</h2>
-  <p>Phone / Text: 571-774-0967</p>
-  <p>Email: info@rosinascatering.com</p>
+  <h2>Request a Quote</h2>
+  <form>
+    <input type="text" placeholder="Name" required>
+    <input type="email" placeholder="Email" required>
+    <input type="text" placeholder="Event Type" required>
+    <input type="date" placeholder="Event Date" required>
+    <textarea placeholder="Message / Order Details"></textarea>
+    <button type="submit" class="btn">Submit</button>
+  </form>
+  <p style="text-align:center; margin-top:1rem;">Or call/text: 571-774-0967 | Email: info@rosinascatering.com</p>
 </section>
 
+<!-- Footer -->
 <footer>
   <p>&copy; 2026 Rosina's Catering | Woodbridge, VA</p>
   <p>
