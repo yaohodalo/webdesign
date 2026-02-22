@@ -1,30 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Rosina's Catering</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosina's Catering | Authentic Ghanaian Cuisine</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: 'Roboto', sans-serif; line-height: 1.6; color: #333; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+  header img { height: 60px; }
+  nav a { margin-left: 1.5rem; text-decoration: none; color: #333; font-weight: bold; }
+  nav a:hover { color: #c0392b; }
+  .hero { background: url('hero-food.jpg') center/cover no-repeat; height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; text-align: center; padding: 0 1rem; }
+  .hero h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+  .hero p { font-size: 1.5rem; margin-bottom: 2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+  .btn { padding: 0.8rem 2rem; background: #c0392b; color: #fff; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; text-decoration: none; }
+  .btn:hover { background: #e74c3c; }
+  section { padding: 4rem 2rem; max-width: 1200px; margin: auto; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+  .menu-item { border: 1px solid #eee; border-radius: 10px; overflow: hidden; text-align: center; transition: transform 0.2s; }
+  .menu-item:hover { transform: scale(1.05); }
+  .menu-item img { width: 100%; height: 200px; object-fit: cover; }
+  .menu-item h3 { margin: 1rem 0 0.5rem 0; }
+  .menu-item p { margin: 0 1rem 1rem 1rem; color: #555; }
+  footer { background: #333; color: #fff; text-align: center; padding: 2rem 1rem; }
+  footer a { color: #fff; margin: 0 0.5rem; text-decoration: none; }
+  footer a:hover { color: #c0392b; }
+</style>
 </head>
 <body>
 
-<header class="hero">
-  <img src="logo.png" alt="Rosina's Catering Logo" class="logo">
-  <h1>Rosina's Catering</h1>
-  <p>Authentic Ghanaian Cuisine in Woodbridge, VA</p>
-  <a href="menu.html" class="button">Order Now</a>
+<header>
+  <img src="https://www.jotform.com/uploads/loverosinaskitchen/form_files/logo.6907af7c44cab3.08695190.png" alt="Rosina's Catering Logo">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="menu.html">Menu</a>
+    <a href="menu.html#order">Order</a>
+    <a href="#contact">Contact</a>
+  </nav>
 </header>
 
-<section class="about">
-  <h2>About Us</h2>
-  <p>We deliver premium Ghanaian catering for your events — pickup only, secure online ordering.</p>
+<section class="hero">
+  <h1>Authentic Ghanaian Cuisine in Woodbridge, VA</h1>
+  <p>Delicious meals for every celebration. Pickup & pre-order available!</p>
+  <a href="menu.html" class="btn">Order Now</a>
 </section>
 
-<section class="contact">
-  <h2>Pickup Info</h2>
-  <p>Location: Woodbridge, VA</p>
-  <p>Email: rosinacatering.orders@gmail.com</p>
-  <p>Phone: (Your Phone Number)</p>
+<section>
+  <h2>About Rosina's Catering</h2>
+  <p>Rosina’s Catering brings authentic Ghanaian flavors to your table for every celebration. From traditional appetizers to hearty main dishes, our meals are made with love and quality ingredients.</p>
 </section>
+
+<section>
+  <h2>Featured Menu Items</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <img src="https://www.pinterest.com/pin/create/bookmarklet/?is_video=false&url=https%3A%2F%2Fyummieliciouz.com%2Fpuff-puff-recipe%2F&media=https%3A%2F%2Fyummieliciouz.com%2Fwp-content%2Fuploads%2F2022%2F08%2FAfrican-puff-puff-recipe-1024x683.png&description=African%20puff%20puff%20recipe" alt="Bofrot">
+      <h3>Bofrot</h3>
+      <p>$25 per 1/2 tray</p>
+    </div>
+    <div class="menu-item">
+      <img src="https://travelfoodatlas.com/wp-content/uploads/2019/08/Ghanaian-Kelewele-fried-plantains-recipe.jpeg" alt="Kelewele">
+      <h3>Kelewele</h3>
+      <p>$45 per 1/2 tray</p>
+    </div>
+    <div class="menu-item">
+      <img src="https://www.pinterest.com/pin/35606653300091033/" alt="Jollof Rice">
+      <h3>Jollof Rice</h3>
+      <p>$14 per individual</p>
+    </div>
+    <div class="menu-item">
+      <img src="https://i.pinimg.com/originals/38/00/60/38006012f58a4bd1fce0986e656c485d.jpg" alt="Light Soup">
+      <h3>Light Soup</h3>
+      <p>$80 per medium tray</p>
+    </div>
+  </div>
+  <a href="menu.html" class="btn" style="margin-top: 2rem; display: inline-block;">See Full Menu</a>
+</section>
+
+<section>
+  <h2>How It Works</h2>
+  <ol>
+    <li>Choose your food & tray size</li>
+    <li>Book your date & time</li>
+    <li>Pay online securely (Stripe coming soon)</li>
+    <li>Pickup at Woodbridge, VA</li>
+  </ol>
+</section>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p>Phone / Text: 571-774-0967</p>
+  <p>Email: info@rosinascatering.com</p>
+</section>
+
+<footer>
+  <p>&copy; 2026 Rosina's Catering | Woodbridge, VA</p>
+  <p>
+    <a href="#">Instagram</a> | <a href="#">Facebook</a>
+  </p>
+</footer>
 
 </body>
 </html>
