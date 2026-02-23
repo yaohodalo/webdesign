@@ -1,93 +1,85 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #F8F4ED;
   margin: 0;
-  padding: 20px;
-  color: #2C2C2C;
+  font-family: 'Segoe UI', sans-serif;
+  background: #F7F4EF;
+  color: #1F1B18;
 }
 
-h1 {
+/* HERO SECTION */
+.hero {
+  background: url('https://www.jotform.com/uploads/loverosinaskitchen/form_files/logo.6907af7c44cab3.08695190.png') center/cover no-repeat;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+}
+
+.hero-overlay {
+  position: relative;
   text-align: center;
-  color: #7A1C1C;
+  color: white;
+}
+
+.hero-overlay h1 {
+  font-size: 48px;
   margin-bottom: 10px;
 }
 
-h2 {
-  color: #7A1C1C;
-  border-bottom: 2px solid #D4AF37;
-  padding-bottom: 5px;
-  margin-top: 50px;
+.hero-overlay p {
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
-.menu-category {
-  margin-bottom: 40px;
+.hero-btn {
+  background: #A99AD6;
+  color: #1F1B18;
+  padding: 12px 25px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.hero-btn:hover {
+  background: #C2A63A;
+  color: white;
+}
+
+/* MENU SECTION */
+#menu {
+  padding: 60px 20px;
 }
 
 .menu-item {
   background: white;
   padding: 20px;
-  border-radius: 12px;
-  margin: 15px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 20px 0;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: 0.3s;
 }
 
 .menu-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-}
-
-.menu-item strong {
-  font-size: 18px;
-  color: #7A1C1C;
-}
-
-.menu-item p {
-  margin: 6px 0 12px 0;
-  font-size: 14px;
-  color: #555;
-}
-
-select {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
+  transform: translateY(-6px);
 }
 
 button {
-  background: #7A1C1C;
+  background: #6E8B5E;
   color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s ease;
 }
 
 button:hover {
-  background: #D4AF37;
-  color: #2C2C2C;
-}
-
-.drink-size button {
-  margin: 5px 5px 5px 0;
-}
-
-.cart-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #D4AF37;
-  color: #2C2C2C;
-  padding: 14px 18px;
-  border-radius: 50px;
-  font-weight: bold;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-}
-
-.cart-button:hover {
-  background: #7A1C1C;
-  color: white;
+  background: #C2A63A;
 }
