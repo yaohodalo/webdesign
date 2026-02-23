@@ -22,9 +22,8 @@ header h1 { margin:0; font-size:2rem; color:#6b4c1d; }
 .menu-item h3 { margin:0 0 0.3rem 0; color:#3e2f1c; }
 .menu-item p { margin:0 0 0.5rem 0; font-size:0.95rem; color:#555; }
 
-.menu-item label { display:block; margin:0.3rem 0; font-weight:600; }
-.menu-item select { margin-left:0.5rem; padding:0.25rem 0.5rem; font-size:0.95rem; border-radius:4px; border:1px solid #ccc; }
-.menu-item button { margin-top:0.5rem; padding:0.5rem 1rem; background:#c49a6c; color:#fff; border:none; border-radius:5px; cursor:pointer; font-weight:bold; transition:0.2s;}
+.menu-item select { padding:0.3rem 0.5rem; font-size:0.95rem; border-radius:4px; border:1px solid #ccc; margin-right:1rem; }
+.menu-item button { padding:0.5rem 1rem; background:#c49a6c; color:#fff; border:none; border-radius:5px; cursor:pointer; font-weight:bold; transition:0.2s;}
 .menu-item button:hover { background:#b17f44; }
 
 footer { background:#333; color:#fff; text-align:center; padding:2rem 1rem; }
@@ -46,88 +45,59 @@ footer a:hover { color:#c0392b; }
 
 <div class="container">
 
-<!-- Appetizers / Sides -->
+<!-- Example Category: Appetizers / Sides -->
 <section class="category">
   <h2>Appetizers | Sides</h2>
 
   <div class="menu-item">
     <h3>Bofrot</h3>
-    <p>A sweet, deep-fried Ghanaian dough ball. Crispy outside, soft inside, hints of nutmeg & vanilla.</p>
-    <label>½ Tray: $25
-      <select id="bofrot_half">
-        <option value="0">0</option>
-        <option value="1">1</option>
-      </select>
-    </label>
-    <label>1 Tray: $45
-      <select id="bofrot_full">
-        <option value="0">0</option>
-        <option value="1">1</option>
-      </select>
-    </label>
-    <button onclick="addToCart('Bofrot', 25, '½ Tray', parseInt(document.getElementById('bofrot_half').value))">Add to Order</button>
-    <button onclick="addToCart('Bofrot', 45, '1 Tray', parseInt(document.getElementById('bofrot_full').value))">Add to Order</button>
+    <p>Sweet, deep-fried Ghanaian dough ball. Crispy outside, soft inside.</p>
+    <select id="bofrot_select">
+      <option value="0|0">Select portion</option>
+      <option value="25|½ Tray">½ Tray - $25</option>
+      <option value="45|1 Tray">1 Tray - $45</option>
+      <option value="85|2 Trays">2 Trays - $85</option>
+      <option value="120|3 Trays">3 Trays - $120</option>
+    </select>
+    <button onclick="addSelectedToCart('Bofrot','bofrot_select')">Add to Cart</button>
   </div>
 
   <div class="menu-item">
     <h3>Meat Pie</h3>
-    <p>Savory Ghanaian pastry filled with seasoned corned beef, onions, and peppers, wrapped in a flaky crust.</p>
-    <label>Individual: $2
-      <select id="meatpie_individual">
-        <option value="0">0</option>
-        <option value="1">1</option>
-      </select>
-    </label>
-    <button onclick="addToCart('Meat Pie', 2, 'Individual', parseInt(document.getElementById('meatpie_individual').value))">Add to Order</button>
+    <p>Savory Ghanaian pastry filled with seasoned beef and onions.</p>
+    <select id="meatpie_select">
+      <option value="0|0">Select portion</option>
+      <option value="2|Individual">Individual - $2</option>
+      <option value="25|½ Tray">½ Tray - $25</option>
+      <option value="45|1 Tray">1 Tray - $45</option>
+      <option value="85|2 Trays">2 Trays - $85</option>
+      <option value="120|3 Trays">3 Trays - $120</option>
+    </select>
+    <button onclick="addSelectedToCart('Meat Pie','meatpie_select')">Add to Cart</button>
   </div>
 
-  <div class="menu-item">
-    <h3>Kelewele</h3>
-    <p>Spicy Ghanaian street snack made from ripe plantains tossed in ginger, pepper, and spices.</p>
-    <label>½ Tray: $45
-      <select id="kelewele_half">
-        <option value="0">0</option>
-        <option value="1">1</option>
-      </select>
-    </label>
-    <button onclick="addToCart('Kelewele', 45, '½ Tray', parseInt(document.getElementById('kelewele_half').value))">Add to Order</button>
-  </div>
+  <!-- Repeat same structure for other appetizers, soups, rice, meat/fish, local, stews, drinks -->
 
-  <!-- Add other appetizers in same format: Plantains, Chin Chin, Ghana Chips, Chinchinga, Ghana Salad, Poloo, Turkey Tail, Fish Pie -->
 </section>
 
-<!-- Soups -->
+<!-- Example Category: Soups -->
 <section class="category">
   <h2>Soups</h2>
 
   <div class="menu-item">
     <h3>Light Soup</h3>
     <p>Tomatoes, choice protein & spices.</p>
-    <label>Goat & Tripe (Medium): $80
-      <select id="light_soup_goat">
-        <option value="0">0</option>
-        <option value="1">1</option>
-      </select>
-    </label>
-    <button onclick="addToCart('Light Soup', 80, 'Goat & Tripe', parseInt(document.getElementById('light_soup_goat').value))">Add to Order</button>
+    <select id="lightsoup_select">
+      <option value="0|0">Select portion</option>
+      <option value="80|Goat & Tripe (Medium)">Goat & Tripe (Medium) - $80</option>
+      <option value="120|Goat & Tripe (Large)">Goat & Tripe (Large) - $120</option>
+      <option value="70|Fish Only">Fish Only - $70</option>
+    </select>
+    <button onclick="addSelectedToCart('Light Soup','lightsoup_select')">Add to Cart</button>
   </div>
 
-  <div class="menu-item">
-    <h3>Abenkwan (Palm Nut Soup)</h3>
-    <p>Rich soup made from palm fruit extract, simmered with meats and spices.</p>
-    <label>Mixed meat: $120
-      <select id="abenkwan_mixed">
-        <option value="0">0</option>
-        <option value="1">1</option>
-      </select>
-    </label>
-    <button onclick="addToCart('Abenkwan', 120, 'Mixed meat', parseInt(document.getElementById('abenkwan_mixed').value))">Add to Order</button>
-  </div>
-
-  <!-- Add Okra Soup similarly -->
+  <!-- Repeat for Abenkwan, Okra Soup -->
 </section>
-
-<!-- Repeat for Rice Dishes, Meat/Fish, Local, Stews, Drinks in the same format -->
 
 </div>
 
@@ -144,16 +114,25 @@ footer a:hover { color:#c0392b; }
 // Cart functionality
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function addToCart(name, price, size, quantity) {
-  if(quantity === 0) return;
-  const existing = cart.find(item => item.name === name && item.size === size);
-  if(existing){
-    existing.quantity += quantity;
-  } else {
-    cart.push({name, price, size, quantity});
+function addSelectedToCart(name, selectId){
+  const select = document.getElementById(selectId);
+  const [price, portion] = select.value.split('|');
+  const quantity = parseInt(price) === 0 ? 0 : 1;
+  if(quantity === 0){
+    alert('Please select a valid portion.');
+    return;
   }
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert(`${quantity} x ${name} (${size}) added to cart!`);
+
+  const existing = cart.find(item => item.name === name && item.portion === portion);
+  if(existing){
+    existing.quantity += 1;
+  } else {
+    cart.push({name, price: parseFloat(price), portion, quantity: 1});
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert(`${name} (${portion}) added to cart!`);
+  select.selectedIndex = 0; // reset dropdown
 }
 </script>
 
