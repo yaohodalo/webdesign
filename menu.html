@@ -2,34 +2,45 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rosina's Catering Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff8f0; color: #333; margin: 0; padding: 0; }
-header { text-align: center; background-color: #f5e4d3; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-header img { max-width: 200px; margin-bottom: 0.5rem; }
+body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background: #fff8f0; color: #333; }
+header { text-align: center; background: #f5e4d3; padding: 1rem 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+header img { max-width: 180px; margin-bottom: 0.5rem; }
 header h1 { margin: 0; font-size: 2rem; color: #6b4c1d; }
 
-.container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-.category { margin-bottom: 3rem; }
-.category h2 { border-bottom: 2px solid #c49a6c; padding-bottom: 0.5rem; color: #6b4c1d; margin-bottom: 1rem; font-size: 1.8rem; }
+.container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+h2.section-title { text-align: center; color: #c0392b; font-size: 1.9rem; margin: 2rem 0 1rem; }
 
-.menu-item { background: #fff; border-radius: 10px; padding: 1rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s; }
-.menu-item:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-.menu-item h3 { margin: 0 0 0.3rem 0; color: #3e2f1c; }
-.menu-item p { margin: 0 0 0.5rem 0; font-size: 0.95rem; color: #555; }
+.menu-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); }
+.menu-item { background: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s; }
+.menu-item:hover { transform: scale(1.03); }
+.menu-item-content { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+.menu-item-content h3 { margin: 0 0 0.5rem; color:#3e2f1c; }
+.menu-item-content p { margin: 0 0.8rem; font-size: 0.95rem; color: #555; flex-grow: 1; }
+.menu-item-content .price { font-weight: bold; margin-bottom: 0.7rem; }
+.menu-item-content button { background: #c0392b; color: #fff; padding: 0.5rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+.menu-item-content button:hover { background: #e74c3c; }
 
-.tray-options { margin-top: 0.5rem; }
-.tray-options label { display: inline-block; margin-right: 1.5rem; font-weight: 600; font-size: 0.95rem; }
-select { margin-left: 0.5rem; padding: 0.25rem 0.5rem; font-size: 0.95rem; border-radius: 4px; border: 1px solid #ccc; }
+#cart { position: fixed; top: 70px; right: 10px; width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 10px; padding: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-height: 80vh; overflow-y: auto; display: none; z-index: 200; }
+#cart h3 { margin-top: 0; text-align: center; }
+.cart-item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+.cart-item span { display: block; }
+.cart-item button { background: none; border: none; color: #c0392b; cursor: pointer; font-weight: bold; }
 
-.submit-button { display: block; margin: 2rem auto; background-color: #c49a6c; color: white; font-size: 1.2rem; padding: 0.8rem 2rem; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-.submit-button:hover { background-color: #b17f44; }
+#cart-total { text-align: right; font-weight: bold; margin-top: 1rem; }
+#checkout { margin-top: 1rem; background: #c0392b; color: #fff; border: none; width: 100%; padding: 0.5rem; border-radius: 6px; cursor: pointer; font-size: 1rem; }
+#checkout:hover { background: #e74c3c; }
+
+footer { background: #333; color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 2rem; }
+footer a { color: #fff; margin: 0 0.5rem; }
+footer a:hover { color: #c0392b; }
 
 @media (max-width: 600px) {
-  .menu-item { padding: 0.8rem 1rem; }
   header h1 { font-size: 1.5rem; }
-  .category h2 { font-size: 1.4rem; }
+  #cart { width: 90%; right: 5px; }
 }
 </style>
 </head>
@@ -41,258 +52,183 @@ select { margin-left: 0.5rem; padding: 0.25rem 0.5rem; font-size: 0.95rem; borde
 </header>
 
 <div class="container">
-<form id="orderForm">
 
-<!-- Example Category -->
-<div class="category">
-<h2>Appetizers | Sides</h2>
+  <!-- Appetizers -->
+  <h2 class="section-title">Appetizers | Sides</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Bofrot</h3>
+        <p>Sweet, deep-fried dough balls.</p>
+        <button onclick="addToCart('Bofrot ½ Tray',25)">Add ½ Tray ($25)</button>
+        <button onclick="addToCart('Bofrot 1 Tray',45)">Add 1 Tray ($45)</button>
+        <button onclick="addToCart('Bofrot 2 Trays',85)">Add 2 Trays ($85)</button>
+      </div>
+    </div>
 
-<div class="menu-item">
-<h3>Bofrot</h3>
-<p>A sweet, deep-fried Ghanaian dough ball. Crispy outside, soft and fluffy inside, with hints of nutmeg and vanilla.</p>
-<div class="tray-options">
-<label>½ Tray: $25<select name="bofrot_half"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
-<label>1 Tray: $45<select name="bofrot_full"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
-<label>2 Trays: $85<select name="bofrot_two"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-</div>
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Meat Pie</h3>
+        <p>Savory pastry filled with beef, onions & peppers.</p>
+        <button onclick="addToCart('Meat Pie Individual',2)">Add Individual ($2)</button>
+      </div>
+    </div>
 
-<div class="menu-item">
-<h3>Meat Pie</h3>
-<p>Savory Ghanaian pastry filled with seasoned corned beef, onions, and peppers, wrapped in a flaky golden crust.</p>
-<div class="tray-options">
-<label>Individual: $2<select name="meatpie_individual"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
-</div>
-</div>
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Kelewele</h3>
+        <p>Spicy fried plantains tossed with ginger & pepper.</p>
+        <button onclick="addToCart('Kelewele ½ Tray',45)">Add ½ Tray ($45)</button>
+      </div>
+    </div>
+  </div>
 
-<div class="menu-item">
-<h3>Ghana Chips</h3>
-<p>Crunchy, spiced fried snacks made from flour and butter, flavored with nutmeg or pepper.</p>
-<label>32oz: $10<select name="ghana_chips_32oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
+  <!-- Soups -->
+  <h2 class="section-title">Soups</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Light Soup</h3>
+        <p>Tomatoes, choice protein & spices.</p>
+        <button onclick="addToCart('Light Soup Goat Medium',80)">Add Goat Medium ($80)</button>
+      </div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Abenkwan (Palm Nut) Soup</h3>
+        <p>Rich palm fruit soup with meats and spices.</p>
+        <button onclick="addToCart('Abenkwan Mixed',120)">Add Mixed ($120)</button>
+      </div>
+    </div>
+  </div>
 
-<div class="menu-item">
-<h3>Chin Chin</h3>
-<p>Crunchy West African snack made from fried dough, lightly sweet and spiced with nutmeg.</p>
-<label>32oz: $10<select name="chin_chin_32oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
+  <!-- Rice Dishes -->
+  <h2 class="section-title">Rice Dishes</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Jollof Rice</h3>
+        <p>Rice simmered in rich tomato stew.</p>
+        <button onclick="addToCart('Jollof Rice Individual',14)">Add Individual ($14)</button>
+      </div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Waakye Combo</h3>
+        <p>Rice & beans with stew, gari, eggs & plantains.</p>
+        <button onclick="addToCart('Waakye ½ Tray',100)">Add ½ Tray ($100)</button>
+      </div>
+    </div>
+  </div>
 
-<div class="menu-item">
-<h3>Kelewele</h3>
-<p>Spicy Ghanaian street snack made from ripe plantains tossed in ginger, pepper, and aromatic spices.</p>
-<label>½ Tray: $45<select name="kelewele_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
+  <!-- Meat/Fish -->
+  <h2 class="section-title">Meat | Fish</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Chicken Drumsticks | Thigh | Leg</h3>
+        <p>Seasoned to perfection.</p>
+        <button onclick="addToCart('Chicken ½ Tray',40)">Add ½ Tray ($40)</button>
+      </div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Pompano</h3>
+        <p>Seasoned to perfection.</p>
+        <button onclick="addToCart('Pompano ½ Tray',50)">Add ½ Tray ($50)</button>
+      </div>
+    </div>
+  </div>
 
-<div class="menu-item">
-<h3>Plantains</h3>
-<p>Fried and seasoned to perfection.</p>
-<label>½ Tray: $35<select name="plantains_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
+  <!-- Drinks -->
+  <h2 class="section-title">Drinks</h2>
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Lemonade</h3>
+        <p>Homemade fresh lemonade.</p>
+        <button onclick="addToCart('Lemonade 8oz',1.5)">Add 8oz ($1.50)</button>
+      </div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-content">
+        <h3>Ginger Drink</h3>
+        <p>Blend of ginger, lemon & sugar.</p>
+        <button onclick="addToCart('Ginger Drink 8oz',1.5)">Add 8oz ($1.50)</button>
+      </div>
+    </div>
+  </div>
 
-<div class="menu-item">
-<h3>Chinchinga (Beef Suya)</h3>
-<p>Ghana’s take on kebabs. Grilled skewers of spicy, marinated meat.</p>
-<label>Individual: $0<select name="chinchinga_individual"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-
-<div class="menu-item">
-<h3>Ghana Salad</h3>
-<p>Hearty mix of lettuce, tomatoes, onions, eggs, baked beans, and corned beef, topped with mayonnaise.</p>
-<label>½ Tray: $25<select name="ghana_salad_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-
-<div class="menu-item">
-<h3>Poloo</h3>
-<p>Crispy Ghanaian coconut biscuit made from flour, sugar, and grated coconut.</p>
-<label>½ Tray: $45<select name="poloo_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-
-<div class="menu-item">
-<h3>Turkey Tail | Chofi Bites</h3>
-<p>Turkey tail bites.</p>
-<label>½ Tray: $50<select name="turkeytail_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-
-<div class="menu-item">
-<h3>Fish Pie</h3>
-<p>Savory Ghanaian pastry filled with seasoned tuna, onions, and peppers.</p>
-<label>Individual: $2<select name="fishpie_individual"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-</div>
-
-<!-- Soups -->
-<div class="category">
-<h2>Soups</h2>
-
-<div class="menu-item">
-<h3>Light Soup</h3>
-<p>Tomatoes, choice protein & spices.</p>
-<label>Goat & Tripe (Medium): $80<select name="light_soup_goat"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-
-<div class="menu-item">
-<h3>Abenkwan (Palm nut) Soup</h3>
-<p>Rich soup made from palm fruit extract, simmered with meats and spices.</p>
-<label>Mixed meat: $120<select name="abenkwan_mixed"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-
-<div class="menu-item">
-<h3>Okra Soup</h3>
-<p>Fresh okra, palm oil, meats or fish, and bold spices.</p>
-<label>Mixed meat: $120<select name="okra_mixed"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-</div>
-
-<!-- Rice Dishes -->
-<div class="category">
-<h2>Rice Dishes</h2>
-<div class="menu-item">
-<h3>Jollof Rice</h3>
-<p>Rice simmered in a rich tomato stew with onions, peppers, and spices.</p>
-<label>Fish Only Individual: $14<select name="jollof_fish"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Waakye Combo</h3>
-<p>Rice & beans cooked with millet leaves, served with stew, gari, boiled eggs, and fried plantains.</p>
-<label>½ Tray Combo: $100<select name="waakye_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Fried Rice</h3>
-<p>Seasoned rice with veggies, eggs, and spiced meats or shrimp.</p>
-<label>½ Tray: $35<select name="friedrice_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
 </div>
 
-<!-- Meat / Fish -->
-<div class="category">
-<h2>Meat | Fish</h2>
-<div class="menu-item">
-<h3>Chicken Drumsticks | Thigh | Leg</h3>
-<p>Seasoned to perfection.</p>
-<label>½ Tray: $40<select name="chicken_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Chicken Wings</h3>
-<p>Seasoned to perfection.</p>
-<label>½ Tray: $67.50<select name="wings_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Fried Crocker</h3>
-<p>Seasoned to perfection.</p>
-<label>½ Tray: $45<select name="crocker_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Pompano</h3>
-<p>Seasoned to perfection.</p>
-<label>½ Tray: $50<select name="pompano_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
+<!-- Cart -->
+<div id="cart">
+  <h3>Your Cart</h3>
+  <div id="cart-items"></div>
+  <div id="cart-total">Total: $0</div>
+  <button onclick="checkout()">Checkout</button>
 </div>
 
-<!-- Local -->
-<div class="category">
-<h2>Local</h2>
-<div class="menu-item">
-<h3>Kenkey & Fish</h3>
-<p>Fermented corn dough with grilled fish, served with spicy sauce.</p>
-<label>½ Tray: $77.55<select name="kenkey_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Banku & Fish</h3>
-<p>Fermented corn and cassava dough paired with grilled fish, spicy pepper sauce, and fresh veggies.</p>
-<label>½ Tray: $62.55<select name="banku_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Tuo Zafi</h3>
-<p>Maize or millet flour, paired with rich green leafy soups like ayoyo.</p>
-<label>Individual: $17<select name="tuo_individual"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Attieke</h3>
-<p>Fermented cassava couscous served with grilled fish, spicy sauces, and salad.</p>
-<label>Individual: $20<select name="attieke_individual"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-</div>
-
-<!-- Stews -->
-<div class="category">
-<h2>Stews</h2>
-<div class="menu-item">
-<h3>Spinach Stew</h3>
-<p>Deep fried halibut and thick cut fries served with tartar sauce.</p>
-<label>½ Tray: $60<select name="spinach_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Beans Stew</h3>
-<p>Black-eyed peas simmered in tomato & onion sauce, paired with plantains or gari.</p>
-<label>½ Tray: $45<select name="beans_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Fish Stew</h3>
-<p>Spicy tomato sauce simmered with fried or grilled fish.</p>
-<label>½ Tray: $50<select name="fishstew_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Chicken Stew</h3>
-<p>Spicy tomato sauce with tender chicken.</p>
-<label>½ Tray: $40<select name="chickenstew_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Waakye Stew</h3>
-<p>Spicy tomato sauce with seasoned fried or grilled fish.</p>
-<label>½ Tray: $55<select name="waakye_stew_half"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-</div>
-
-<!-- Drinks -->
-<div class="category">
-<h2>Drinks</h2>
-<div class="menu-item">
-<h3>Our Homemade Lemonade</h3>
-<p>Our famous lemonade.</p>
-<label>8oz: $1.50<select name="lemonade_8oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Ginger Drink</h3>
-<p>Blend of ginger, lemon & sugar.</p>
-<label>8oz: $1.50<select name="ginger_8oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Lamugee</h3>
-<p>Refreshing Ghanaian drink made from millet or rice, blended with ginger, cloves, and tamarind.</p>
-<label>8oz: $2<select name="lamugee_8oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Sobolo</h3>
-<p>Hibiscus petals drink infused with ginger, cloves, and pineapple.</p>
-<label>8oz: $2<select name="sobolo_8oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Watermelon Juice</h3>
-<p>Blend of mint & watermelon.</p>
-<label>8oz: $1.50<select name="watermelon_8oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-<div class="menu-item">
-<h3>Winter Punch</h3>
-<p>Blend of fresh fruits & ginger ale.</p>
-<label>8oz: $2<select name="winterpunch_8oz"><option value="0">0</option><option value="1">1</option></select></label>
-</div>
-</div>
-
-<button type="submit" class="submit-button">Place Order</button>
-
-</form>
+<footer>
+  <p>&copy; 2026 Rosina's Catering | Woodbridge, VA</p>
+  <p><a href="#">Instagram</a> | <a href="#">Facebook</a></p>
+</footer>
 
 <script>
-const form = document.getElementById('orderForm');
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-  const formData = new FormData(form);
-  let summary = 'Your Order Summary:\n';
-  for (const [name, value] of formData.entries()) {
-    if (value !== '0') summary += `${name.replace(/_/g,' ')}: ${value}\n`;
-  }
-  alert(summary || 'No items selected.');
-});
+// Initialize cart
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Add item
+function addToCart(name, price) {
+  const existing = cart.find(item => item.name === name);
+  if(existing) existing.quantity++;
+  else cart.push({name, price, quantity:1});
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartDisplay();
+  alert(`${name} added to cart!`);
+}
+
+// Remove item
+function removeFromCart(name){
+  cart = cart.filter(item => item.name !== name);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartDisplay();
+}
+
+// Update cart
+function updateCartDisplay() {
+  const cartContainer = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+  cartContainer.innerHTML = "";
+  let total = 0;
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <span>${item.name} x ${item.quantity}</span>
+      <span>$${(item.price*item.quantity).toFixed(2)}</span>
+      <button onclick="removeFromCart('${item.name}')">✖</button>
+    `;
+    cartContainer.appendChild(div);
+  });
+  cartTotal.textContent = "Total: $" + total.toFixed(2);
+  document.getElementById("cart").style.display = cart.length ? "block" : "none";
+}
+
+// Checkout
+function checkout() {
+  if(!cart.length){ alert("Your cart is empty!"); return; }
+  let summary = "Order Summary:\n";
+  cart.forEach(item => {
+    summary += `${item.name} x ${item.quantity} = $${(item.price*item.quantity).toFixed(2)}\n`;
+  });
+  summary += "Total: $" + cart.reduce((sum,item)=>sum+item.price*item.quantity,0).toFixed(2);
+  alert(summary);
+}
+
+// Load cart on page load
+document.addEventListener("DOMContentLoaded", updateCartDisplay);
 </script>
 
 </body>
