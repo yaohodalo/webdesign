@@ -4,196 +4,382 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rosina's Catering Menu</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Roboto', sans-serif; margin: 0; background: #fff8f0; color: #333; }
-  header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #f5e4d3; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-  header img { max-height: 60px; }
-  .cart-btn { background: #c0392b; color: #fff; border: none; padding: 0.6rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold; }
-  .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-  h1, h2 { color: #6b4c1d; }
-  h2 { border-bottom: 2px solid #c49a6c; padding-bottom: 0.3rem; margin-bottom: 1rem; }
-  .menu-item { background: #fff; border-radius: 10px; padding: 1rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: transform 0.2s; }
-  .menu-item:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
-  .menu-item h3 { margin: 0 0 0.5rem 0; }
-  .menu-item p { margin: 0 0 0.5rem 0; color: #555; }
-  .menu-controls { margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  select { padding: 0.3rem 0.5rem; border-radius: 4px; border: 1px solid #ccc; }
-  .add-btn { background: #c0392b; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold; }
-  .add-btn:hover { background: #e74c3c; }
-  footer { background: #6b4c1d; color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 2rem; }
-  footer a { color: #fff; margin: 0 0.5rem; text-decoration: none; }
-  footer a:hover { color: #c0392b; }
-
-  /* Cart modal */
-  .cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 200; }
-  .cart-content { background: #fff; padding: 2rem; border-radius: 10px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
-  .cart-item { display: flex; justify-content: space-between; margin-bottom: 1rem; }
-  .close-cart { background: #c0392b; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 1rem; }
-
-  @media(max-width:600px){
-    header { flex-direction: column; gap: 0.5rem; }
-    .menu-controls { flex-direction: column; }
-  }
+  body { font-family: Arial, sans-serif; background: #fafafa; margin: 20px; }
+  h1 { color: #b22222; text-align: center; }
+  h2 { color: #b22222; margin-top: 40px; }
+  .menu-category { margin-bottom: 30px; }
+  .menu-item { margin: 10px 0; padding: 10px; background: #fff; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);}
+  .menu-item label { margin-right: 10px; }
+  button { margin-top: 5px; padding: 5px 10px; background: #b22222; color: #fff; border: none; border-radius: 3px; cursor: pointer; }
+  button:hover { background: #8b1a1a; }
+  .drink-size { margin: 5px; display: inline-block; }
 </style>
 </head>
 <body>
 
-<header>
-  <img src="https://www.jotform.com/uploads/loverosinaskitchen/form_files/logo.6907af7c44cab3.08695190.png" alt="Rosina's Catering Logo">
-  <button class="cart-btn" onclick="toggleCart()">View Cart (<span id="cart-count">0</span>)</button>
-</header>
+<h1>Rosina's Catering Menu</h1>
 
-<div class="container">
-
-  <h1>Rosina's Catering Menu</h1>
-
-  <!-- Example Category: Appetizers -->
-  <div class="category">
-    <h2>Appetizers & Sides</h2>
-
-    <div class="menu-item">
-      <h3>Bofrot</h3>
-      <p>Sweet Ghanaian dough balls, crispy outside, soft inside.</p>
-      <div class="menu-controls">
-        <select id="bofrot_select">
-          <option value="0|Select Portion">Select Portion</option>
-          <option value="25|½ Tray">½ Tray: $25</option>
-          <option value="45|1 Tray">1 Tray: $45</option>
-          <option value="85|2 Trays">2 Trays: $85</option>
-        </select>
-        <button class="add-btn" onclick="addSelectedToCart('Bofrot','bofrot_select')">Add to Cart</button>
-      </div>
-    </div>
-
-    <div class="menu-item">
-      <h3>Kelewele</h3>
-      <p>Spicy fried plantains with ginger and pepper.</p>
-      <div class="menu-controls">
-        <select id="kelewele_select">
-          <option value="0|Select Portion">Select Portion</option>
-          <option value="45|½ Tray">½ Tray: $45</option>
-          <option value="85|1 Tray">1 Tray: $85</option>
-        </select>
-        <button class="add-btn" onclick="addSelectedToCart('Kelewele','kelewele_select')">Add to Cart</button>
-      </div>
-    </div>
-
-    <!-- Repeat the structure for all menu items from your JotForm -->
-
+<!-- Appetizers & Sides -->
+<div class="menu-category">
+  <h2>Appetizers & Sides</h2>
+  <div class="menu-item">
+    <strong>Bofrot</strong>
+    <p>A sweet, deep-fried Ghanaian dough ball. Crispy outside, soft and fluffy inside, with hints of nutmeg and vanilla. It’s a beloved street snack, perfect with Koko or enjoyed solo.</p>
+    <select id="bofrot-size">
+      <option value="25">½ Tray - $25</option>
+      <option value="50">1 Tray - $50</option>
+      <option value="100">2 Trays - $100</option>
+      <option value="150">3 Trays - $150</option>
+    </select>
+    <button onclick="addToCart('Bofrot', document.getElementById('bofrot-size').value)">Add to Order</button>
   </div>
 
-  <!-- You would add other categories similarly: Soups, Rice Dishes, Meat/Fish, Local, Stews, Drinks -->
-  <!-- Example: Soups -->
-  <div class="category">
-    <h2>Soups</h2>
-
-    <div class="menu-item">
-      <h3>Light Soup</h3>
-      <p>Tomatoes, choice protein & spices.</p>
-      <div class="menu-controls">
-        <select id="lightsoup_select">
-          <option value="0|Select Portion">Select Portion</option>
-          <option value="80|Goat & Tripe (Medium)">Goat & Tripe (Medium): $80</option>
-        </select>
-        <button class="add-btn" onclick="addSelectedToCart('Light Soup','lightsoup_select')">Add to Cart</button>
-      </div>
-    </div>
-
+  <div class="menu-item">
+    <strong>Meat Pie</strong>
+    <select id="meatpie-size">
+      <p>Is a savory Ghanaian pastry filled with seasoned corned beef, onions, and peppers, wrapped in a flaky golden crust. Perfectly handheld and packed with flavor.</p>
+      <option value="2">Individual - $2</option>
+      <option value="50">½ Tray - $50</option>
+      <option value="100">1 Tray - $100</option>
+      <option value="200">2 Trays - $200</option>
+      <option value="300">3 Trays - $300</option>
+    </select>
+    <button onclick="addToCart('Meat Pie', document.getElementById('meatpie-size').value)">Add to Order</button>
   </div>
 
+  <div class="menu-item">
+    <strong>Kelewele</strong>
+    <p>Spicy Ghanaian street snack made from ripe plantains tossed in ginger, pepper, and aromatic spices, then deep-fried to golden perfection. Bold, sweet, and fiery in every bite.</p>
+    <select id="kelewele-size">
+      <option value="45">½ Tray - $45</option>
+      <option value="90">1 Tray - $90</option>
+      <option value="180">2 Trays - $180</option>
+      <option value="270">3 Trays - $270</option>
+    </select>
+    <button onclick="addToCart('Kelewele', document.getElementById('kelewele-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Plantains</strong>
+    <p>Fried and seasoned to perfection.</p>
+    <select id="plantains-size">
+      <option value="35">½ Tray - $35</option>
+      <option value="70">1 Tray - $70</option>
+      <option value="140">2 Trays - $140</option>
+      <option value="210">3 Trays - $210</option>
+    </select>
+    <button onclick="addToCart('Plantains', document.getElementById('plantains-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Chin Chin</strong>
+    <P>Crunchy West African snack made from fried dough, lightly sweet and spiced with nutmeg. Perfect for nibbling at parties or packing as a treat.</P>
+    <select id="chinchin-size">
+      <option value="10">32oz - $10</option>
+      <option value="40">½ Tray - $40</option>
+      <option value="80">1 Tray - $80</option>
+      <option value="160">2 Trays - $160</option>
+    </select>
+    <button onclick="addToCart('Chin Chin', document.getElementById('chinchin-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Ghana Chips</strong>
+    <P>Crunchy, spiced fried snacks made from flour and butter, often flavored with nutmeg or pepper. They’re bite-sized, golden, and perfect for munching at parties or on the go.</P>
+    <select id="ghanachips-size">
+      <option value="10">32oz - $10</option>
+      <option value="40">½ Tray - $40</option>
+      <option value="80">1 Tray - $80</option>
+      <option value="160">2 Trays - $160</option>
+    </select>
+    <button onclick="addToCart('Ghana Chips', document.getElementById('ghanachips-size').value)">Add to Order</button>
+  </div>
 </div>
 
-<!-- Cart Modal -->
-<div class="cart-modal" id="cartModal">
-  <div class="cart-content">
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <p><strong>Total: $<span id="cartTotal">0</span></strong></p>
-    <button class="close-cart" onclick="toggleCart()">Close</button>
+<!-- Soups -->
+<div class="menu-category">
+  <h2>Soups</h2>
+  <div class="menu-item">
+    <strong>Light Soup</strong>
+    <select id="lightsoup-size">
+      <option value="80">Goat & Tripe (Medium) - $80</option>
+    </select>
+    <button onclick="addToCart('Light Soup', document.getElementById('lightsoup-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Abenkwan (Palm Nut) Soup</strong>
+    <select id="abenkwan-size">
+      <option value="120">Mixed Meat - $120</option>
+    </select>
+    <button onclick="addToCart('Abenkwan Soup', document.getElementById('abenkwan-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Okra Soup</strong>
+    <select id="okra-size">
+      <option value="120">Mixed Meat - $120</option>
+    </select>
+    <button onclick="addToCart('Okra Soup', document.getElementById('okra-size').value)">Add to Order</button>
   </div>
 </div>
+
+<!-- Rice Dishes -->
+<div class="menu-category">
+  <h2>Rice Dishes</h2>
+  <div class="menu-item">
+    <strong>Jollof Rice</strong>
+    <select id="jollof-size">
+      <option value="14">Individual Fish - $14</option>
+      <option value="35">½ Tray - $35</option>
+    </select>
+    <button onclick="addToCart('Jollof Rice', document.getElementById('jollof-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Waakye Combo</strong>
+    <select id="waakye-size">
+      <option value="100">½ Tray Combo - $100</option>
+    </select>
+    <button onclick="addToCart('Waakye Combo', document.getElementById('waakye-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Fried Rice</strong>
+    <select id="friedrice-size">
+      <option value="35">½ Tray - $35</option>
+    </select>
+    <button onclick="addToCart('Fried Rice', document.getElementById('friedrice-size').value)">Add to Order</button>
+  </div>
+</div>
+
+<!-- Meat / Fish -->
+<div class="menu-category">
+  <h2>Meat & Fish</h2>
+  <div class="menu-item">
+    <strong>Chicken Drumsticks / Thigh / Leg</strong>
+    <select id="chicken-size">
+      <option value="40">½ Tray - $40</option>
+    </select>
+    <button onclick="addToCart('Chicken Tray', document.getElementById('chicken-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Chicken Wings</strong>
+    <select id="wings-size">
+      <option value="67.5">½ Tray - $67.50</option>
+    </select>
+    <button onclick="addToCart('Chicken Wings', document.getElementById('wings-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Fried Crocker</strong>
+    <select id="crocker-size">
+      <option value="45">½ Tray - $45</option>
+    </select>
+    <button onclick="addToCart('Fried Crocker', document.getElementById('crocker-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Pompano</strong>
+    <select id="pompano-size">
+      <option value="50">½ Tray - $50</option>
+    </select>
+    <button onclick="addToCart('Pompano', document.getElementById('pompano-size').value)">Add to Order</button>
+  </div>
+</div>
+
+<!-- Local Dishes -->
+<div class="menu-category">
+  <h2>Local Dishes</h2>
+  <div class="menu-item">
+    <strong>Kenkey & Fish</strong>
+    <select id="kenkey-size">
+      <option value="77.55">½ Tray - $77.55</option>
+    </select>
+    <button onclick="addToCart('Kenkey & Fish', document.getElementById('kenkey-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Banku & Fish</strong>
+    <select id="banku-size">
+      <option value="62.55">½ Tray - $62.55</option>
+    </select>
+    <button onclick="addToCart('Banku & Fish', document.getElementById('banku-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Tuo Zafi</strong>
+    <select id="tuo-size">
+      <option value="17">Individual - $17</option>
+    </select>
+    <button onclick="addToCart('Tuo Zafi', document.getElementById('tuo-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Attieke</strong>
+    <select id="attieke-size">
+      <option value="20">Individual - $20</option>
+    </select>
+    <button onclick="addToCart('Attieke', document.getElementById('attieke-size').value)">Add to Order</button>
+  </div>
+</div>
+
+<!-- Stews -->
+<div class="menu-category">
+  <h2>Stews</h2>
+  <div class="menu-item">
+    <strong>Spinach Stew</strong>
+    <select id="spinach-size">
+      <option value="60">½ Tray - $60</option>
+    </select>
+    <button onclick="addToCart('Spinach Stew', document.getElementById('spinach-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Beans Stew</strong>
+    <select id="beans-size">
+      <option value="45">½ Tray - $45</option>
+    </select>
+    <button onclick="addToCart('Beans Stew', document.getElementById('beans-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Fish Stew</strong>
+    <select id="fishstew-size">
+      <option value="50">½ Tray - $50</option>
+    </select>
+    <button onclick="addToCart('Fish Stew', document.getElementById('fishstew-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Chicken Stew</strong>
+    <select id="chickenstew-size">
+      <option value="40">½ Tray - $40</option>
+    </select>
+    <button onclick="addToCart('Chicken Stew', document.getElementById('chickenstew-size').value)">Add to Order</button>
+  </div>
+
+  <div class="menu-item">
+    <strong>Waakye Stew</strong>
+    <select id="waakye_stew-size">
+      <option value="55">½ Tray - $55</option>
+    </select>
+    <button onclick="addToCart('Waakye Stew', document.getElementById('waakye_stew-size').value)">Add to Order</button>
+  </div>
+</div>
+
+<!-- Drinks -->
+<div class="menu-category">
+  <h2>Drinks</h2>
+
+  <div class="menu-item">
+    <strong>Homemade Lemonade</strong><br>
+    <div class="drink-size">
+      <button onclick="addToCart('Lemonade 8oz', 1.5)">8oz - $1.50</button>
+      <button onclick="addToCart('Lemonade 16oz', 2.5)">16oz - $2.50</button>
+      <button onclick="addToCart('Lemonade 1 Gallon', 10)">1 Gallon - $10</button>
+      <button onclick="addToCart('Lemonade 2 Gallons', 18)">2 Gallons - $18</button>
+      <button onclick="addToCart('Lemonade 5 Gallons', 40)">5 Gallons - $40</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <strong>Ginger Drink</strong><br>
+    <div class="drink-size">
+      <button onclick="addToCart('Ginger 8oz', 1.5)">8oz - $1.50</button>
+      <button onclick="addToCart('Ginger 16oz', 2.5)">16oz - $2.50</button>
+      <button onclick="addToCart('Ginger 1 Gallon', 10)">1 Gallon - $10</button>
+      <button onclick="addToCart('Ginger 2 Gallons', 18)">2 Gallons - $18</button>
+      <button onclick="addToCart('Ginger 5 Gallons', 40)">5 Gallons - $40</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <strong>Lamugee</strong><br>
+    <div class="drink-size">
+      <button onclick="addToCart('Lamugee 8oz', 2)">8oz - $2</button>
+      <button onclick="addToCart('Lamugee 16oz', 3.5)">16oz - $3.50</button>
+      <button onclick="addToCart('Lamugee 1 Gallon', 12)">1 Gallon - $12</button>
+      <button onclick="addToCart('Lamugee 2 Gallons', 20)">2 Gallons - $20</button>
+      <button onclick="addToCart('Lamugee 5 Gallons', 45)">5 Gallons - $45</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <strong>Sobolo</strong><br>
+    <div class="drink-size">
+      <button onclick="addToCart('Sobolo 8oz', 2)">8oz - $2</button>
+      <button onclick="addToCart('Sobolo 16oz', 3.5)">16oz - $3.50</button>
+      <button onclick="addToCart('Sobolo 1 Gallon', 12)">1 Gallon - $12</button>
+      <button onclick="addToCart('Sobolo 2 Gallons', 20)">2 Gallons - $20</button>
+      <button onclick="addToCart('Sobolo 5 Gallons', 45)">5 Gallons - $45</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <strong>Watermelon Juice</strong><br>
+    <div class="drink-size">
+      <button onclick="addToCart('Watermelon 8oz', 1.5)">8oz - $1.50</button>
+      <button onclick="addToCart('Watermelon 16oz', 2.5)">16oz - $2.50</button>
+      <button onclick="addToCart('Watermelon 1 Gallon', 10)">1 Gallon - $10</button>
+      <button onclick="addToCart('Watermelon 2 Gallons', 18)">2 Gallons - $18</button>
+      <button onclick="addToCart('Watermelon 5 Gallons', 40)">5 Gallons - $40</button>
+    </div>
+  </div>
+
+  <div class="menu-item">
+    <strong>Winter Punch</strong><br>
+    <div class="drink-size">
+      <button onclick="addToCart('Winter Punch 8oz', 2)">8oz - $2</button>
+      <button onclick="addToCart('Winter Punch 16oz', 3.5)">16oz - $3.50</button>
+      <button onclick="addToCart('Winter Punch 1 Gallon', 12)">1 Gallon - $12</button>
+      <button onclick="addToCart('Winter Punch 2 Gallons', 20)">2 Gallons - $20</button>
+      <button onclick="addToCart('Winter Punch 5 Gallons', 45)">5 Gallons - $45</button>
+    </div>
+  </div>
+</div>
+
+<br>
+<button onclick="viewCart()">View Cart</button>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(name, price) {
+  price = parseFloat(price);
+  const existing = cart.find(item => item.name === name);
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({ name, price, quantity: 1 });
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(`${name} added to cart!`);
+}
+
+function viewCart() {
+  if(cart.length === 0){
+    alert("Your cart is empty.");
+    return;
+  }
+  let summary = "Your Cart:\n";
+  cart.forEach(item => {
+    summary += `${item.name} - $${item.price} x ${item.quantity}\n`;
+  });
+  summary += `Total: $${cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}`;
+  alert(summary);
+}
+</script>
 
 <footer>
   <p>&copy; 2026 Rosina's Catering | Woodbridge, VA</p>
   <p>
-    <a href="https://www.instagram.com/" target="_blank">Instagram</a> | 
-    <a href="https://www.facebook.com/" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com/rosinas_catering" target="_blank">Instagram</a> | 
+    <a href="https://www.facebook.com/profile.php?id=61583799733826&mibextid=wwXIfr&mibextid=wwXIfr" target="_blank">Facebook</a> | 
   </p>
 </footer>
-
-<script>
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-function updateCartCount(){
-  let count = cart.reduce((sum,item)=>sum+item.quantity,0);
-  document.getElementById('cart-count').textContent = count;
-}
-
-function addSelectedToCart(name, selectId){
-  const select = document.getElementById(selectId);
-  const parts = select.value.split('|');
-  if(parts.length !== 2){
-    alert('Please select a valid portion.');
-    return;
-  }
-  const price = parseFloat(parts[0].trim());
-  const portion = parts[1].trim();
-  if(isNaN(price) || price <=0){
-    alert('Please select a valid portion.');
-    return;
-  }
-
-  const existing = cart.find(item => item.name===name && item.portion===portion);
-  if(existing){
-    existing.quantity += 1;
-  } else {
-    cart.push({name, portion, price, quantity:1});
-  }
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert(`${name} (${portion}) added to cart!`);
-  select.selectedIndex = 0;
-  updateCartCount();
-}
-
-function toggleCart(){
-  const modal = document.getElementById('cartModal');
-  if(modal.style.display==='flex'){
-    modal.style.display='none';
-  } else {
-    renderCart();
-    modal.style.display='flex';
-  }
-}
-
-function renderCart(){
-  const container = document.getElementById('cartItems');
-  container.innerHTML='';
-  let total=0;
-  cart.forEach((item,idx)=>{
-    const itemDiv = document.createElement('div');
-    itemDiv.className='cart-item';
-    itemDiv.innerHTML=`
-      <span>${item.name} (${item.portion}) x ${item.quantity}</span>
-      <span>$${(item.price*item.quantity).toFixed(2)} 
-      <button onclick="removeItem(${idx})" style="background:#c0392b;color:#fff;border:none;padding:0 5px;border-radius:3px;cursor:pointer;">X</button></span>
-    `;
-    container.appendChild(itemDiv);
-    total += item.price*item.quantity;
-  });
-  document.getElementById('cartTotal').textContent = total.toFixed(2);
-}
-
-function removeItem(index){
-  cart.splice(index,1);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-  updateCartCount();
-}
-
-// Initialize count on page load
-updateCartCount();
-</script>
 
 </body>
 </html>
