@@ -5,12 +5,18 @@
 
 <title>Would You Join Me For One Hour?</title>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Spend one hour with Jesus in Eucharistic Adoration. Join the livestream and pray.">
+
+<link rel="icon" href="/favicon.ico">
+
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 
 <style>
 
 body{
-font-family: Georgia, serif;
+font-family:Georgia,serif;
 text-align:center;
 background:linear-gradient(#1b1b1b,#3a2f23);
 color:#f5e6c8;
@@ -36,6 +42,14 @@ font-size:18px;
 position:relative;
 }
 
+video{
+width:100%;
+height:auto;
+border-radius:8px;
+}
+
+/* scrolling prayer */
+
 .scroll-text{
 position:absolute;
 bottom:10px;
@@ -53,14 +67,12 @@ from{transform:translateX(100%)}
 to{transform:translateX(-100%)}
 }
 
+/* timer */
+
 .timer{
 margin-top:15px;
 font-size:20px;
 color:#ffd700;
-}
-
-video{
-border-radius:8px;
 }
 
 </style>
@@ -88,10 +100,9 @@ id="adoration"
 class="video-js"
 controls
 autoplay
-width="900"
-height="500">
+playsinline>
 
-<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8" type="application/x-mpegURL">
+<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8?playerId=1&secure_token=NeyYM3e4O3hDIWhVckJdSmIhFiWD1LXx&heartbeat_token=eyJpdiI6ImhtSjhCTEN0Zm5ZTG02UWMvN0JTenc9PSIsInZhbHVlIjoialVvMEZnMFhoWWRUTkUwdEtmcFFFeUw4TFlhT1YyZ2s1YS9oeVhobmlaMmh6TmpqdldaZ0RHUmw5azVHeklsZCIsIm1hYyI6Ijk5Y2RlYjY1NjdkMTQ2NDRkNTAwOGY2MDE0YmNjYWIxZjdlZjc0YzllNjc0ZThmNWVlN2MxYTJiNWEzYzU5M2QiLCJ0YWciOiIifQ%3D%3D-1772930595" type="application/x-mpegURL">
 
 </video>
 
@@ -116,6 +127,7 @@ var player = videojs('adoration');
 var time = 3600;
 
 function updateTimer(){
+
 var minutes = Math.floor(time/60);
 var seconds = time%60;
 
