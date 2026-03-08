@@ -7,6 +7,9 @@
 
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
 
 body{
@@ -58,18 +61,19 @@ margin-top:15px;
 font-size:20px;
 color:#ffd700;
 }
-  
+
 video{
 border-radius:8px;
 }
 
-</style>
+#map{
+height:500px;
+width:100%;
+margin-top:30px;
+border-radius:8px;
+}
 
-<script>
-setTimeout(function(){
-location.reload();
-},300000);
-</script>
+</style>
 
 </head>
 
@@ -78,6 +82,10 @@ location.reload();
 <div class="container">
 
 <h1>"Could you not watch with me one hour?" — Matthew 26:40</h1>
+
+<h2>Global Eucharistic Adoration</h2>
+
+<div id="map"></div>
 
 <p>Spend time with Jesus in the Blessed Sacrament.</p>
 
@@ -95,20 +103,10 @@ height="500">
 
 </video>
 
-<script>
-
-var map = L.map('map').setView([20,0],2);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:18
-}).addTo(map);
-
-</script>
-  
 </div>
-  
+
 <div class="scroll-text">
-    Stay With Me, Remain Here With Me — Watch And Pray
+Stay With Me, Remain Here With Me — Watch And Pray
 </div>
 
 <div class="timer">
@@ -118,6 +116,7 @@ Adoration Hour Remaining: <span id="countdown">60:00</span>
 </div>
 
 <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 
@@ -138,14 +137,28 @@ document.getElementById("countdown").innerHTML = minutes + ":" + seconds;
 if(time > 0){
 time--;
 }
-
 }
 
 setInterval(updateTimer,1000);
 
+
+/* MAP */
+
+var map = L.map('map').setView([20,0],2);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+maxZoom:18
+}).addTo(map);
+
 </script>
 
+<script>
+setTimeout(function(){
+location.reload();
+},300000);
+</script>
 
-  
 </body>
 </html>
