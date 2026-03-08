@@ -3,7 +3,7 @@
 
 <head>
 
-<title>Global Eucharistic Adoration</title>
+<title>Would You Join Me For One Hour</title>
 
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 
@@ -53,6 +53,31 @@ font-size:20px;
 color:#ffd700;
 }
 
+.scroll-text {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 15px;
+  font-size: 24px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.8);
+}
+
+.scroll-text span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 12s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 </style>
 
 </head>
@@ -61,7 +86,7 @@ color:#ffd700;
 
 <div class="container">
 
-<h1>"Could you not watch with me one hour?" Matthew 26:40</h1>
+<h1>"Could you not watch with me one hour?" - Matthew 26:40</h1>
 
 <h2>Global Eucharistic Adoration</h2>
 
