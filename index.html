@@ -2,9 +2,14 @@
 <html>
 
 <head>
-
+<meta charset="utf-8">
 <title>Would You Join Me For One Hour</title>
 
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- VideoJS -->
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 
 <link rel="stylesheet"
@@ -28,23 +33,20 @@ padding:20px;
 
 #map{
 height:500px;
-width:100%;
-margin-top:30px;
-border-radius:8px;
-}
-
-.video-wrapper{
-margin-top:20px;
+width:90%;
+margin:auto;
+margin-bottom:20px;
 }
 
 button{
 background:gold;
 border:none;
-padding:12px;
+padding:10px 20px;
 font-size:16px;
 cursor:pointer;
 border-radius:6px;
-margin-top:10px;
+#videoContainer{
+margin-top:20px;
 }
 
 .timer{
@@ -90,7 +92,7 @@ color:#ffd700;
 
 <h2>Global Eucharistic Adoration</h2>
 
-<p> Souls Watching in Prayer: <span id="prayerCount">0</span></p>
+
 
 <button id="prayerButton" onclick="joinPrayer()">
 I Will Watch One Hour
@@ -122,6 +124,7 @@ width="900"
 height="500"
 style="display:none"
 frameborder="0"
+allow="autoplay; encrypted-media"
 allowfullscreen>
 </iframe>
 
@@ -144,6 +147,17 @@ Adoration Hour Remaining: <span id="countdown">60:00</span>
 
 <script>
 
+/* MAP */
+
+var map = L.map('map').setView([20,0],2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map);
+
+
+/* VIDEO PLAYER */
+
 var player = videojs('adorationVideo');
 
 function playChapel(stream){
@@ -158,9 +172,13 @@ if(stream.includes("youtube.com") || stream.includes("youtu.be")){
 video.style.display="none";
 frame.style.display="block";
 
-/* extract youtube id */
+var id;
 
-var id = stream.split("v=")[1];
+if(stream.includes("watch?v=")){
+id = stream.split("watch?v=")[1];
+}else if(stream.includes("youtu.be/")){
+id = stream.split("youtu.be/")[1];
+}
 
 if(id && id.includes("&")){
 id = id.split("&")[0];
@@ -275,14 +293,6 @@ L.marker([33.53360293199483, -86.67505764235436]).addTo(map)
 .bindPopup(`
 <h3>EWTN Chapel, Irondale AL, USA</h3>
 <button onclick="playChapel('https://cdn3.wowza.com/1/Y09GU2RCUG9EbVRr/WlpHUVVx/hls/live/playlist.m3u8')">
-Watch Live Adoration
-</button>
-`);
-
-L.marker([26.2694301889862, -98.1701400328158]).addTo(map)
-.bindPopup(`
-<h3>Shalom World Chapel, Edinburg TX, USA</h3>
-<button onclick="playChapel('blob:https://www.swprayer.org/95cb1ca0-5b33-4bd6-81a9-bc4afa0a2381')">
 Watch Live Adoration
 </button>
 `);
