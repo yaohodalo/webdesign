@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>SW Prayer – Worldwide Adoration Map</title>
+<title>Would You Join Me For One Hour</title>
 
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -42,9 +42,18 @@ margin-top:20px;
 
 <body>
 
-<h1>🌍 Worldwide Eucharistic Adoration</h1>
+
+<div class="container">
+
+<h1>"Could you not watch with me one hour?"</h1><p>Matthew 26:40</p>
+
+<h2>Global Eucharistic Adoration</h2>
 
 <div id="map"></div>
+
+<div class="scroll-text">
+ <span>Stay With Me, Remain Here With Me, Watch And Pray</span>
+</div>
 
 <div id="videoContainer">
 
@@ -72,13 +81,15 @@ allowfullscreen>
 
 <br>
 
-<h2 id="timer">Prayer Time: 0:00</h2>
+<div class="timer">
+Adoration Hour Remaining: <span id="countdown">60:00</span>
+</div>
 
 <button onclick="startPrayer()">Start Prayer Hour</button>
 
-<h3>Global Prayer Count: <span id="counter">0</span></h3>
+<p> Souls Watching in Prayer: <span id="prayerCount">0</span></p>
 
-<p>© 2023 SW Prayer</p>
+<p>© 2026 Worldwide Eucharistic Adoration Network</p>
 
 <script>
 
@@ -182,7 +193,7 @@ count++;
 document.getElementById("counter").innerText=count;
 
 }
-
+<p> Souls Watching in Prayer: <span id="prayerCount">0</span></p>
 
 
 /* MAP MARKERS */
