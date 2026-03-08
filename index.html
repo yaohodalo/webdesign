@@ -37,6 +37,38 @@ cursor:pointer;
 margin-top:20px;
 }
 
+.timer{
+margin-top:15px;
+font-size:20px;
+color:#ffd700;
+}
+
+.scroll-text {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 15px;
+  font-size: 24px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.8);
+}
+
+.scroll-text span {
+  isplay: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 12s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
 </style>
 </head>
 
@@ -153,47 +185,48 @@ player.play();
 }
 
 
-/* PRAYER TIMER */
 
-var seconds=0;
-var timerInterval;
+/* PRAYER COUNTER */
 
-function startPrayer(){
+var prayers = 0;
 
-clearInterval(timerInterval);
+function joinPrayer(){
 
-timerInterval=setInterval(function(){
+prayers++;
 
-seconds++;
+document.getElementById("prayerCount").innerText = prayers;
 
-var minutes=Math.floor(seconds/60);
-var sec=seconds%60;
+var btn = document.getElementById("prayerButton");
 
-document.getElementById("timer").innerText=
-"Prayer Time: "+minutes+":"+(sec<10?"0"+sec:sec);
-
-if(seconds==3600){
-clearInterval(timerInterval);
-alert("Thank you for completing one hour of prayer!");
-incrementCounter();
-}
-
-},1000);
+btn.disabled = true;
+btn.innerText = "You are praying with us";
 
 }
 
 
-/* GLOBAL COUNTER */
+/* ONE HOUR TIMER */
 
-function incrementCounter(){
+var time = 3600;
 
-var count=parseInt(document.getElementById("counter").innerText);
-count++;
+function updateTimer(){
 
-document.getElementById("counter").innerText=count;
+var minutes = Math.floor(time/60);
+var seconds = time % 60;
+
+if(seconds < 10){
+seconds = "0"+seconds;
+}
+
+document.getElementById("countdown").innerHTML =
+minutes + ":" + seconds;
+
+if(time > 0){
+time--;
+}
 
 }
-<p> Souls Watching in Prayer: <span id="prayerCount">0</span></p>
+
+setInterval(updateTimer,1000);
 
 
 /* MAP MARKERS */
