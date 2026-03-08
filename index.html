@@ -89,6 +89,8 @@ border-radius:8px;
 
 <p>Spend time with Jesus in the Blessed Sacrament.</p>
 
+<p>🙏 People Praying Right Now: <span id="prayers">1</span></p>
+  
 <div class="video-wrapper">
 
 <video
@@ -128,6 +130,9 @@ function updateTimer(){
 var minutes = Math.floor(time/60);
 var seconds = time%60;
 
+var count = Math.floor(Math.random()*200)+50;
+document.getElementById("prayers").innerHTML = count;
+
 if(seconds < 10){
 seconds = "0" + seconds;
 }
@@ -162,20 +167,57 @@ location.reload();
 
 /* PRAYER LOCATIONS */
 
+/* PRAYER LOCATIONS WITH LIVE VIDEO */
+
 L.marker([41.9028,12.4964]).addTo(map)
-.bindPopup("Rome – Eucharistic Adoration");
+.bindPopup(`
+<h3>Rome – Eucharistic Adoration</h3>
+<video width="250" controls autoplay muted>
+<source src="ROME_VIDEO_STREAM_LINK.m3u8" type="application/x-mpegURL">
+</video>
+`);
 
 L.marker([38.9072,-77.0369]).addTo(map)
-.bindPopup("Washington DC – Adoration");
+.bindPopup(`
+<h3>Washington DC – Adoration</h3>
+<video width="250" controls autoplay muted>
+<source src="DC_VIDEO_STREAM_LINK.m3u8" type="application/x-mpegURL">
+</video>
+`);
 
 L.marker([43.0950,-0.0462]).addTo(map)
-.bindPopup("Lourdes – Prayer");
+.bindPopup(`
+<h3>Lourdes – Adoration</h3>
+<video width="250" controls autoplay muted>
+<source src="LOURDES_VIDEO_STREAM_LINK.m3u8" type="application/x-mpegURL">
+</video>
+`);
 
-L.marker([50.0647,19.9450]).addTo(map)
-.bindPopup("Krakow – Adoration");
+L.marker([51.08820493539503, -114.19680691635025]).addTo(map)
+.bindPopup(`
+<h3>Calgary, CA – Eucharistic Adoration</h3>
+<video width="250" controls autoplay muted>
+<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8" type="application/x-mpegURL">
+</video>
+`);
 
-L.marker([14.5995,120.9842]).addTo(map)
-.bindPopup("Manila – Prayer");
+
+/* VISITOR LOCATION */
+
+if (navigator.geolocation) {
+
+navigator.geolocation.getCurrentPosition(function(position){
+
+var lat = position.coords.latitude;
+var lon = position.coords.longitude;
+
+L.marker([lat,lon]).addTo(map)
+.bindPopup("You are praying here")
+.openPopup();
+
+});
+
+}
 
 
 </script>
