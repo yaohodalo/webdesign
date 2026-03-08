@@ -32,11 +32,7 @@ width:100%;
 margin-top:30px;
 border-radius:8px;
 }
-
-.video-wrapper{
-margin-top:20px;
-}
-
+  
 button{
 background:gold;
 border:none;
@@ -78,6 +74,30 @@ color:#ffd700;
   }
 }
 
+<div id="videoContainer">
+
+<video
+id="adorationVideo"
+class="video-js"
+controls
+autoplay
+width="900"
+height="500"
+style="display:none">
+</video>
+
+<iframe
+id="adorationFrame"
+width="900"
+height="500"
+style="display:none"
+frameborder="0"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
+
+</div>
+
 </style>
 
 </head>
@@ -102,20 +122,6 @@ I Will Watch One Hour
  <span>Stay With Me, Remain Here With Me — Watch And Pray</span>
 </div>
 
-<div class="video-wrapper">
-
-<video
-id="adoration"
-class="video-js"
-controls
-autoplay
-width="900"
-height="500">
-
-<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8"
-type="application/x-mpegURL">
-
-</video>
 </div>
 
 <div class="timer">
@@ -131,26 +137,56 @@ Adoration Hour Remaining: <span id="countdown">60:00</span>
 
 /* VIDEO PLAYER */
 
-var player = videojs('adoration');
 
+/* VIDEO PLAYER */
 
-/* PRAYER COUNTER */
+var player = videojs('adorationVideo');
 
-var prayers = 0;
+function playChapel(stream){
 
-function joinPrayer(){
+var video = document.getElementById("adorationVideo");
+var frame = document.getElementById("adorationFrame");
 
-prayers++;
+/* YOUTUBE */
 
-document.getElementById("prayerCount").innerText = prayers;
+if(stream.includes("youtube.com") || stream.includes("youtu.be")){
 
-var btn = document.getElementById("prayerButton");
+video.style.display="none";
+frame.style.display="block";
 
-btn.disabled = true;
-btn.innerText = "You are praying with us";
+var id;
+
+if(stream.includes("watch?v=")){
+id = stream.split("watch?v=")[1];
+}else if(stream.includes("youtu.be/")){
+id = stream.split("youtu.be/")[1];
+}
+
+if(id.includes("&")){
+id = id.split("&")[0];
+}
+
+frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
 
 }
 
+/* M3U8 STREAM */
+
+else if(stream.includes(".m3u8")){
+
+frame.style.display="none";
+video.style.display="block";
+
+player.src({
+src:stream,
+type:"application/x-mpegURL"
+});
+
+player.play();
+
+}
+
+}
 
 /* ONE HOUR TIMER */
 
