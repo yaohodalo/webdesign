@@ -65,22 +65,11 @@ border-radius:8px;
 
 </style>
 
-
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
-<video id="adoration" controls autoplay width="900" height="500"></video>
-
 <script>
-var video = document.getElementById('adoration');
-var videoSrc = "https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8?playerId=1&secure_token=NeyYM3e4O3hDIWhVckJdSmIhFiWD1LXx&heartbeat_token=eyJpdiI6ImhtSjhCTEN0Zm5ZTG02UWMvN0JTenc9PSIsInZhbHVlIjoialVvMEZnMFhoWWRUTkUwdEtmcFFFeUw4TFlhT1YyZ2s1YS9oeVhobmlaMmh6TmpqdldaZ0RHUmw5azVHeklsZCIsIm1hYyI6Ijk5Y2RlYjY1NjdkMTQ2NDRkNTAwOGY2MDE0YmNjYWIxZjdlZjc0YzllNjc0ZThmNWVlN2MxYTJiNWEzYzU5M2QiLCJ0YWciOiIifQ%3D%3D-1772930595" type="application/x-mpegURL";
-
-if(Hls.isSupported()){
-   var hls = new Hls();
-   hls.loadSource(videoSrc);
-   hls.attachMedia(video);
-}
+setTimeout(function(){
+location.reload();
+},300000);
 </script>
-
 
 </head>
 
@@ -92,9 +81,24 @@ if(Hls.isSupported()){
 
 <p>Spend time with Jesus in the Blessed Sacrament.</p>
 
+<div class="video-wrapper">
+
+<video
+id="adoration"
+class="video-js"
+controls
+autoplay
+width="900"
+height="500">
+
+<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8?playerId=1&secure_token=NeyYM3e4O3hDIWhVckJdSmIhFiWD1LXx&heartbeat_token=eyJpdiI6ImhtSjhCTEN0Zm5ZTG02UWMvN0JTenc9PSIsInZhbHVlIjoialVvMEZnMFhoWWRUTkUwdEtmcFFFeUw4TFlhT1YyZ2s1YS9oeVhobmlaMmh6TmpqdldaZ0RHUmw5azVHeklsZCIsIm1hYyI6Ijk5Y2RlYjY1NjdkMTQ2NDRkNTAwOGY2MDE0YmNjYWIxZjdlZjc0YzllNjc0ZThmNWVlN2MxYTJiNWEzYzU5M2QiLCJ0YWciOiIifQ%3D%3D-1772930595" type="application/x-mpegURL">
+
+</video>
 
 <div class="scroll-text">
-    Stay With Me, Remain Here With Me — Watch And Pray
+Stay With Me, Remain Here With Me — Watch And Pray
+</div>
+
 </div>
 
 <div class="timer">
@@ -131,12 +135,5 @@ setInterval(updateTimer,1000);
 
 </script>
 
-<script>
-setTimeout(function(){
-location.reload();
-},300000);
-</script>
-
-  
 </body>
 </html>
