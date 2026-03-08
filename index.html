@@ -146,7 +146,7 @@ Adoration Hour Remaining: <span id="countdown">60:00</span>
 
 <p>Soul Watching in Prayer: <span id="prayerCount">0</span></p>
 
-<p>© 2026 Worldwide Eucharistic Adoration Network</p>
+<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map </p>
 
 <script>
 
@@ -224,12 +224,17 @@ player.pause();
 
 }
   
-/* PRAYER TIMER */
+/* PRAYER TIMER AND GLOBAL COUNTER */
 
 var seconds=0;
 var timerInterval;
 
 function startPrayer(){
+
+db.ref("souls").transaction((current)=>{
+return (current || 0) + 1;
+});
+
 
 clearInterval(timerInterval);
 
@@ -258,15 +263,25 @@ incrementCounter();
 function stopPrayer(){
 
 clearInterval(timerInterval);
-
 alert("Prayer hour stopped. Thank you for praying.");
+
+db.ref("souls").transaction((current)=>{
+return (current || 1) - 1;
+});
+
+
+db.ref("souls").on("value", (snapshot)=>{
+
+document.getElementById("prayerCount").innerText = snapshot.val();
+
+});
 
 }
 
 
-/* GLOBAL COUNTER */
 
 
+/* FIREBASE CONFIG */
 const firebaseConfig = {
 apiKey: "AIzaSyBB6NJuODwMOE5uyswtCR9PCAc3-Dr4D50",
 authDomain: "apostolate-4d47c.firebaseapp.com",
@@ -279,26 +294,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
   
 
-function startPrayer(){
 
-db.ref("souls").transaction((current)=>{
-return (current || 0) + 1;
-});
-
-}
-
-function stopPrayer(){
-
-db.ref("souls").transaction((current)=>{
-return (current || 1) - 1;
-});
-
-
-db.ref("souls").on("value", (snapshot)=>{
-
-document.getElementById("prayerCount").innerText = snapshot.val();
-
-});
 
   
 
@@ -315,7 +311,7 @@ Watch Live Adoration
 L.marker([33.533602,-86.675057]).addTo(map)
 .bindPopup(`
 <h3>EWTN Chapel, Irondale AL, USA</h3>
-<button onclick="playChapel('https://cdn3.wowza.com/1/Y09GU2RCUG9EbVRr/WlpHUVVx/hls/live/playlist.m3u8')">
+<button onclick="playChapel('https://www.ewtn.com/live/adoration')">
 Watch Live Adoration
 </button>
 `);
