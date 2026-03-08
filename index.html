@@ -2,14 +2,9 @@
 <html>
 
 <head>
-<meta charset="utf-8">
+
 <title>Would You Join Me For One Hour</title>
 
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<!-- VideoJS -->
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 
 <link rel="stylesheet"
@@ -33,20 +28,23 @@ padding:20px;
 
 #map{
 height:500px;
-width:90%;
-margin:auto;
-margin-bottom:20px;
+width:100%;
+margin-top:30px;
+border-radius:8px;
+}
+
+.video-wrapper{
+margin-top:20px;
 }
 
 button{
 background:gold;
 border:none;
-padding:10px 20px;
+padding:12px;
 font-size:16px;
 cursor:pointer;
 border-radius:6px;
-#videoContainer{
-margin-top:20px;
+margin-top:10px;
 }
 
 .timer{
@@ -92,7 +90,7 @@ color:#ffd700;
 
 <h2>Global Eucharistic Adoration</h2>
 
-
+<p> Souls Watching in Prayer: <span id="prayerCount">0</span></p>
 
 <button id="prayerButton" onclick="joinPrayer()">
 I Will Watch One Hour
@@ -106,31 +104,15 @@ I Will Watch One Hour
 
 <div class="video-wrapper">
 
-<div id="videoContainer">
-
 <video
-id="adorationVideo"
+id="adoration"
 class="video-js"
 controls
 autoplay
 width="900"
-height="500"
-style="display:none">
-</video>
+height="500">
 
-<iframe
-id="adorationFrame"
-width="900"
-height="500"
-style="display:none"
-frameborder="0"
-allow="autoplay; encrypted-media"
-allowfullscreen>
-</iframe>
-
-</div>
-
-<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8?playerId=1&secure_token=NeyYM3e4O3hDIWhVckJdSmIhFiWD1LXx&heartbeat_token=eyJpdiI6ImhtSjhCTEN0Zm5ZTG02UWMvN0JTenc9PSIsInZhbHVlIjoialVvMEZnMFhoWWRUTkUwdEtmcFFFeUw4TFlhT1YyZ2s1YS9oeVhobmlaMmh6TmpqdldaZ0RHUmw5azVHeklsZCIsIm1hYyI6Ijk5Y2RlYjY1NjdkMTQ2NDRkNTAwOGY2MDE0YmNjYWIxZjdlZjc0YzllNjc0ZThmNWVlN2MxYTJiNWEzYzU5M2QiLCJ0YWciOiIifQ%3D%3D-1772930595"
+<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8"
 type="application/x-mpegURL">
 
 </video>
@@ -146,65 +128,6 @@ Adoration Hour Remaining: <span id="countdown">60:00</span>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-
-/* MAP */
-
-var map = L.map('map').setView([20,0],2);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
-}).addTo(map);
-
-
-/* VIDEO PLAYER */
-
-var player = videojs('adorationVideo');
-
-function playChapel(stream){
-
-var video = document.getElementById("adorationVideo");
-var frame = document.getElementById("adorationFrame");
-
-/* detect youtube */
-
-if(stream.includes("youtube.com") || stream.includes("youtu.be")){
-
-video.style.display="none";
-frame.style.display="block";
-
-var id;
-
-if(stream.includes("watch?v=")){
-id = stream.split("watch?v=")[1];
-}else if(stream.includes("youtu.be/")){
-id = stream.split("youtu.be/")[1];
-}
-
-if(id && id.includes("&")){
-id = id.split("&")[0];
-}
-
-frame.src = "https://www.youtube.com/embed/"+id+"?autoplay=1";
-
-}
-
-/* detect m3u8 */
-
-else if(stream.includes(".m3u8")){
-
-frame.style.display="none";
-video.style.display="block";
-
-player.src({
-src:stream,
-type:"application/x-mpegURL"
-});
-
-player.play();
-
-}
-
-}
 
 /* VIDEO PLAYER */
 
@@ -288,37 +211,6 @@ L.marker([51.08819145733045, -114.19683910285558]).addTo(map)
 Watch Live Adoration
 </button>
 `);
-
-L.marker([33.53360293199483, -86.67505764235436]).addTo(map)
-.bindPopup(`
-<h3>EWTN Chapel, Irondale AL, USA</h3>
-<button onclick="playChapel('https://cdn3.wowza.com/1/Y09GU2RCUG9EbVRr/WlpHUVVx/hls/live/playlist.m3u8')">
-Watch Live Adoration
-</button>
-`);
-
-L.marker([-37.848311206122695, 145.0962187271487]).addTo(map)
-.bindPopup(`
-<h3>St Benedicts Burwood, Burwood AU</h3>
-<button onclick="playChapel(\'https://www.youtube.com/watch?v=qz8YE61BoXM\')">
-Watch Live Adoration
-</button>
-`);
-
-L.marker([52.20212410792924, 20.41967808186777]).addTo(map)
-.bindPopup(`
-<h3>Monastery of the Immaculate Conception of the Order of Friars Minor Conventual (Franciscan Fathers), Paprotnia PL</h3>
-<button onclick="playChapel(\'https://www.youtube.com/watch?v=bIR18Pvy11U\')">
-Watch Live Adoration
-</button>
-`);
-
-
-
-
-
-
-  
 
 </script>
 
