@@ -26,6 +26,17 @@ width:90%;
 margin:auto;
 margin-bottom:20px;
 }
+#videoContainer{
+width:90%;
+margin:auto;
+margin-top:20px;
+}
+
+#adorationVideo,
+#adorationFrame{
+width:100%;
+height:500px;
+}
 
 button{
 padding:10px 20px;
@@ -60,7 +71,9 @@ margin-bottom:20px;
 <h2>Global Eucharistic Adoration</h2>
 
 <div class="scroll-text">
-<span>Stay With Me, Remain Here With Me, Watch And Pray</span>
+<marquee behavior="scroll" direction="left" scrollamount="5">
+✝ Stay With Me, Remain Here With Me ✝ Watch And Pray 
+</marquee>
 </div>
 
 <div id="map"></div>
@@ -72,15 +85,11 @@ id="adorationVideo"
 class="video-js"
 controls
 autoplay
-width="900"
-height="500"
 style="display:none">
 </video>
 
 <iframe
 id="adorationFrame"
-width="900"
-height="500"
 style="display:none"
 frameborder="0"
 allow="autoplay; encrypted-media"
