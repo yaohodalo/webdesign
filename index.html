@@ -161,7 +161,6 @@ maxZoom:19
 
 /* VIDEO PLAYER */
 
-
 var player = videojs('adorationVideo');
 
 function playChapel(stream){
@@ -170,10 +169,6 @@ document.getElementById("videoModal").style.display="block";
 
 var video = document.getElementById("adorationVideo");
 var frame = document.getElementById("adorationFrame");
-
-
-
-/* YOUTUBE */
 
 if(stream.includes("youtube.com") || stream.includes("youtu.be")){
 
@@ -184,19 +179,17 @@ var id;
 
 if(stream.includes("watch?v=")){
 id = stream.split("watch?v=")[1];
-}else if(stream.includes("youtu.be/")){
+}else{
 id = stream.split("youtu.be/")[1];
 }
 
 if(id.includes("&")){
-id = id.split("&")[0];
+id=id.split("&")[0];
 }
 
 frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
 
 }
-
-/* M3U8 STREAM */
 
 else if(stream.includes(".m3u8")){
 
@@ -214,31 +207,54 @@ player.play();
 
 }
 
+
 function closeVideo(){
 
 document.getElementById("videoModal").style.display="none";
-
 document.getElementById("adorationFrame").src="";
-
 player.pause();
 
 }
-  
-/* PRAYER TIMER AND GLOBAL COUNTER */
 
-var seconds=0;
+
+/* FIREBASE */
+
+const firebaseConfig = {
+apiKey: "AIzaSyBB6NJuODwMOE5uyswtCR9PCAc3-Dr4D50",
+authDomain: "apostolate-4d47c.firebaseapp.com",
+databaseURL: "https://apostolate-4d47c-default-rtdb.firebaseio.com",
+projectId: "apostolate-4d47c"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+
+/* GLOBAL COUNTER LISTENER */
+
+db.ref("souls").on("value",(snapshot)=>{
+
+document.getElementById("prayerCount").innerText = snapshot.val() || 0;
+
+});
+
+
+/* PRAYER TIMER */
+
+var seconds = 0;
 var timerInterval;
 
 function startPrayer(){
 
-db.ref("souls").transaction((current)=>{
-return (current || 0) + 1;
-});
-
-
 clearInterval(timerInterval);
 
 seconds = 0;
+
+/* add global counter */
+
+db.ref("souls").transaction((current)=>{
+return (current || 0) + 1;
+});
 
 timerInterval=setInterval(function(){
 
@@ -250,53 +266,35 @@ var sec=seconds%60;
 document.getElementById("countdown").innerText =
 minutes+":"+(sec<10?"0"+sec:sec);
 
-if(seconds==3600){
+if(seconds>=3600){
+
 clearInterval(timerInterval);
+
 alert("Thank you for completing one hour of prayer!");
-incrementCounter();
+
+stopPrayer();
+
 }
 
 },1000);
 
 }
 
+
 function stopPrayer(){
 
 clearInterval(timerInterval);
-alert("Prayer hour stopped. Thank you for praying.");
+
+/* remove from global counter */
 
 db.ref("souls").transaction((current)=>{
-return (current || 1) - 1;
+return Math.max((current || 1) - 1,0);
 });
 
-
-db.ref("souls").on("value", (snapshot)=>{
-
-document.getElementById("prayerCount").innerText = snapshot.val();
-
-});
+alert("Prayer hour stopped. Thank you for praying.");
 
 }
 
-
-
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-apiKey: "AIzaSyBB6NJuODwMOE5uyswtCR9PCAc3-Dr4D50",
-authDomain: "apostolate-4d47c.firebaseapp.com",
-databaseURL: "https://apostolate-4d47c-default-rtdb.firebaseio.com",
-projectId: "apostolate-4d47c"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.database();
-  
-
-
-
-  
 
 /* MAP MARKERS */
 
