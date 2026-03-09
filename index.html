@@ -12,8 +12,9 @@
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+<!-- Firebase (COMPAT VERSION) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <style>
 
@@ -29,6 +30,7 @@ width:90%;
 margin:auto;
 margin-bottom:20px;
 }
+
 #videoContainer{
 width:90%;
 margin:auto;
@@ -76,10 +78,6 @@ font-size:16px;
 cursor:pointer;
 }
 
-#videoContainer{
-margin-top:20px;
-}
-
 .scroll-text{
 background:black;
 color:white;
@@ -104,7 +102,7 @@ margin-bottom:20px;
 
 <div class="scroll-text">
 <marquee behavior="scroll" direction="left" scrollamount="5">
-✝ Stay With Me, Remain Here With Me ✝ Watch And Pray 
+✝ Stay With Me, Remain Here With Me ✝ Watch And Pray
 </marquee>
 </div>
 
@@ -112,10 +110,11 @@ margin-bottom:20px;
 
 <div id="videoModal" class="video-modal">
 <div class="video-modal-content">
+
 <span class="closeVideo" onclick="closeVideo()">✖</span>
-  
-  
+
 <div id="videoContainer">
+
 <video
 id="adorationVideo"
 class="video-js"
@@ -137,16 +136,18 @@ allowfullscreen>
 <br>
 
 <div class="timer">
-Adoration Hour Remaining: <span id="countdown">60:00</span>
+Adoration Prayer Time: <span id="countdown">0:00</span>
 </div>
 
 <button onclick="startPrayer()">Start Prayer Hour</button>
 <button onclick="stopPrayer()">Stop Prayer</button>
 
-
 <p>Soul Watching in Prayer: <span id="prayerCount">0</span></p>
 
-<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map </p>
+<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map</p>
+
+</div>
+</div>
 
 <script>
 
@@ -161,7 +162,11 @@ maxZoom:19
 
 /* VIDEO PLAYER */
 
-var player = videojs('adorationVideo');
+var player;
+
+window.onload=function(){
+player = videojs('adorationVideo');
+};
 
 function playChapel(stream){
 
@@ -169,6 +174,8 @@ document.getElementById("videoModal").style.display="block";
 
 var video = document.getElementById("adorationVideo");
 var frame = document.getElementById("adorationFrame");
+
+/* YOUTUBE */
 
 if(stream.includes("youtube.com") || stream.includes("youtu.be")){
 
@@ -191,6 +198,8 @@ frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
 
 }
 
+/* M3U8 STREAM */
+
 else if(stream.includes(".m3u8")){
 
 frame.style.display="none";
@@ -205,14 +214,22 @@ player.play();
 
 }
 
+/* OTHER LINKS */
+
+else{
+window.open(stream,"_blank");
 }
 
+}
 
 function closeVideo(){
 
 document.getElementById("videoModal").style.display="none";
 document.getElementById("adorationFrame").src="";
+
+if(player){
 player.pause();
+}
 
 }
 
@@ -227,7 +244,10 @@ projectId: "apostolate-4d47c"
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.database();
+
+var praying=false;
 
 
 /* GLOBAL COUNTER LISTENER */
@@ -239,21 +259,38 @@ document.getElementById("prayerCount").innerText = snapshot.val() || 0;
 });
 
 
+window.addEventListener("beforeunload", function () {
+
+if(praying){
+
+db.ref("souls").transaction((current)=>{
+return Math.max((current || 1) - 1,0);
+});
+
+}
+
+});
+
+
 /* PRAYER TIMER */
 
-var seconds = 0;
+var seconds=0;
 var timerInterval;
 
 function startPrayer(){
 
+if(praying) return;
+
+praying=true;
+
 clearInterval(timerInterval);
 
-seconds = 0;
+seconds=0;
 
-/* add global counter */
+/* add to counter */
 
 db.ref("souls").transaction((current)=>{
-return (current || 0) + 1;
+return (current || 0)+1;
 });
 
 timerInterval=setInterval(function(){
@@ -283,12 +320,16 @@ stopPrayer();
 
 function stopPrayer(){
 
+if(!praying) return;
+
+praying=false;
+
 clearInterval(timerInterval);
 
-/* remove from global counter */
+/* remove from counter */
 
 db.ref("souls").transaction((current)=>{
-return Math.max((current || 1) - 1,0);
+return Math.max((current || 1)-1,0);
 });
 
 alert("Prayer hour stopped. Thank you for praying.");
