@@ -4,15 +4,12 @@
 <meta charset="utf-8">
 <title>Would You Join Me For One Hour</title>
 
-<!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<!-- VideoJS -->
 <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
 <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
 
-<!-- Firebase (COMPAT VERSION) -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -93,8 +90,6 @@ margin-bottom:20px;
 
 <body>
 
-<div class="container">
-
 <h1>"Could you not watch with me one hour?"</h1>
 <p>Matthew 26:40</p>
 
@@ -136,7 +131,7 @@ allowfullscreen>
 <br>
 
 <div class="timer">
-Adoration Prayer Time: <span id="countdown">0:00</span>
+Adoration Hour Remaining: <span id="countdown">60:00</span>
 </div>
 
 <button onclick="startPrayer()">Start Prayer Hour</button>
@@ -159,23 +154,23 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 maxZoom:19
 }).addTo(map);
 
+/* Chapel Icon */
+
+var chapelIcon = L.icon({
+iconUrl:"https://cdn-icons-png.flaticon.com/512/3176/3176363.png",
+iconSize:[35,35]
+});
 
 /* VIDEO PLAYER */
 
-var player;
-
-window.onload=function(){
-player = videojs('adorationVideo');
-};
+var player = videojs('adorationVideo');
 
 function playChapel(stream){
 
 document.getElementById("videoModal").style.display="block";
 
-var video = document.getElementById("adorationVideo");
-var frame = document.getElementById("adorationFrame");
-
-/* YOUTUBE */
+var video=document.getElementById("adorationVideo");
+var frame=document.getElementById("adorationFrame");
 
 if(stream.includes("youtube.com") || stream.includes("youtu.be")){
 
@@ -185,9 +180,9 @@ frame.style.display="block";
 var id;
 
 if(stream.includes("watch?v=")){
-id = stream.split("watch?v=")[1];
+id=stream.split("watch?v=")[1];
 }else{
-id = stream.split("youtu.be/")[1];
+id=stream.split("youtu.be/")[1];
 }
 
 if(id.includes("&")){
@@ -197,8 +192,6 @@ id=id.split("&")[0];
 frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
 
 }
-
-/* M3U8 STREAM */
 
 else if(stream.includes(".m3u8")){
 
@@ -214,67 +207,50 @@ player.play();
 
 }
 
-/* OTHER LINKS */
-
-else{
-window.open(stream,"_blank");
-}
-
 }
 
 function closeVideo(){
 
 document.getElementById("videoModal").style.display="none";
 document.getElementById("adorationFrame").src="";
-
-if(player){
 player.pause();
-}
 
 }
 
+/* CLOSE MODAL CLICK OUTSIDE */
+
+window.onclick=function(event){
+
+var modal=document.getElementById("videoModal");
+
+if(event.target==modal){
+closeVideo();
+}
+
+}
 
 /* FIREBASE */
 
-const firebaseConfig = {
-apiKey: "AIzaSyBB6NJuODwMOE5uyswtCR9PCAc3-Dr4D50",
-authDomain: "apostolate-4d47c.firebaseapp.com",
-databaseURL: "https://apostolate-4d47c-default-rtdb.firebaseio.com",
-projectId: "apostolate-4d47c"
+const firebaseConfig={
+apiKey:"AIzaSyBB6NJuODwMOE5uyswtCR9PCAc3-Dr4D50",
+authDomain:"apostolate-4d47c.firebaseapp.com",
+databaseURL:"https://apostolate-4d47c-default-rtdb.firebaseio.com",
+projectId:"apostolate-4d47c"
 };
 
 firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
 
-const db = firebase.database();
-
-var praying=false;
-
-
-/* GLOBAL COUNTER LISTENER */
+/* GLOBAL COUNTER */
 
 db.ref("souls").on("value",(snapshot)=>{
-
-document.getElementById("prayerCount").innerText = snapshot.val() || 0;
-
+document.getElementById("prayerCount").innerText=snapshot.val() || 0;
 });
-
-
-window.addEventListener("beforeunload", function () {
-
-if(praying){
-
-db.ref("souls").transaction((current)=>{
-return Math.max((current || 1) - 1,0);
-});
-
-}
-
-});
-
 
 /* PRAYER TIMER */
 
-var seconds=0;
+var praying=false;
+var seconds=3600;
 var timerInterval;
 
 function startPrayer(){
@@ -285,9 +261,7 @@ praying=true;
 
 clearInterval(timerInterval);
 
-seconds=0;
-
-/* add to counter */
+seconds=3600;
 
 db.ref("souls").transaction((current)=>{
 return (current || 0)+1;
@@ -295,15 +269,15 @@ return (current || 0)+1;
 
 timerInterval=setInterval(function(){
 
-seconds++;
+seconds--;
 
 var minutes=Math.floor(seconds/60);
 var sec=seconds%60;
 
-document.getElementById("countdown").innerText =
+document.getElementById("countdown").innerText=
 minutes+":"+(sec<10?"0"+sec:sec);
 
-if(seconds>=3600){
+if(seconds<=0){
 
 clearInterval(timerInterval);
 
@@ -317,7 +291,6 @@ stopPrayer();
 
 }
 
-
 function stopPrayer(){
 
 if(!praying) return;
@@ -326,36 +299,49 @@ praying=false;
 
 clearInterval(timerInterval);
 
-/* remove from counter */
-
 db.ref("souls").transaction((current)=>{
 return Math.max((current || 1)-1,0);
 });
 
 alert("Prayer hour stopped. Thank you for praying.");
 
+document.getElementById("countdown").innerText="60:00";
+
 }
 
+/* SAFELY REMOVE COUNT ON PAGE EXIT */
+
+window.addEventListener("beforeunload",function(){
+
+if(praying){
+
+db.ref("souls").transaction((current)=>{
+return Math.max((current || 1)-1,0);
+});
+
+}
+
+});
 
 /* MAP MARKERS */
 
-L.marker([51.088191,-114.196839]).addTo(map)
+L.marker([51.088191,-114.196839],{icon:chapelIcon}).addTo(map)
 .bindPopup(`
 <h3>Sisters of Divine Mercy, Calgary CA</h3>
-<button onclick="playChapel('https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8?playerId=1&secure_token=uYpLRJBcVtX1Aomu2gefrZzuG4E2dm4z&heartbeat_token=eyJpdiI6IlhZamFoN0QvcE10cjdkckEzbmlxQ0E9PSIsInZhbHVlIjoicjZEaUdwYzFJd3RDOEhGeDJLNm9ZcjVwQ0RUTkF3a2x6NDlFaWs0WDA1YnArSFJGUjRIUUJjcndlRS8vemFLUyIsIm1hYyI6IjU0MjFmY2NhZWFiYTI2ZThkYzJlNTUyYTU2MWJmYWNiY2YzOWE3NTNiODcyNDY0NWMxM2VkMDY2MjY3NjVkNzciLCJ0YWciOiIifQ%3D%3D-1773013044')">
+<button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
 Watch Live Adoration
 </button>
 `);
 
-L.marker([33.533602,-86.675057]).addTo(map)
+L.marker([33.533602,-86.675057],{icon:chapelIcon}).addTo(map)
 .bindPopup(`
 <h3>EWTN Chapel, Irondale AL, USA</h3>
-<button onclick="playChapel('https://www.ewtn.com/live/adoration')">
+<button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
 Watch Live Adoration
 </button>
 `);
 
-L.marker([-37.848311,145.096218]).addTo(map)
+L.marker([-37.848311,145.096218],{icon:chapelIcon}).addTo(map)
 .bindPopup(`
 <h3>St Benedicts Burwood, Australia</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
@@ -363,7 +349,7 @@ Watch Live Adoration
 </button>
 `);
 
-L.marker([52.202124,20.419678]).addTo(map)
+L.marker([52.202124,20.419678],{icon:chapelIcon}).addTo(map)
 .bindPopup(`
 <h3>Franciscan Monastery, Paprotnia Poland</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
