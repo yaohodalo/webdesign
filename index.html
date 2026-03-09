@@ -1,216 +1,415 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
+<meta charset="utf-8">
 <title>Would You Join Me For One Hour</title>
 
-<link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <style>
 
 body{
-font-family: Georgia, serif;
+font-family:Arial;
 text-align:center;
-background:linear-gradient(#1b1b1b,#3a2f23);
-color:#f5e6c8;
-margin:0;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
+background:#f2f2f2;
 }
 
 #map{
 height:500px;
-width:100%;
-margin-top:30px;
-border-radius:8px;
+width:90%;
+margin:auto;
+margin-bottom:20px;
 }
 
-.video-wrapper{
+#videoContainer{
+width:90%;
+margin:auto;
 margin-top:20px;
 }
 
+.video-modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background-color:rgba(0,0,0,0.9);
+}
+
+.video-modal-content{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:90%;
+max-width:900px;
+}
+
+#adorationVideo,
+#adorationFrame{
+width:100%;
+height:500px;
+}
+
+.closeVideo{
+position:absolute;
+top:-40px;
+right:0;
+font-size:30px;
+color:white;
+cursor:pointer;
+}
+
 button{
-background:gold;
-border:none;
-padding:12px;
+padding:10px 20px;
 font-size:16px;
 cursor:pointer;
-border-radius:6px;
-margin-top:10px;
 }
-
-.timer{
-margin-top:15px;
+.scroll-text{
+background:
+linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+url("https://www.saintjeromechurch.org/wp-content/uploads/2024/03/22291-what-exactly-is-the-blessed-sacrament-find-out-here.jpg");
+background-size:cover;
+background-position:center;
+color:gold;
+padding:12px;
 font-size:20px;
-color:#ffd700;
-}
-
-.scroll-text {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  margin-top: 15px;
-  font-size: 24px;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255,215,0,0.8);
-}
-
-.scroll-text span {
-  display: inline-block;
-  padding-left: 100%;
-  animation: scroll-left 12s linear infinite;
-}
-
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+font-weight:bold;
+width:90%;
+margin:auto;
+margin-bottom:20px;
+text-shadow:2px 2px 6px black;
+border:2px solid gold;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>"Could you not watch with me one hour?"</h1><p>Matthew 26:40</p>
+<h1>"Could you not watch with me one hour?"</h1>
+<p>Matthew 26:40</p>
 
 <h2>Global Eucharistic Adoration</h2>
 
-<p> Souls Watching in Prayer: <span id="prayerCount">0</span></p>
-
-<button id="prayerButton" onclick="joinPrayer()">
-I Will Watch One Hour
-</button>
+<div class="scroll-text">
+<marquee behavior="scroll" direction="left" scrollamount="5">
+Stay With Me, Remain Here With Me.
+Watch And Pray, Watch And Pray.
+</marquee>
+</div>
 
 <div id="map"></div>
 
-<div class="scroll-text">
- <span>Stay With Me, Remain Here With Me — Watch And Pray</span>
-</div>
-
-<div class="video-wrapper">
-
-<video
-id="adoration"
-class="video-js"
-controls
-autoplay
-width="900"
-height="500">
-
-<source src="https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8"
-type="application/x-mpegURL">
-
-</video>
-</div>
-
+<!-- Prayer Timer Section -->
 <div class="timer">
 Adoration Hour Remaining: <span id="countdown">60:00</span>
 </div>
 
+<button onclick="startPrayer()">Start Prayer Hour</button>
+<button onclick="stopPrayer()">Stop Prayer</button>
+
+
+  
+<!-- Souls praying counter -->
+<p>Soul Watching in Prayer: <span id="prayerCount">0</span></p>
+<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map</p>
+
+
+<div id="videoModal" class="video-modal">
+<div class="video-modal-content">
+
+<span class="closeVideo" onclick="closeVideo()">✖</span>
+
+<div id="videoContainer">
+
+<video
+id="adorationVideo"
+class="video-js"
+controls
+autoplay
+style="display:none">
+</video>
+
+<iframe
+id="adorationFrame"
+style="display:none"
+frameborder="0"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
+
 </div>
 
-<script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<br>
+  
+</div>
 
 <script>
-
-/* VIDEO PLAYER */
-
-var player = videojs('adoration');
-
-
-/* PRAYER COUNTER */
-
-var prayers = 0;
-
-function joinPrayer(){
-
-prayers++;
-
-document.getElementById("prayerCount").innerText = prayers;
-
-var btn = document.getElementById("prayerButton");
-
-btn.disabled = true;
-btn.innerText = "You are praying with us";
-
-}
-
-
-/* ONE HOUR TIMER */
-
-var time = 3600;
-
-function updateTimer(){
-
-var minutes = Math.floor(time/60);
-var seconds = time % 60;
-
-if(seconds < 10){
-seconds = "0"+seconds;
-}
-
-document.getElementById("countdown").innerHTML =
-minutes + ":" + seconds;
-
-if(time > 0){
-time--;
-}
-
-}
-
-setInterval(updateTimer,1000);
-
 
 /* MAP */
 
 var map = L.map('map').setView([20,0],2);
 
-L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{
-maxZoom:18
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
 }).addTo(map);
 
 
-/* FUNCTION TO CHANGE STREAM */
+/* VIDEO PLAYER */
+
+var player = videojs('adorationVideo');
 
 function playChapel(stream){
 
+document.getElementById("videoModal").style.display="block";
+
+var video=document.getElementById("adorationVideo");
+var frame=document.getElementById("adorationFrame");
+
+if(stream.includes("youtube.com") || stream.includes("youtu.be")){
+
+video.style.display="none";
+frame.style.display="block";
+
+var id;
+
+if(stream.includes("watch?v=")){
+id=stream.split("watch?v=")[1];
+}else{
+id=stream.split("youtu.be/")[1];
+}
+
+if(id.includes("&")){
+id=id.split("&")[0];
+}
+
+frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
+
+}
+
+else if(stream.includes(".m3u8")){
+
+frame.style.display="none";
+video.style.display="block";
+
 player.src({
-src: stream,
-type: "application/x-mpegURL"
+src:stream,
+type:"application/x-mpegURL"
 });
 
 player.play();
 
 }
 
+}
+
+function closeVideo(){
+
+document.getElementById("videoModal").style.display="none";
+document.getElementById("adorationFrame").src="";
+player.pause();
+
+}
+
+/* CLOSE MODAL CLICK OUTSIDE */
+
+window.onclick=function(event){
+
+var modal=document.getElementById("videoModal");
+
+if(event.target==modal){
+closeVideo();
+}
+
+}
+
+/* FIREBASE */
+
+const firebaseConfig={
+apiKey:"AIzaSyBB6NJuODwMOE5uyswtCR9PCAc3-Dr4D50",
+authDomain:"apostolate-4d47c.firebaseapp.com",
+databaseURL:"https://apostolate-4d47c-default-rtdb.firebaseio.com",
+projectId:"apostolate-4d47c"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+
+/* GLOBAL COUNTER */
+
+db.ref("souls").on("value",(snapshot)=>{
+document.getElementById("prayerCount").innerText=snapshot.val() || 0;
+});
+
+/* PRAYER TIMER */
+
+var praying=false;
+var seconds=3600;
+var timerInterval;
+
+function startPrayer(){
+
+if(praying) return;
+
+praying=true;
+
+clearInterval(timerInterval);
+
+seconds=3600;
+
+db.ref("souls").transaction((current)=>{
+return (current || 0)+1;
+});
+
+timerInterval=setInterval(function(){
+
+seconds--;
+
+var minutes=Math.floor(seconds/60);
+var sec=seconds%60;
+
+document.getElementById("countdown").innerText=
+minutes+":"+(sec<10?"0"+sec:sec);
+
+if(seconds<=0){
+
+clearInterval(timerInterval);
+
+alert("Thank you for completing one hour of prayer!");
+
+stopPrayer();
+
+}
+
+},1000);
+
+}
+
+function stopPrayer(){
+
+if(!praying) return;
+
+praying=false;
+
+clearInterval(timerInterval);
+
+db.ref("souls").transaction((current)=>{
+return Math.max((current || 1)-1,0);
+});
+
+alert("Prayer hour stopped. Thank you for praying.");
+
+document.getElementById("countdown").innerText="60:00";
+
+}
+
+/* SAFELY REMOVE COUNT ON PAGE EXIT */
+
+window.addEventListener("beforeunload",function(){
+
+if(praying){
+
+db.ref("souls").transaction((current)=>{
+return Math.max((current || 1)-1,0);
+});
+
+}
+
+});
 
 /* MAP MARKERS */
 
-L.marker([51.08819145733045, -114.19683910285558]).addTo(map)
+L.marker([51.088191,-114.196839]).addTo(map)
 .bindPopup(`
 <h3>Sisters of Divine Mercy, Calgary CA</h3>
-<button onclick="playChapel('https://edge3.stl.ecatholic.live/live/ss/amlst:1_23_676_1_6iAOzF4TPNjbPTSlvM9JOb95EFZjllKJEjW3SHCZ5BF8ApsUyfOSvlmtCM70i9f9/playlist.m3u8?playerId=1&secure_token=NeyYM3e4O3hDIWhVckJdSmIhFiWD1LXx&heartbeat_token=eyJpdiI6ImhtSjhCTEN0Zm5ZTG02UWMvN0JTenc9PSIsInZhbHVlIjoialVvMEZnMFhoWWRUTkUwdEtmcFFFeUw4TFlhT1YyZ2s1YS9oeVhobmlaMmh6TmpqdldaZ0RHUmw5azVHeklsZCIsIm1hYyI6Ijk5Y2RlYjY1NjdkMTQ2NDRkNTAwOGY2MDE0YmNjYWIxZjdlZjc0YzllNjc0ZThmNWVlN2MxYTJiNWEzYzU5M2QiLCJ0YWciOiIifQ%3D%3D-1772930595')">
+<button onclick="playChapel('https://www.youtube.com/watch?v=1OR9c5YtRco')">
 Watch Live Adoration
 </button>
 `);
+
+L.marker([27.211164594068823, -98.12618571688884]).addTo(map)
+.bindPopup(`
+<h3>Shalom World, Edinburg TX, USA</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=l30JmRRGQQI')">
+Watch Live Adoration
+</button>
+`);
+
+L.marker([33.533602,-86.675057]).addTo(map)
+.bindPopup(`
+<h3>EWTN Chapel, Irondale AL, USA</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=GlGkFWPKomU')">
+Watch Live Adoration
+</button>
+`);
+
+L.marker([-37.848311,145.096218]).addTo(map)
+.bindPopup(`
+<h3>St Benedicts Burwood, Australia</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
+Watch Live Adoration
+</button>
+`);
+
+L.marker([52.202124,20.419678]).addTo(map)
+.bindPopup(`
+<h3>Monastery of the Immaculate Conception of the Order of Friars Minor Conventual, Paprotnia Poland</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
+Watch Live Adoration
+</button>
+`);
+
+L.marker([51.51272175784455, -0.16690941632605502]).addTo(map)
+.bindPopup(`
+<h3>Tyburn Convent, London UK</h3>
+<button onclick="playChapel(' https://www.youtube.com/watch?v=YbxI_Vd97H4')">
+Watch Live Adoration
+</button>
+`);
+
+L.marker([44.34934717811221, 13.014269026323799]).addTo(map)
+.bindPopup(`
+<h3>Maria Vision, Rome Italy</h3>
+<button onclick="playChapel('https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8')">
+Watch Live Adoration
+</button>
+`);
+
+L.marker([1.2967181988001202, 103.85090453422588]).addTo(map)
+.bindPopup(`
+<h3>Cathedral of the Good Shepherd, Singapore</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=g8sUK4RNIEg')">
+Watch Live Adoration
+</button>
+`);
+  
+L.marker([39.81915886003033, -5.163416274606668]).addTo(map)
+.bindPopup(`
+<h3>Ermita de Nuestra Señora de Bienvenida-Alcolea, Toledo Spain </h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=YTWA-eUZzJQ')">
+Watch Live Adoration
+</button>
+`);
+
+ L.marker([40.41343862264555, -74.10332138991909]).addTo(map)
+.bindPopup(`
+<h3>St Mary Mother of God Church, Middletown NJ, USA </h3>
+<button onclick="playChapel(' https://www.youtube.com/watch?v=TIu6DyLTWLQ')">
+Watch Live Adoration
+</button>
+`);
+
+ 
 
 </script>
 
