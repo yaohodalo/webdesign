@@ -74,15 +74,21 @@ padding:10px 20px;
 font-size:16px;
 cursor:pointer;
 }
-
 .scroll-text{
-background:black;
-color:white;
-padding:10px;
-font-size:18px;
+background:
+linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+url("https://www.saintjeromechurch.org/wp-content/uploads/2024/03/22291-what-exactly-is-the-blessed-sacrament-find-out-here.jpg");
+background-size:cover;
+background-position:center;
+color:gold;
+padding:12px;
+font-size:20px;
+font-weight:bold;
 width:90%;
 margin:auto;
 margin-bottom:20px;
+text-shadow:2px 2px 6px black;
+border:2px solid gold;
 }
 
 </style>
@@ -102,6 +108,21 @@ margin-bottom:20px;
 </div>
 
 <div id="map"></div>
+
+<!-- Prayer Timer Section -->
+<div class="timer">
+Adoration Hour Remaining: <span id="countdown">60:00</span>
+</div>
+
+<button onclick="startPrayer()">Start Prayer Hour</button>
+<button onclick="stopPrayer()">Stop Prayer</button>
+
+
+  
+<!-- Souls praying counter -->
+<p>Soul Watching in Prayer: <span id="prayerCount">0</span></p>
+<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map</p>
+
 
 <div id="videoModal" class="video-modal">
 <div class="video-modal-content">
@@ -129,19 +150,7 @@ allowfullscreen>
 </div>
 
 <br>
-
-<div class="timer">
-Adoration Hour Remaining: <span id="countdown">60:00</span>
-</div>
-
-<button onclick="startPrayer()">Start Prayer Hour</button>
-<button onclick="stopPrayer()">Stop Prayer</button>
-
-<p>Soul Watching in Prayer: <span id="prayerCount">0</span></p>
-
-<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map</p>
-
-</div>
+  
 </div>
 
 <script>
@@ -154,12 +163,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 maxZoom:19
 }).addTo(map);
 
-/* Chapel Icon */
-
-var chapelIcon = L.icon({
-iconUrl:"https://cdn-icons-png.flaticon.com/512/3176/3176363.png",
-iconSize:[35,35]
-});
 
 /* VIDEO PLAYER */
 
@@ -325,7 +328,7 @@ return Math.max((current || 1)-1,0);
 
 /* MAP MARKERS */
 
-L.marker([51.088191,-114.196839],{icon:chapelIcon}).addTo(map)
+L.marker([51.088191,-114.196839]).addTo(map)
 .bindPopup(`
 <h3>Sisters of Divine Mercy, Calgary CA</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
@@ -333,7 +336,7 @@ Watch Live Adoration
 </button>
 `);
 
-L.marker([33.533602,-86.675057],{icon:chapelIcon}).addTo(map)
+L.marker([33.533602,-86.675057]).addTo(map)
 .bindPopup(`
 <h3>EWTN Chapel, Irondale AL, USA</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
@@ -341,7 +344,7 @@ Watch Live Adoration
 </button>
 `);
 
-L.marker([-37.848311,145.096218],{icon:chapelIcon}).addTo(map)
+L.marker([-37.848311,145.096218]).addTo(map)
 .bindPopup(`
 <h3>St Benedicts Burwood, Australia</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
@@ -349,7 +352,7 @@ Watch Live Adoration
 </button>
 `);
 
-L.marker([52.202124,20.419678],{icon:chapelIcon}).addTo(map)
+L.marker([52.202124,20.419678]).addTo(map)
 .bindPopup(`
 <h3>Franciscan Monastery, Paprotnia Poland</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
