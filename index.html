@@ -211,6 +211,17 @@ player.play();
 
 }
 
+/* NEW: WEBCAM PAGE */
+
+else{
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src = stream;
+
+}
+
 }
 
 function closeVideo(){
@@ -412,7 +423,7 @@ Watch Live Adoration
  L.marker([48.32946693286068, 18.084085010485204]).addTo(map)
 .bindPopup(`
 <h3>Servants of the Holy Spirit of Perpetual Adoration, Nitra Slovakia </h3>
-<button onclick="window.open('https://apps.csweb.sk/sspsap/','_blank')">
+<button onclick=""playChapel('https://apps.csweb.sk/sspsap/')">
 Watch Live Adoration
 </button>
 `);
