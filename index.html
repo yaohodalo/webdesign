@@ -438,18 +438,18 @@ const rows = data.trim().split("\n");
 
 rows.slice(1).forEach(row => {
 
-const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+const cols = row.split(",");
 
 if(cols.length < 6) return;
 
-const name = cols[0].replace(/"/g,"");
-const city = cols[1].replace(/"/g,"");
-const country = cols[2].replace(/"/g,"");
+const name = cols[0].trim();
+const city = cols[1].trim();
+const country = cols[2].trim();
 const lat = parseFloat(cols[3]);
 const lng = parseFloat(cols[4]);
-const stream = cols[5].replace(/"/g,"");
+const stream = cols[5].trim();
 
-if(!lat || !lng) return;
+if(!lat || !lng || !stream) return;
 
 L.marker([lat,lng]).addTo(map)
 .bindPopup(`
@@ -463,7 +463,6 @@ Watch Live Adoration
 });
 
 });
- 
 
 </script>
 
