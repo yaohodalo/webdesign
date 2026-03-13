@@ -104,7 +104,7 @@ border:2px solid gold;
 <h1>"Could you not watch with me one hour?"</h1>
 <p>Matthew 26:40</p>
 
-<h2>Global Eucharistic Adoration</h2>
+<h2>Virtual Eucharistic Adoration Map</h2>
 
 <div class="scroll-text">
 <marquee behavior="scroll" direction="left" scrollamount="5">
@@ -173,6 +173,13 @@ attribution:'© OpenStreetMap'
 var markers = L.markerClusterGroup();
 
 map.addLayer(markers);
+
+var markers = L.markerClusterGroup({
+maxClusterRadius:50,
+spiderfyOnMaxZoom:true,
+showCoverageOnHover:false,
+zoomToBoundsOnClick:true
+});
 
 
 /* VIDEO PLAYER */
@@ -475,15 +482,6 @@ Watch Live Adoration
 `)
 );
 
-  
-markers.addLayer(
- L.marker([48.32946693286068, 18.084085010485204]).bindPopup(`
-<h3>Servants of the Holy Spirit of Perpetual Adoration, Nitra Slovakia </h3>
-<button onclick="playChapel('https://apps.csweb.sk/sspsap/')">
-Watch Live Adoration
-</button>
-`)
-  );
 
 
 
