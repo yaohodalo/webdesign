@@ -581,11 +581,6 @@ marker:marker
 
   
   
-  
-
-
-
-
 fetch("Adorationchapels.csv")
 .then(response => response.text())
 .then(data => {
@@ -607,7 +602,7 @@ const stream = cols[5].trim();
 
 if(!lat || !lng || !stream) return;
 
-  var marker = L.marker([lat,lng]).bindPopup(`
+var marker = L.marker([lat,lng]).bindPopup(`
 <h3>${name}</h3>
 <p>${city}, ${country}</p>
 <button onclick="playChapel('${stream}')">
@@ -623,8 +618,7 @@ lng:lng,
 marker:marker
 });
 
-);
-  
+});
 
 });
 
