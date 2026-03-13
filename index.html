@@ -13,6 +13,11 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
 <style>
 
 body{
@@ -160,9 +165,9 @@ allowfullscreen>
 
 var map = L.map('map').setView([20,0],2);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
-}).addTo(map);
+var markers = L.markerClusterGroup();
+
+map.addLayer(markers);
 
 
 /* VIDEO PLAYER */
@@ -484,14 +489,16 @@ const stream = cols[5].trim();
 
 if(!lat || !lng || !stream) return;
 
-L.marker([lat,lng]).addTo(map)
-.bindPopup(`
-<h3>${name}</h3>
-<p>${city}, ${country}</p>
-<button onclick="playChapel('${stream}')">
-Watch Live Adoration
-</button>
-`);
+markers.addLayer(
+    L.marker([lat,lng]).bindPopup(`
+    <h3>${name}</h3>
+    <p>${city}, ${country}</p>
+    <button onclick="playChapel('${stream}')">
+    Watch Live Adoration
+    </button>
+`)
+);
+  
 
 });
 
