@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Would You Join Me For One Hour</title>
+<title>Virtual Eucharistic Adoration Map</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -12,6 +12,11 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <style>
 
@@ -99,7 +104,7 @@ border:2px solid gold;
 <h1>"Could you not watch with me one hour?"</h1>
 <p>Matthew 26:40</p>
 
-<h2>Global Eucharistic Adoration</h2>
+<h2>Virtual Eucharistic Adoration Map</h2>
 
 <div class="scroll-text">
 <marquee behavior="scroll" direction="left" scrollamount="5">
@@ -109,6 +114,11 @@ Watch And Pray, Watch And Pray.
 </div>
 
 <div id="map"></div>
+
+<button onclick="findNearestChapel()">
+Find Nearest Adoration Chapel
+</button>
+  
 
 <!-- Prayer Timer Section -->
 <div class="timer">
@@ -122,7 +132,7 @@ Adoration Hour Remaining: <span id="countdown">60:00</span>
   
 <!-- Souls praying counter -->
 <p>Soul Watching in Prayer: <span id="prayerCount">0</span></p>
-<p>© 2026 I Am Catholic - Global Eucharistic Adoration Map</p>
+<p>© 2026 I Am Catholic LLC - Virtual Eucharistic Adoration Map</p>
 
 
 <div id="videoModal" class="video-modal">
@@ -161,10 +171,18 @@ allowfullscreen>
 var map = L.map('map').setView([20,0],2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
+maxZoom:19,
+attribution:'© OpenStreetMap'
 }).addTo(map);
 
+var markers = L.markerClusterGroup();
 
+map.addLayer(markers);
+
+/*Chapel*/
+var chapelLocations = [];
+
+  
 /* VIDEO PLAYER */
 
 var player = videojs('adorationVideo');
@@ -173,19 +191,25 @@ function playChapel(stream){
 
 document.getElementById("videoModal").style.display="block";
 
-var video=document.getElementById("adorationVideo");
-var frame=document.getElementById("adorationFrame");
+var video = document.getElementById("adorationVideo");
+var frame = document.getElementById("adorationFrame");
+
+stream = stream.trim();
+
+/* YOUTUBE */
 
 if(stream.includes("youtube.com") || stream.includes("youtu.be")){
 
 video.style.display="none";
 frame.style.display="block";
 
-var id;
+let id="";
 
 if(stream.includes("watch?v=")){
 id=stream.split("watch?v=")[1];
-}else{
+}
+
+else if(stream.includes("youtu.be/")){
 id=stream.split("youtu.be/")[1];
 }
 
@@ -196,6 +220,9 @@ id=id.split("&")[0];
 frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
 
 }
+
+
+/* HLS LIVESTREAM (.m3u8) */
 
 else if(stream.includes(".m3u8")){
 
@@ -211,8 +238,43 @@ player.play();
 
 }
 
+
+/* MJPG WEBCAM */
+
+else if(stream.includes(".mjpg")){
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src=stream;
+
 }
 
+
+/* EMBED STREAMS */
+
+else if(stream.includes("embed")){
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src=stream;
+
+}
+
+
+/* NORMAL WEBSITE STREAM */
+
+else{
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src=stream;
+
+}
+
+}
 function closeVideo(){
 
 document.getElementById("videoModal").style.display="none";
@@ -329,87 +391,278 @@ return Math.max((current || 1)-1,0);
 
 /* MAP MARKERS */
 
-L.marker([51.088191,-114.196839]).addTo(map)
-.bindPopup(`
+
+var marker = L.marker([51.088191,-114.196839]).bindPopup(`
 <h3>Sisters of Divine Mercy, Calgary CA</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=1OR9c5YtRco')">
 Watch Live Adoration
 </button>
 `);
+  
+markers.addLayer(marker);
+chapelLocations.push({
+lat:51.088191,
+lng:-114.196839,
+marker:marker
+});
 
-L.marker([27.211164594068823, -98.12618571688884]).addTo(map)
-.bindPopup(`
+
+
+var marker = L.marker([27.211164594068823, -98.12618571688884]).bindPopup(`
 <h3>Shalom World, Edinburg TX, USA</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=l30JmRRGQQI')">
-Watch Live Adoration
-</button>
-`);
-
-L.marker([33.533602,-86.675057]).addTo(map)
-.bindPopup(`
-<h3>EWTN Chapel, Irondale AL, USA</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=GlGkFWPKomU')">
 Watch Live Adoration
 </button>
 `);
+markers.addLayer(marker);
+chapelLocations.push({
+lat:27.211164594068823,
+lng:-98.12618571688884,
+marker:marker
+});
 
-L.marker([-37.848311,145.096218]).addTo(map)
-.bindPopup(`
+
+
+var marker = L.marker([33.533602,-86.675057]).bindPopup(`
+<h3>EWTN Chapel, Irondale AL, USA</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=l30JmRRGQQI')">
+Watch Live Adoration
+</button>
+`);
+markers.addLayer(marker);
+chapelLocations.push({
+lat:33.533602,
+lng:-86.675057,
+marker:marker
+});
+
+
+
+var marker = L.marker([-37.848311,145.096218]).bindPopup(`
 <h3>St Benedicts Burwood, Australia</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
 Watch Live Adoration
 </button>
 `);
+markers.addLayer(marker);
+chapelLocations.push({
+lat:-37.848311,
+lng:145.096218,
+marker:marker
+});
 
-L.marker([52.202124,20.419678]).addTo(map)
-.bindPopup(`
+
+var marker = L.marker([52.202124,20.419678]).bindPopup(`
 <h3>Monastery of the Immaculate Conception of the Order of Friars Minor Conventual, Paprotnia Poland</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
 Watch Live Adoration
 </button>
 `);
+  markers.addLayer(marker);
+  chapelLocations.push({
+  lat:52.202124,
+  lng:20.419678,
+  marker:marker
+  });
 
-L.marker([51.51272175784455, -0.16690941632605502]).addTo(map)
-.bindPopup(`
+
+var marker = L.marker([51.51272175784455, -0.16690941632605502]).bindPopup(`
 <h3>Tyburn Convent, London UK</h3>
-<button onclick="playChapel(' https://www.youtube.com/watch?v=YbxI_Vd97H4')">
+<button onclick="playChapel('https://www.youtube.com/watch?v=YbxI_Vd97H4')">
 Watch Live Adoration
 </button>
 `);
+  markers.addLayer(marker);
+  chapelLocations.push({
+  lat:51.51272175784455,
+  lng:-0.16690941632605502,
+  marker:marker
+  });
 
-L.marker([44.34934717811221, 13.014269026323799]).addTo(map)
-.bindPopup(`
+
+var marker = L.marker([44.34934717811221, 13.014269026323799]).bindPopup(`
 <h3>Maria Vision, Rome Italy</h3>
 <button onclick="playChapel('https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8')">
 Watch Live Adoration
 </button>
 `);
+  markers.addLayer(marker);
+  chapelLocations.push({
+  lat:44.34934717811221,
+  lng:13.014269026323799,
+  marker:marker
+  });
+  
 
-L.marker([1.2967181988001202, 103.85090453422588]).addTo(map)
-.bindPopup(`
+var marker = L.marker([1.2967181988001202, 103.85090453422588]).bindPopup(`
 <h3>Cathedral of the Good Shepherd, Singapore</h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=g8sUK4RNIEg')">
 Watch Live Adoration
 </button>
 `);
-  
-L.marker([39.81915886003033, -5.163416274606668]).addTo(map)
-.bindPopup(`
+  markers.addLayer(marker);
+  chapelLocations.push({
+  lat:1.2967181988001202,
+  lng:103.85090453422588,
+  marker:marker
+  });
+
+
+
+var marker = L.marker([39.81915886003033, -5.163416274606668]).bindPopup(`
 <h3>Ermita de Nuestra Señora de Bienvenida-Alcolea, Toledo Spain </h3>
 <button onclick="playChapel('https://www.youtube.com/watch?v=YTWA-eUZzJQ')">
 Watch Live Adoration
 </button>
 `);
+  markers.addLayer(marker);
+  chapelLocations.push({
+  lat:39.81915886003033,
+  lng:-5.163416274606668,
+  marker:marker
+  });
+  
 
- L.marker([40.41343862264555, -74.10332138991909]).addTo(map)
-.bindPopup(`
+var marker =  L.marker([40.41343862264555, -74.10332138991909]).bindPopup(`
 <h3>St Mary Mother of God Church, Middletown NJ, USA </h3>
-<button onclick="playChapel(' https://www.youtube.com/watch?v=TIu6DyLTWLQ')">
+<button onclick="playChapel('https://www.youtube.com/watch?v=TIu6DyLTWLQ')">
+Watch Live Adoration
+</button>
+`);
+  markers.addLayer(marker);
+  chapelLocations.push({
+  lat:40.41343862264555,
+  lng:-74.10332138991909,
+  marker:marker
+  });
+
+
+ var marker = L.marker([53.65165594532146, -6.685879731542342]).bindPopup(`
+<h3>St Mary Parish, Navan, Ireland </h3>
+<button onclick="playChapel('https://www.churchservices.tv/navan/embed?wmode=opaque#')">
+Watch Live Adoration
+</button>
+`);
+markers.addLayer(marker);
+chapelLocations.push({
+lat:53.65165594532146,
+lng:-6.685879731542342,
+marker:marker
+  });
+
+
+var marker =  L.marker([20.721364477198332, -103.39008143297748]).bindPopup(`
+<h3>Maria Vision TV, Mexico </h3>
+<button onclick="playChapel('https://www.mariavision.com/livecapillamx')">
+Watch Live Adoration
+</button>
+`);
+markers.addLayer(marker);
+chapelLocations.push({
+lat:20.721364477198332,
+lng:-103.39008143297748,
+marker:marker
+  });
+
+
+ var marker = L.marker([43.07212215585635, 12.611784425550729]).bindPopup(`
+<h3>Maria Vision TV, Assisi, Italy </h3>
+<button onclick="playChapel('https://www.mariavision.it/')">
+Watch Live Adoration
+</button>
+`);
+markers.addLayer(marker);
+chapelLocations.push({
+lat:43.07212215585635,
+lng:12.611784425550729,
+marker:marker
+  });
+
+
+  
+  
+fetch("Adorationchapels.csv")
+.then(response => response.text())
+.then(data => {
+
+const rows = data.trim().split("\n");
+
+rows.slice(1).forEach(row => {
+
+const cols = row.split(",");
+
+if(cols.length < 6) return;
+
+const name = cols[0].trim();
+const city = cols[1].trim();
+const country = cols[2].trim();
+const lat = parseFloat(cols[3]);
+const lng = parseFloat(cols[4]);
+const stream = cols[5].trim();
+
+if(!lat || !lng || !stream) return;
+
+var marker = L.marker([lat,lng]).bindPopup(`
+<h3>${name}</h3>
+<p>${city}, ${country}</p>
+<button onclick="playChapel('${stream}')">
 Watch Live Adoration
 </button>
 `);
 
- 
+markers.addLayer(marker);
+
+chapelLocations.push({
+lat:lat,
+lng:lng,
+marker:marker
+});
+
+});
+
+});
+
+
+function findNearestChapel(){
+
+if(!navigator.geolocation){
+alert("Geolocation not supported.");
+return;
+}
+
+navigator.geolocation.getCurrentPosition(function(position){
+
+var userLat = position.coords.latitude;
+var userLng = position.coords.longitude;
+
+var nearest = null;
+var minDistance = Infinity;
+
+chapelLocations.forEach(function(chapel){
+
+var distance = Math.sqrt(
+Math.pow(chapel.lat - userLat,2) +
+Math.pow(chapel.lng - userLng,2)
+);
+
+if(distance < minDistance){
+minDistance = distance;
+nearest = chapel;
+}
+
+});
+
+if(nearest){
+
+map.setView([nearest.lat, nearest.lng],8);
+
+nearest.marker.openPopup();
+
+}
+
+});
+
+}
 
 </script>
 
