@@ -85,7 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
 function openStream(url) {
   const modal = document.getElementById("videoModal");
   const frame = document.getElementById("adorationFrame");
-  frame.src = url + "?autoplay=1";
+  const embedUrl = url
+  .replace("watch?v=", "embed/")
+  .replace("youtu.be/", "www.youtube.com/embed/");
+ frame.src = embedUrl + "?autoplay=1";
+
   modal.style.display = "flex";
 
   document.getElementById("closeModal").onclick = () => {
