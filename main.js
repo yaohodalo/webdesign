@@ -199,6 +199,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- AUTOCOMPLETE SEARCH (NEW) ---
+const suggestionsBox = document.getElementById("suggestions");
+
+document.getElementById("searchInput").addEventListener("input", e => {
+  const query = e.target.value.toLowerCase();
+
+  if (!query) {
+    suggestionsBox.innerHTML = "";
+    return;
+  }
+
+  // Build suggestion list
+  const matches = [];
+
+  allMarkers.forEach(m => {
+    const d = m.chapelData;
+
+    if (d.name?.toLowerCase().includes(query)) matches.push(d.name);
+    if (d.city?.toLowerCase().includes(query)) matches.push(d.city);
+    if (d.country?.toLowerCase().includes(query)) matches.push(d.country);
+  });
+
+  // Remove duplicates + limit
+  const unique = [...new Set(matches)].slice(0, 8);
+
+  suggestionsBox.innerHTML = unique
+    .map(item => `<div>${item}</div>`)
+    .join("");
+
+  // Click suggestion
+  document.querySelectorAll(".suggestions div").forEach(el => {
+    el.onclick = () => {
+      document.getElementById("searchInput").value = el.innerText;
+      suggestionsBox.innerHTML = "";
+
+      // Trigger search filter
+      document.getElementById("searchInput").dispatchEvent(new Event("input"));
+    };
+  });
+});
+
+// Hide suggestions when clicking outside
+document.addEventListener("click", e => {
+  if (!e.target.closest(".search-container")) {
+    suggestionsBox.innerHTML = "";
+  }
+});
+
   // --- FIND USER LOCATION (UPDATED) ---
   document.getElementById("findChapel").addEventListener("click", () => {
     if (!navigator.geolocation) {
