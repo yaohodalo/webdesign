@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const parsed = Papa.parse(text, { header: true }).data;
       chapelData = parsed;
       initMap(parsed);
-    });
+    })
+    .catch(err => console.error("CSV load error:", err));
 
   // Initialize Leaflet map
   function initMap(chapels) {
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Light parchment tile style
     L.tileLayer("[{s}.basemaps.cartocdn.com](https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png)", {
-      attribution: '&copy; OpenStreetMap contributors & Carto',
+      attribution: "&copy; OpenStreetMap contributors & Carto",
       maxZoom: 18
     }).addTo(map);
 
@@ -36,28 +37,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // “Find Chapel Near Me”
+  // Find Chapel Near Me
   document.getElementById("findChapel").addEventListener("click", () => {
     if (!navigator.geolocation) {
-      alert("Geolocation not supported.");
+      alert("Geolocation not supported by your browser.");
       return;
     }
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude, longitude } = pos.coords;
-      map.setView([latitude, longitude], 8);
-      L.circle([latitude, longitude], { radius: 2000, color: "#B59B6A" }).addTo(map);
-    }, () => alert("Location permission denied."));
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const { latitude, longitude } = pos.coords;
+        map.setView([latitude, longitude], 8);
+        L.circle([latitude, longitude], { radius: 2000, color: "#B59B6A" }).addTo(map);
+      },
+      () => alert("Location permission denied.")
+    );
   });
 
-  // “Start Adoration Now” → pick first live chapel
+  // Start Adoration Now → pick first live chapel
   document.getElementById("startAdoration").addEventListener("click", () => {
     const live = chapelData.find(c => c.live === "TRUE");
     if (live) openStream(live.youtube);
     else alert("No live adoration stream available right now.");
   });
 
-  // “Pledge Hour” toggle section
-  document.getElementById("exploreChapel").addEventListener("click", () => {
+  // Pledge Hour toggle section
+  document.getElementById("pledgeButton").addEventListener("click", () => {
     document.getElementById("pledge").classList.toggle("hidden");
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   });
@@ -71,7 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
         e.target.reset();
         document.getElementById("thanks").classList.remove("hidden");
       })
-      .catch(() => alert("Form could not be submitted. Replace Formspree URL."));
+      .catch(() =>
+        alert("Form could not be submitted. Replace Formspree URL with your actual endpoint.")
+      );
   });
 });
 
@@ -81,10 +87,12 @@ function openStream(url) {
   const frame = document.getElementById("adorationFrame");
   frame.src = url + "?autoplay=1";
   modal.style.display = "flex";
+
   document.getElementById("closeModal").onclick = () => {
     modal.style.display = "none";
     frame.src = "";
   };
+
   window.onclick = e => {
     if (e.target === modal) {
       modal.style.display = "none";
