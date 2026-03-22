@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let map;
   let chapelData = [];
   let player;
+  let allMarkers = [];
+  let markersGroup;
 
   // Initialize video.js AFTER DOM is ready
   player = videojs("adorationVideo");
@@ -61,6 +63,35 @@ document.addEventListener("DOMContentLoaded", () => {
       maxZoom: 18
     }).addTo(map);
 
+    physicalChapels.forEach(c => {
+   const marker = L.marker([c.lat, c.lng]);
+
+  marker.chapelData = {
+    name: c.name,
+    city: c.city,
+    country: c.country,
+    type: "physical"
+  };
+
+  marker.bindPopup(`
+    <b>⛪ ${c.name}</b><br>
+    ${c.city}, ${c.country}<br><br>
+    In-person Adoration
+  `);
+
+  allMarkers.push(marker);
+  markersGroup.addLayer(marker);
+});
+
+
+    const nearby = allMarkers
+  .filter(m => m.chapelData.type === "physical") // ✅ ONLY physical
+  .slice(0, 20);
+
+markersGroup.clearLayers();
+markersGroup.addLayers(nearby);
+    
+
     // --- CLUSTER GROUP (FIXED + IMPROVED) ---
     const markers = L.markerClusterGroup({
       maxClusterRadius: 50,
@@ -93,6 +124,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       markerList.push(marker);
     });
+
+    const physicalChapels = [
+  {
+    name: "St Mary Catholic Church",
+    city: "Rockville",
+    country: "USA",
+    lat: 39.0839,
+    lng: -77.1528
+  },
+  {
+    name: "St Patrick Cathedral",
+    city: "New York",
+    country: "USA",
+    lat: 40.7585,
+    lng: -73.9760
+  }
+];
 
     // --- CSV CHAPELS ---
     csvChapels.forEach(c => {
@@ -240,6 +288,27 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(() => alert("Form submission failed."));
   });
+
+  document.getElementById("searchInput").addEventListener("input", e => {
+  const query = e.target.value.toLowerCase();
+
+  const filtered = allMarkers.filter(m => {
+    const d = m.chapelData;
+    return (
+      d.name?.toLowerCase().includes(query) ||
+      d.city?.toLowerCase().includes(query) ||
+      d.country?.toLowerCase().includes(query)
+    );
+  });
+
+  markersGroup.clearLayers();
+  markersGroup.addLayers(filtered);
+
+  if (filtered.length) {
+    const group = new L.featureGroup(filtered);
+    map.fitBounds(group.getBounds());
+  }
+});
 
   // --- BASIC SANITIZER ---
   function escapeHTML(str = "") {
