@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize Leaflet map
   function initMap(chapels) {
-    map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2);
+   var map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2);
 
     // Light parchment tile style
     L.tileLayer("[{s}.basemaps.cartocdn.com](https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png)", {
