@@ -54,6 +54,76 @@ button:active {
   transform: scale(0.97);
 }
 
+/* --- TOP BAR LAYOUT --- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+/* LEFT */
+.left {
+  flex: 1;
+  text-align: left;
+}
+
+/* CENTER */
+.center {
+  flex: 2;
+  text-align: center;
+}
+
+/* RIGHT */
+.right {
+  flex: 1;
+  text-align: right;
+}
+
+/* LOGO */
+.logo {
+  width: 80px;
+  background: transparent; /* removes white feel */
+}
+
+/* SEARCH */
+.search-container {
+  position: relative;
+  max-width: 400px;
+  margin: 0.5rem auto;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #D4AF37;
+}
+
+/* SUGGESTIONS DROPDOWN */
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestions div {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.suggestions div:hover {
+  background: #f5f5f5;
+}
+
 /* Map */
 #map {
   height: 75vh; /* responsive instead of fixed */
