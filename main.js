@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
    var map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2);
 
     // Light parchment tile style
-    L.tileLayer("[{s}.basemaps.cartocdn.com](https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png)", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors & Carto",
       maxZoom: 18
     }).addTo(map);
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("pledgeForm").addEventListener("submit", e => {
     e.preventDefault();
     const data = new FormData(e.target);
-    fetch("[formspree.io](https://formspree.io/f/yourFormIDhere)", { method: "POST", body: data })
+    fetch("https://formspree.io/f/yourFormIDhere", { method: "POST", body: data })
       .then(() => {
         e.target.reset();
         document.getElementById("thanks").classList.remove("hidden");
