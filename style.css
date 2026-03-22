@@ -23,9 +23,73 @@ h2 {
   color: #6e6256;
 }
 
-/* Header */
-header {
-  padding: 1rem 1rem 0;
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: #0B1F3A;
+  color: white;
+}
+
+/* LEFT */
+.header-left {
+  flex: 1;
+}
+
+.logo {
+  width: 60px;
+}
+
+/* CENTER (MAIN SEARCH) */
+.header-center {
+  flex: 2;
+  position: relative;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+
+/* RIGHT */
+.header-right {
+  flex: 1;
+  text-align: right;
+}
+
+.header-right button {
+  background: #D4AF37;
+  color: white;
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  margin-left: 0.3rem;
+}
+
+/* SUGGESTIONS */
+.suggestions {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: white;
+  color: black;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestions div {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.suggestions div:hover {
+  background: #eee;
 }
 
 /* Buttons */
