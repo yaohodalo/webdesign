@@ -6,21 +6,29 @@ body {
   text-align: center;
 }
 
+/* Typography */
 h1 {
   font-family: "Crimson Pro", serif;
   font-weight: 600;
   margin: 1.5rem 0 0.3rem;
 }
 
+h2 {
+  margin-top: 0.5rem;
+}
+
 .verse {
   font-style: italic;
   margin: 0 0 1rem;
+  color: #6e6256;
 }
 
+/* Header */
 header {
   padding: 1rem 1rem 0;
 }
 
+/* Buttons */
 .cta-container {
   margin: 1rem 0 1.5rem;
 }
@@ -29,20 +37,26 @@ button {
   background-color: #B59B6A;
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 0.7em 1.2em;
+  border-radius: 6px;
+  padding: 0.7em 1.3em;
   margin: 0.3em;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 button:hover {
   background-color: #A68A58;
+  transform: translateY(-1px);
 }
 
+button:active {
+  transform: scale(0.97);
+}
+
+/* Map */
 #map {
-  height: 550px;
+  height: 75vh; /* responsive instead of fixed */
   width: 100%;
   border-top: 2px solid #B59B6A;
   border-bottom: 2px solid #B59B6A;
@@ -55,7 +69,8 @@ button:hover {
   max-width: 600px;
 }
 
-#pledge input, #pledge textarea {
+#pledge input,
+#pledge textarea {
   width: 100%;
   margin: 0.4rem 0;
   padding: 0.6rem;
@@ -77,27 +92,81 @@ button:hover {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   justify-content: center;
   align-items: center;
   z-index: 5000;
+  padding: 1rem;
 }
 
 .modal-content {
   background: #fffaf2;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 1rem;
-  max-width: 90%;
+  width: 100%;
+  max-width: 900px;
+  position: relative;
 }
 
+/* Close button */
 .close {
-  float: right;
-  font-size: 1.5rem;
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.6rem;
   cursor: pointer;
 }
 
+/* Video + iframe responsiveness */
+#adorationFrame,
+#adorationVideo {
+  width: 100%;
+  height: 60vh;
+  border-radius: 6px;
+}
+
+/* Footer */
 footer {
   color: #776D5F;
   margin: 2rem 0 1rem;
   font-size: 0.9rem;
+}
+
+/* --- Marker Cluster Styling (optional but nice) --- */
+.marker-cluster-small {
+  background-color: rgba(181, 155, 106, 0.6);
+}
+.marker-cluster-small div {
+  background-color: rgba(181, 155, 106, 0.9);
+}
+
+.marker-cluster-medium {
+  background-color: rgba(166, 138, 88, 0.6);
+}
+.marker-cluster-medium div {
+  background-color: rgba(166, 138, 88, 0.9);
+}
+
+.marker-cluster-large {
+  background-color: rgba(120, 100, 70, 0.6);
+}
+.marker-cluster-large div {
+  background-color: rgba(120, 100, 70, 0.9);
+}
+
+/* --- Mobile tweaks --- */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #adorationFrame,
+  #adorationVideo {
+    height: 40vh;
+  }
+
+  button {
+    width: 90%;
+    max-width: 300px;
+  }
 }
