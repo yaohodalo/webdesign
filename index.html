@@ -13,31 +13,48 @@
     rel="stylesheet"
   />
 
-
   <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
 
+  <!-- Marker Cluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
+
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
   <!-- Site CSS -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Small layout fix -->
+  <style>
+    #map {
+      height: 75vh;
+    }
+
+    .modal-content {
+      max-width: 90%;
+    }
+  </style>
 </head>
 
 <body>
   <header>
     <h1>"Could you not watch with me one hour?"</h1>
-    <p class="verse">— Matthew 26:40</p>
-    <h2>Live Eucharistic Adoration Chapel Map</h2>
+    <p class="verse">— Matthew 26:40</p>
+    <h2>Live Eucharistic Adoration Chapel Map</h2>
     <p>
-      Spend one hour with Jesus in Eucharistic Adoration. Watch live
+      Spend one hour with Jesus in Eucharistic Adoration. Watch live
       adoration, join others praying, or find a chapel near you.
     </p>
 
     <nav class="cta-container">
-      <button id="startAdoration">Start Adoration Now</button>
-      <button id="findChapel">Find Chapel Near Me</button>
-      <button id="pledgeButton">Pledge an Hour of Prayer</button>
+      <button id="startAdoration">Start Adoration Now</button>
+      <button id="findChapel">Find Chapel Near Me</button>
+      <button id="pledgeButton">Pledge an Hour of Prayer</button>
     </nav>
   </header>
 
@@ -47,28 +64,30 @@
 
     <!-- Pledge Section -->
     <section id="pledge" class="hidden">
-      <h2>Pledge an Hour of Prayer</h2>
+      <h2>Pledge an Hour of Prayer</h2>
       <form id="pledgeForm">
-        <input type="text" name="name" placeholder="Your name" />
-        <input type="email" name="email" placeholder="Optional email" />
+        <input type="text" name="name" placeholder="Your name" />
+        <input type="email" name="email" placeholder="Optional email" />
         <input type="datetime-local" name="time" required />
-        <textarea name="intention" placeholder="Prayer intention" rows="3"></textarea>
-        <button type="submit">Pledge My Hour</button>
+        <textarea name="intention" placeholder="Prayer intention" rows="3"></textarea>
+        <button type="submit">Pledge My Hour</button>
       </form>
       <p id="thanks" class="hidden">
-        Thank you — your hour joins adorers worldwide.
+        Thank you — your hour joins adorers worldwide.
       </p>
     </section>
   </main>
 
   <footer>
-    <p>© 2024 WouldYouJoinMeForOneHour.org | Ad Majorem Dei Gloriam 🕊️</p>
+    <p>© 2024 WouldYouJoinMeForOneHour.org | Ad Majorem Dei Gloriam 🕊️</p>
   </footer>
 
-  <!-- Video Modal -->
+  <!-- Video Modal -->
   <div id="videoModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
+
+      <!-- YouTube / iframe streams -->
       <iframe
         id="adorationFrame"
         width="560"
@@ -76,16 +95,33 @@
         frameborder="0"
         allowfullscreen
       ></iframe>
+
+      <!-- HLS video player -->
+      <video
+        id="adorationVideo"
+        class="video-js vjs-default-skin"
+        controls
+        autoplay
+        style="display:none; width:100%; max-width:800px;"
+      ></video>
     </div>
   </div>
 
-  <!-- Scripts (correct HTTPS CDN order) -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  ></script>
+  <!-- Scripts (CORRECT ORDER) -->
 
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Marker Cluster -->
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+  <!-- Your Script -->
   <script src="main.js" defer></script>
 </body>
 </html>
