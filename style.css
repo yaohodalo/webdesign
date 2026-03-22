@@ -87,6 +87,41 @@ button:active {
   display: none;
 }
 
+/* Logo */
+.logo {
+  width: 110px;
+  margin-top: 1rem;
+}
+
+/* Search */
+.search-container {
+  margin: 1rem auto;
+  width: 90%;
+  max-width: 400px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #D4AF37;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+/* Gold theme tweak */
+button {
+  background-color: #D4AF37 !important;
+}
+
+button:hover {
+  background-color: #b8962e !important;
+}
+
+/* Cluster color match */
+.marker-cluster div {
+  background-color: #D4AF37 !important;
+}
+
 /* Modal */
 .modal {
   display: none;
