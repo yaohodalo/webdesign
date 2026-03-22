@@ -23,6 +23,109 @@ document.addEventListener("DOMContentLoaded", () => {
       maxZoom: 18
     }).addTo(map);
 
+    /* MAP MARKERS */
+markers.addLayer(
+L.marker([51.088191,-114.196839]).bindPopup(`
+<h3>Sisters of Divine Mercy, Calgary CA</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=1OR9c5YtRco')">
+Watch Live Adoration
+</button>
+`)
+);
+
+markers.addLayer(
+L.marker([27.211164594068823, -98.12618571688884]).bindPopup(`
+<h3>Shalom World, Edinburg TX, USA</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=GlGkFWPKomU')">
+Watch Live Adoration
+</button>
+`)
+);
+
+markers.addLayer(
+L.marker([33.533602,-86.675057]).bindPopup(`
+<h3>EWTN Chapel, Irondale AL, USA</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=l30JmRRGQQI')">
+Watch Live Adoration
+</button>
+`)
+  );
+
+markers.addLayer(
+L.marker([-37.848311,145.096218]).bindPopup(`
+<h3>St Benedicts Burwood, Australia</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
+Watch Live Adoration
+</button>
+`)
+);
+
+markers.addLayer(
+L.marker([52.202124,20.419678]).bindPopup(`
+<h3>Monastery of the Immaculate Conception of the Order of Friars Minor Conventual, Paprotnia Poland</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
+Watch Live Adoration
+</button>
+`)
+  );
+
+markers.addLayer(
+L.marker([51.51272175784455, -0.16690941632605502]).bindPopup(`
+<h3>Tyburn Convent, London UK</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=YbxI_Vd97H4')">
+Watch Live Adoration
+</button>
+`)
+  );
+
+markers.addLayer(
+L.marker([44.34934717811221, 13.014269026323799]).bindPopup(`
+<h3>Maria Vision, Rome Italy</h3>
+<button onclick="playChapel('https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8')">
+Watch Live Adoration
+</button>
+`)
+  );
+  
+markers.addLayer(
+L.marker([1.2967181988001202, 103.85090453422588]).bindPopup(`
+<h3>Cathedral of the Good Shepherd, Singapore</h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=g8sUK4RNIEg')">
+Watch Live Adoration
+</button>
+`)
+  );
+
+
+markers.addLayer(
+L.marker([39.81915886003033, -5.163416274606668]).bindPopup(`
+<h3>Ermita de Nuestra Señora de Bienvenida-Alcolea, Toledo Spain </h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=YTWA-eUZzJQ')">
+Watch Live Adoration
+</button>
+`)
+  );
+  
+ markers.addLayer(
+ L.marker([40.41343862264555, -74.10332138991909]).bindPopup(`
+<h3>St Mary Mother of God Church, Middletown NJ, USA </h3>
+<button onclick="playChapel('https://www.youtube.com/watch?v=TIu6DyLTWLQ')">
+Watch Live Adoration
+</button>
+`)
+);
+
+  
+markers.addLayer(
+ L.marker([48.32946693286068, 18.084085010485204]).bindPopup(`
+<h3>Servants of the Holy Spirit of Perpetual Adoration, Nitra Slovakia </h3>
+<button onclick="playChapel('https://apps.csweb.sk/sspsap/')">
+Watch Live Adoration
+</button>
+`)
+  );
+
+
     chapels.forEach(c => {
       if (!c.latitude || !c.longitude) return;
       const icon = c.live === "TRUE" ? "🕯️" : "⛪";
