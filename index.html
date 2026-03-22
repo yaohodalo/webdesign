@@ -43,45 +43,31 @@
 </head>
 
 <body>
+<header class="header">
 
-<header class="topbar">
-
-  <!-- LEFT: LOGO -->
-  <div class="left">
+  <!-- LEFT -->
+  <div class="header-left">
     <img src="Eucharistic.png" class="logo" />
   </div>
 
-  <!-- CENTER: TITLE + SEARCH -->
-  <div class="center">
-    <h1>"Could you not watch with me one hour?"</h1>
-    <p class="verse">— Matthew 26:40</p>
-    <h2>Live Eucharistic Adoration Chapel Map</h2>
-    <p>
-      Spend one hour with Jesus in Eucharistic Adoration. Watch live
-      adoration, join others praying, or find a chapel near you.
-    </p>
-
-    <div class="search-container">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search chapel, city, or country..."
-        autocomplete="off"
-      />
-      <div id="suggestions" class="suggestions"></div>
-    </div>
+  <!-- CENTER (MAIN SEARCH FOCUS) -->
+  <div class="header-center">
+    <input
+      id="searchInput"
+      placeholder="Search by city, country, or chapel..."
+      autocomplete="off"
+    />
+    <div id="suggestions" class="suggestions"></div>
   </div>
 
-  <!-- RIGHT: BUTTONS -->
-  <div class="right">
-    <button id="startAdoration">Start Adoration</button>
-    <button id="findChapel">Find Nearby</button>
-    <button id="pledgeButton">Pledge Hour</button>
+  <!-- RIGHT -->
+  <div class="header-right">
+    <button id="startAdoration">Start</button>
+    <button id="findChapel">Nearby</button>
+    <button id="pledgeButton">Pledge</button>
   </div>
 
 </header>
-  
-
   <main>
     <!-- Map -->
     <div id="map"></div>
