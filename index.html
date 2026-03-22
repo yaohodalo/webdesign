@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Would You Join Me for One Hour?</title>
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)" />
   <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin />
   <link
@@ -13,24 +13,13 @@
     rel="stylesheet"
   />
 
- <!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="[unpkg.com](https://unpkg.com/leaflet@1.9.4/dist/leaflet.css)"
-  integrity="sha512-sA+e2k+0n2gSsnXOYw6Wp7bDJBUXiyg1HYwXZ4/RPVzqSwg1e06m1LgSYDkGS3UtrVt6smrq2g0krlrC2d8ROw=="
-  crossorigin=""
-/>
-
-<!-- PapaParse -->
-<script src="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js)"></script>
-
-<!-- Leaflet JS -->
-<script
-  src="[unpkg.com](https://unpkg.com/leaflet@1.9.4/dist/leaflet.js)"
-  integrity="sha512-nmmMB1dhjDlhvP1NgF70WTU9aMoHS8akIz4ZXNo1x1YJ0qXNxyGkA1Is/AQ4P92j6YtOHz2Pi9bn9oBG1AxewA=="
-  crossorigin=""
-></script>
-
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="[unpkg.com](https://unpkg.com/leaflet@1.9.4/dist/leaflet.css)"
+    integrity="sha512-sA+e2k+0n2gSsnXOYw6Wp7bDJBUXiyg1HYwXZ4/RPVzqSwg1e06m1LgSYDkGS3UtrVt6smrq2g0krlrC2d8ROw=="
+    crossorigin=""
+  />
 
   <!-- Site CSS -->
   <link rel="stylesheet" href="style.css" />
@@ -97,7 +86,15 @@
     </div>
   </div>
 
-  <!-- Main Site JS -->
+  <!-- Scripts: load in correct order -->
+  <script
+    src="[unpkg.com](https://unpkg.com/leaflet@1.9.4/dist/leaflet.js)"
+    integrity="sha512-nmmMB1dhjDlhvP1NgF70WTU9aMoHS8akIz4ZXNo1x1YJ0qXNxyGkA1Is/AQ4P92j6YtOHz2Pi9bn9oBG1AxewA=="
+    crossorigin=""
+  ></script>
+
+  <script src="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js)"></script>
+
   <script src="main.js" defer></script>
 </body>
 </html>
