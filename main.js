@@ -1,9 +1,48 @@
-// Initialize when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   let map;
   let chapelData = [];
+  let player;
 
-  // Load CSV and create map
+  // Initialize video.js AFTER DOM is ready
+  player = videojs("adorationVideo");
+
+  // --- FEATURED CHAPELS (NOT IN CSV) ---
+  const featuredChapels = [
+    {
+      name: "Sisters of Divine Mercy",
+      city: "Calgary",
+      country: "Canada",
+      lat: 51.088191,
+      lng: -114.196839,
+      stream: "https://www.youtube.com/watch?v=1OR9c5YtRco"
+    },
+    {
+      name: "Shalom World",
+      city: "Edinburg TX",
+      country: "USA",
+      lat: 27.211164594068823,
+      lng: -98.12618571688884,
+      stream: "https://www.youtube.com/watch?v=GlGkFWPKomU"
+    },
+    {
+      name: "EWTN Chapel",
+      city: "Irondale AL",
+      country: "USA",
+      lat: 33.533602,
+      lng: -86.675057,
+      stream: "https://www.youtube.com/watch?v=l30JmRRGQQI"
+    },
+    {
+      name: "Maria Vision",
+      city: "Rome",
+      country: "Italy",
+      lat: 44.34934717811221,
+      lng: 13.014269026323799,
+      stream: "https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8"
+    }
+  ];
+
+  // --- LOAD CSV ---
   fetch("Adorationchapels.csv")
     .then(r => r.text())
     .then(text => {
@@ -13,302 +52,203 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => console.error("CSV load error:", err));
 
-  // Initialize Leaflet map
-  function initMap(chapels) {
-   var map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2);
+  // --- INIT MAP ---
+  function initMap(csvChapels) {
+    map = L.map("map", { scrollWheelZoom: true }).setView([20, 0], 2);
 
-    // Light parchment tile style
     L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap contributors & Carto",
+      attribution: "&copy; OpenStreetMap & Carto",
       maxZoom: 18
     }).addTo(map);
 
-    var markers = L.markerClusterGroup();
+    // --- CLUSTER GROUP (FIXED + IMPROVED) ---
+    const markers = L.markerClusterGroup({
+      maxClusterRadius: 50,
+      disableClusteringAtZoom: 12,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true
+    });
 
     map.addLayer(markers);
 
-    /* MAP MARKERS */
-markers.addLayer(
-L.marker([51.088191,-114.196839]).bindPopup(`
-<h3>Sisters of Divine Mercy, Calgary CA</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=1OR9c5YtRco')">
-Watch Live Adoration
-</button>
-`)
-);
+    const markerList = [];
 
-markers.addLayer(
-L.marker([27.211164594068823, -98.12618571688884]).bindPopup(`
-<h3>Shalom World, Edinburg TX, USA</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=GlGkFWPKomU')">
-Watch Live Adoration
-</button>
-`)
-);
+    // --- JITTER FUNCTION (prevents exact overlap) ---
+    function jitter(val) {
+      return val + (Math.random() - 0.5) * 0.0005;
+    }
 
-markers.addLayer(
-L.marker([33.533602,-86.675057]).bindPopup(`
-<h3>EWTN Chapel, Irondale AL, USA</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=l30JmRRGQQI')">
-Watch Live Adoration
-</button>
-`)
-  );
+    // --- FEATURED CHAPELS ---
+    featuredChapels.forEach(c => {
+      const marker = L.marker([jitter(c.lat), jitter(c.lng)]);
 
-markers.addLayer(
-L.marker([-37.848311,145.096218]).bindPopup(`
-<h3>St Benedicts Burwood, Australia</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=qz8YE61BoXM')">
-Watch Live Adoration
-</button>
-`)
-);
+      marker.bindPopup(`
+        <b>🕯️ ${c.name}</b><br>
+        ${c.city}, ${c.country}<br><br>
+        <button onclick="playChapel('${c.stream}')">
+          Watch Live Adoration
+        </button>
+      `);
 
-markers.addLayer(
-L.marker([52.202124,20.419678]).bindPopup(`
-<h3>Monastery of the Immaculate Conception of the Order of Friars Minor Conventual, Paprotnia Poland</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=bIR18Pvy11U')">
-Watch Live Adoration
-</button>
-`)
-  );
-
-markers.addLayer(
-L.marker([51.51272175784455, -0.16690941632605502]).bindPopup(`
-<h3>Tyburn Convent, London UK</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=YbxI_Vd97H4')">
-Watch Live Adoration
-</button>
-`)
-  );
-
-markers.addLayer(
-L.marker([44.34934717811221, 13.014269026323799]).bindPopup(`
-<h3>Maria Vision, Rome Italy</h3>
-<button onclick="playChapel('https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8')">
-Watch Live Adoration
-</button>
-`)
-  );
-  
-markers.addLayer(
-L.marker([1.2967181988001202, 103.85090453422588]).bindPopup(`
-<h3>Cathedral of the Good Shepherd, Singapore</h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=g8sUK4RNIEg')">
-Watch Live Adoration
-</button>
-`)
-  );
-
-
-markers.addLayer(
-L.marker([39.81915886003033, -5.163416274606668]).bindPopup(`
-<h3>Ermita de Nuestra Señora de Bienvenida-Alcolea, Toledo Spain </h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=YTWA-eUZzJQ')">
-Watch Live Adoration
-</button>
-`)
-  );
-  
- markers.addLayer(
- L.marker([40.41343862264555, -74.10332138991909]).bindPopup(`
-<h3>St Mary Mother of God Church, Middletown NJ, USA </h3>
-<button onclick="playChapel('https://www.youtube.com/watch?v=TIu6DyLTWLQ')">
-Watch Live Adoration
-</button>
-`)
-);
-
-  
-markers.addLayer(
- L.marker([48.32946693286068, 18.084085010485204]).bindPopup(`
-<h3>Servants of the Holy Spirit of Perpetual Adoration, Nitra Slovakia </h3>
-<button onclick="playChapel('https://apps.csweb.sk/sspsap/')">
-Watch Live Adoration
-</button>
-`)
-  );
-
-
-    chapels.forEach(c => {
-      if (!c.latitude || !c.longitude) return;
-      const icon = c.live === "TRUE" ? "🕯️" : "⛪";
-      const marker = L.marker([c.latitude, c.longitude]).addTo(map);
-
-      const popup = `
-        <b>${icon} ${c.name}</b><br>
-        ${c.city}, ${c.country}<br><br>
-        <button class="watch" onclick="openStream('${c.youtube}')">Watch Live</button>
-      `;
-      marker.bindPopup(popup);
+      markerList.push(marker);
     });
+
+    // --- CSV CHAPELS ---
+    csvChapels.forEach(c => {
+      const lat = parseFloat(c.latitude);
+      const lng = parseFloat(c.longitude);
+
+      if (isNaN(lat) || isNaN(lng)) return;
+
+      const icon = c.live === "TRUE" ? "🕯️" : "⛪";
+
+      const marker = L.marker([jitter(lat), jitter(lng)]);
+
+      marker.bindPopup(`
+        <b>${icon} ${escapeHTML(c.name)}</b><br>
+        ${escapeHTML(c.city)}, ${escapeHTML(c.country)}<br><br>
+        ${
+          c.youtube
+            ? `<button onclick="playChapel('${c.youtube}')">Watch Live</button>`
+            : "No stream available"
+        }
+      `);
+
+      markerList.push(marker);
+    });
+
+    // Add ALL markers to cluster
+    markers.addLayers(markerList);
+
+    // Auto-fit map to markers
+    if (markerList.length) {
+      const group = new L.featureGroup(markerList);
+      map.fitBounds(group.getBounds());
+    }
   }
 
+  // --- VIDEO PLAYER ---
+  window.playChapel = function (stream) {
+    const modal = document.getElementById("videoModal");
+    const video = document.getElementById("adorationVideo");
+    const frame = document.getElementById("adorationFrame");
 
+    modal.style.display = "block";
+    stream = stream.trim();
 
-  /* VIDEO PLAYER */
+    // --- YOUTUBE ---
+    if (/youtube\.com|youtu\.be/.test(stream)) {
+      video.style.display = "none";
+      frame.style.display = "block";
 
-var player = videojs('adorationVideo');
+      let id = "";
 
-function playChapel(stream){
+      if (stream.includes("watch?v=")) {
+        id = stream.split("watch?v=")[1];
+      } else if (stream.includes("youtu.be/")) {
+        id = stream.split("youtu.be/")[1];
+      }
 
-document.getElementById("videoModal").style.display="block";
+      if (id && id.includes("&")) {
+        id = id.split("&")[0];
+      }
 
-var video = document.getElementById("adorationVideo");
-var frame = document.getElementById("adorationFrame");
+      frame.src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
+    }
 
-stream = stream.trim();
+    // --- HLS (.m3u8) ---
+    else if (stream.includes(".m3u8")) {
+      frame.style.display = "none";
+      video.style.display = "block";
 
-/* YOUTUBE */
+      player.src({
+        src: stream,
+        type: "application/x-mpegURL"
+      });
 
-if(stream.includes("youtube.com") || stream.includes("youtu.be")){
+      player.play();
+    }
 
-video.style.display="none";
-frame.style.display="block";
+    // --- DEFAULT (iframe/embed/webcam) ---
+    else {
+      video.style.display = "none";
+      frame.style.display = "block";
+      frame.src = stream;
+    }
 
-let id="";
+    // --- CLOSE MODAL ---
+    document.getElementById("closeModal").onclick = () => {
+      modal.style.display = "none";
+      frame.src = "";
+      player.pause();
+    };
 
-if(stream.includes("watch?v=")){
-id=stream.split("watch?v=")[1];
-}
+    window.onclick = e => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        frame.src = "";
+        player.pause();
+      }
+    };
+  };
 
-else if(stream.includes("youtu.be/")){
-id=stream.split("youtu.be/")[1];
-}
-
-if(id.includes("&")){
-id=id.split("&")[0];
-}
-
-frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
-
-}
-
-
-/* HLS LIVESTREAM (.m3u8) */
-
-else if(stream.includes(".m3u8")){
-
-frame.style.display="none";
-video.style.display="block";
-
-player.src({
-src:stream,
-type:"application/x-mpegURL"
-});
-
-player.play();
-
-}
-
-
-/* MJPG WEBCAM */
-
-else if(stream.includes(".mjpg")){
-
-video.style.display="none";
-frame.style.display="block";
-
-frame.src=stream;
-
-}
-
-
-/* EMBED STREAMS */
-
-else if(stream.includes("embed")){
-
-video.style.display="none";
-frame.style.display="block";
-
-frame.src=stream;
-
-}
-
-
-/* NORMAL WEBSITE STREAM */
-
-else{
-
-video.style.display="none";
-frame.style.display="block";
-
-frame.src=stream;
-
-}
-
-}
-
-
-
-
-
-
-  /* Find Chapel */
-
-document.getElementById("findChapel").addEventListener("click", () => {
+  // --- FIND USER LOCATION ---
+  document.getElementById("findChapel").addEventListener("click", () => {
     if (!navigator.geolocation) {
-      alert("Geolocation not supported by your browser.");
+      alert("Geolocation not supported.");
       return;
     }
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const { latitude, longitude } = pos.coords;
-        map.setView([latitude, longitude], 8);
-        L.circle([latitude, longitude], { radius: 2000, color: "#B59B6A" }).addTo(map);
-      },
-      () => alert("Location permission denied.")
-    );
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude, longitude } = pos.coords;
+
+      map.setView([latitude, longitude], 8);
+
+      L.circle([latitude, longitude], {
+        radius: 5000,
+        color: "#B59B6A"
+      }).addTo(map);
+    });
   });
 
-  // Start Adoration Now → pick first live chapel
+  // --- START ADORATION (FIRST LIVE) ---
   document.getElementById("startAdoration").addEventListener("click", () => {
-    const live = chapelData.find(c => c.live === "TRUE");
-    if (live) openStream(live.youtube);
-    else alert("No live adoration stream available right now.");
+    const live = chapelData.find(c => c.live === "TRUE" && c.youtube);
+    if (live) playChapel(live.youtube);
+    else alert("No live adoration stream available.");
   });
 
-  // Pledge Hour toggle section
+  // --- PLEDGE UI ---
   document.getElementById("pledgeButton").addEventListener("click", () => {
     document.getElementById("pledge").classList.toggle("hidden");
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   });
 
-  // Pledge form handler (Formspree placeholder)
   document.getElementById("pledgeForm").addEventListener("submit", e => {
     e.preventDefault();
+
     const data = new FormData(e.target);
-    fetch("https://formspree.io/f/yourFormIDhere", { method: "POST", body: data })
+
+    fetch("https://formspree.io/f/yourFormIDhere", {
+      method: "POST",
+      body: data
+    })
       .then(() => {
         e.target.reset();
         document.getElementById("thanks").classList.remove("hidden");
       })
-      .catch(() =>
-        alert("Form could not be submitted. Replace Formspree URL with your actual endpoint.")
-      );
+      .catch(() => alert("Form submission failed."));
   });
+
+  // --- BASIC SANITIZER ---
+  function escapeHTML(str = "") {
+    return str.replace(/[&<>"']/g, m => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[m]));
+  }
 });
-
-// Global (simple) modal controls
-function openStream(url) {
-  const modal = document.getElementById("videoModal");
-  const frame = document.getElementById("adorationFrame");
-  const embedUrl = url
-  .replace("watch?v=", "embed/")
-  .replace("youtu.be/", "www.youtube.com/embed/");
- frame.src = embedUrl + "?autoplay=1";
-
-  modal.style.display = "flex";
-
-  document.getElementById("closeModal").onclick = () => {
-    modal.style.display = "none";
-    frame.src = "";
-  };
-
-  window.onclick = e => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-      frame.src = "";
-    }
-  };
-}
