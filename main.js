@@ -23,6 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
       maxZoom: 18
     }).addTo(map);
 
+    var markers = L.markerClusterGroup();
+
+    map.addLayer(markers);
+
     /* MAP MARKERS */
 markers.addLayer(
 L.marker([51.088191,-114.196839]).bindPopup(`
@@ -140,8 +144,109 @@ Watch Live Adoration
     });
   }
 
-  // Find Chapel Near Me
-  document.getElementById("findChapel").addEventListener("click", () => {
+
+
+  /* VIDEO PLAYER */
+
+var player = videojs('adorationVideo');
+
+function playChapel(stream){
+
+document.getElementById("videoModal").style.display="block";
+
+var video = document.getElementById("adorationVideo");
+var frame = document.getElementById("adorationFrame");
+
+stream = stream.trim();
+
+/* YOUTUBE */
+
+if(stream.includes("youtube.com") || stream.includes("youtu.be")){
+
+video.style.display="none";
+frame.style.display="block";
+
+let id="";
+
+if(stream.includes("watch?v=")){
+id=stream.split("watch?v=")[1];
+}
+
+else if(stream.includes("youtu.be/")){
+id=stream.split("youtu.be/")[1];
+}
+
+if(id.includes("&")){
+id=id.split("&")[0];
+}
+
+frame.src="https://www.youtube.com/embed/"+id+"?autoplay=1";
+
+}
+
+
+/* HLS LIVESTREAM (.m3u8) */
+
+else if(stream.includes(".m3u8")){
+
+frame.style.display="none";
+video.style.display="block";
+
+player.src({
+src:stream,
+type:"application/x-mpegURL"
+});
+
+player.play();
+
+}
+
+
+/* MJPG WEBCAM */
+
+else if(stream.includes(".mjpg")){
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src=stream;
+
+}
+
+
+/* EMBED STREAMS */
+
+else if(stream.includes("embed")){
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src=stream;
+
+}
+
+
+/* NORMAL WEBSITE STREAM */
+
+else{
+
+video.style.display="none";
+frame.style.display="block";
+
+frame.src=stream;
+
+}
+
+}
+
+
+
+
+
+
+  /* Find Chapel */
+
+document.getElementById("findChapel").addEventListener("click", () => {
     if (!navigator.geolocation) {
       alert("Geolocation not supported by your browser.");
       return;
