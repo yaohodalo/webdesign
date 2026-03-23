@@ -78,38 +78,96 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
   
   // --- FEATURED CHAPELS (NOT IN CSV) ---
   const featuredChapels = [
-    {
-      name: "Sisters of Divine Mercy",
-      city: "Calgary",
-      country: "Canada",
-      lat: 51.088191,
-      lng: -114.196839,
-      stream: "https://www.youtube.com/watch?v=1OR9c5YtRco"
-    },
-    {
-      name: "Shalom World",
-      city: "Edinburg TX",
-      country: "USA",
-      lat: 27.211164594068823,
-      lng: -98.12618571688884,
-      stream: "https://www.youtube.com/watch?v=GlGkFWPKomU"
-    },
-    {
-      name: "EWTN Chapel",
-      city: "Irondale AL",
-      country: "USA",
-      lat: 33.533602,
-      lng: -86.675057,
-      stream: "https://www.youtube.com/watch?v=l30JmRRGQQI"
-    },
-    {
-      name: "Maria Vision",
-      city: "Rome",
-      country: "Italy",
-      lat: 44.34934717811221,
-      lng: 13.014269026323799,
-      stream: "https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8"
-    }
+    const featuredChapels = [
+  {
+    name: "Sisters of Divine Mercy",
+    city: "Calgary",
+    country: "Canada",
+    lat: 51.088191,
+    lng: -114.196839,
+    stream: "https://www.youtube.com/watch?v=1OR9c5YtRco"
+  },
+  {
+    name: "Shalom World",
+    city: "Edinburg TX",
+    country: "USA",
+    lat: 27.211164594068823,
+    lng: -98.12618571688884,
+    stream: "https://www.youtube.com/watch?v=GlGkFWPKomU"
+  },
+  {
+    name: "EWTN Chapel",
+    city: "Irondale AL",
+    country: "USA",
+    lat: 33.533602,
+    lng: -86.675057,
+    stream: "https://www.youtube.com/watch?v=l30JmRRGQQI"
+  },
+  {
+    name: "St Benedicts Burwood",
+    city: "Australia",
+    country: "Australia",
+    lat: -37.848311,
+    lng: 145.096218,
+    stream: "https://www.youtube.com/watch?v=qz8YE61BoXM"
+  },
+  {
+    name: "Monastery of the Immaculate Conception",
+    city: "Paprotnia",
+    country: "Poland",
+    lat: 52.202124,
+    lng: 20.419678,
+    stream: "https://www.youtube.com/watch?v=bIR18Pvy11U"
+  },
+  {
+    name: "Tyburn Convent",
+    city: "London",
+    country: "UK",
+    lat: 51.51272175784455,
+    lng: -0.16690941632605502,
+    stream: "https://www.youtube.com/watch?v=YbxI_Vd97H4"
+  },
+  {
+    name: "Maria Vision",
+    city: "Rome",
+    country: "Italy",
+    lat: 44.34934717811221,
+    lng: 13.014269026323799,
+    stream: "https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8"
+  },
+  {
+    name: "Cathedral of the Good Shepherd",
+    city: "Singapore",
+    country: "Singapore",
+    lat: 1.2967181988001202,
+    lng: 103.85090453422588,
+    stream: "https://www.youtube.com/watch?v=g8sUK4RNIEg"
+  },
+  {
+    name: "Ermita de Nuestra Señora de Bienvenida-Alcolea",
+    city: "Toledo",
+    country: "Spain",
+    lat: 39.81915886003033,
+    lng: -5.163416274606668,
+    stream: "https://www.youtube.com/watch?v=YTWA-eUZzJQ"
+  },
+  {
+    name: "St Mary Mother of God Church",
+    city: "Middletown NJ",
+    country: "USA",
+    lat: 40.41343862264555,
+    lng: -74.10332138991909,
+    stream: "https://www.youtube.com/watch?v=TIu6DyLTWLQ"
+  },
+  {
+    name: "Servants of the Holy Spirit of Perpetual Adoration",
+    city: "Nitra",
+    country: "Slovakia",
+    lat: 48.32946693286068,
+    lng: 18.084085010485204,
+    stream: "https://apps.csweb.sk/sspsap/"
+  }
+];
   ];
 
   // NEW: PHYSICAL CHAPELS
@@ -167,22 +225,30 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
     }
 
     // --- FEATURED ---
-    featuredChapels.forEach(c => {
-      const marker = L.marker([jitter(c.lat), jitter(c.lng)]);
 
-      marker.chapelData = { ...c, type: "virtual" }; // NEW
+// FEATURED (manual virtual chapels)
+featuredChapels.forEach(c => {
 
-      marker.bindPopup(`
-        <b> 🕯️ ${c.name}</b><br>
-        ${c.city}, ${c.country}<br><br>
-        <button onclick="playChapel('${c.stream}')">
-          Watch Live Adoration
-        </button>
-      `);
+  const marker = L.marker([c.lat, c.lng]);
 
-      allMarkers.push(marker); // NEW
-      markerList.push(marker);
-    });
+  marker.chapelData = {
+    name: c.name,
+    city: c.city,
+    country: c.country,
+    type: "virtual"
+  };
+
+  marker.bindPopup(`
+    <b>🕯️ ${c.name}</b><br>
+    ${c.city}, ${c.country}<br><br>
+    <button onclick="playChapel('${c.stream}')">
+      Watch Live Adoration
+    </button>
+  `);
+
+  allMarkers.push(marker);
+});
+
 
     // --- CSV ---
     csvChapels.forEach(c => {
@@ -339,30 +405,18 @@ document.addEventListener("click", e => {
   });
 
   // --- START ADORATION (UNCHANGED) ---
-document.getElementById("startAdoration").addEventListener("click", () => {
-  
-  // 1. Check featured chapels FIRST (most reliable)
-  const featuredLive = featuredChapels.find(c => c.stream);
+document.getElementById("startAdoration").onclick = () => {
 
-  if (featuredLive) {
-    playChapel(featuredLive.stream);
+  // PRIORITY: featured chapels first
+  if (featuredChapels.length) {
+    playChapel(featuredChapels[0].stream);
     return;
   }
 
-  // 2. Then check CSV (normalize values)
-  const live = chapelData.find(c =>
-    (c.live || "").toString().toLowerCase() === "true" &&
-    c.youtube
-  );
-
-  if (live) {
-    playChapel(live.youtube);
-    return;
-  }
-
-  // 3. Fallback
-  alert("No live adoration stream available.");
-});
+  // fallback to CSV
+  const live = chapelData.find(c => c.youtube);
+  if (live) playChapel(live.youtube);
+};
 
 
   const lives = chapelData.filter(c =>
