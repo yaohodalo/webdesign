@@ -77,7 +77,6 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
 
   
   // --- FEATURED CHAPELS (NOT IN CSV) ---
-  const featuredChapels = [
     const featuredChapels = [
   {
     name: "Sisters of Divine Mercy",
@@ -168,7 +167,6 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
     stream: "https://apps.csweb.sk/sspsap/"
   }
 ];
-  ];
 
   // NEW: PHYSICAL CHAPELS
   const physicalChapels = [
