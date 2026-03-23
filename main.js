@@ -28,19 +28,16 @@ music.play().then(() => {
 
 // Stop music on FIRST interaction (your UX choice)
 function stopOnInteraction(e) {
-  // ❌ Ignore clicks on music button
   if (e.target.closest("#musicToggle")) return;
-
-  // ❌ Ignore if already stopped
   if (userStopped) return;
 
-  // ✅ Only stop if actually playing
   if (!music.paused) {
     setTimeout(() => {
       fadeOutMusic();
       userStopped = true;
       musicBtn.innerText = "🎵 Resume";
     }, 300); // small grace delay
+}
 }
 
 ["click", "scroll", "keydown"].forEach(event => {
