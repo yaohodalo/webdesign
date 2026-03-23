@@ -8,41 +8,21 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <div class="verse-ticker">
-  <div class="verse-track">
-    “Be still and know that I am God.” — Psalm 46:10 &nbsp;&nbsp;&nbsp;
-    “Could you not watch with me one hour?” — Matthew 26:40 &nbsp;&nbsp;&nbsp;
-    “I am the bread of life.” — John 6:35 &nbsp;&nbsp;&nbsp;
-    “Remain in me, as I remain in you.” — John 15:4
-  </div>
-</div>
-  <audio id="bgMusic" loop>
-  <source src="204-stay with me.mp3" type="audio/mpeg">
-</audio>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital@0;1&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
 
-<button id="musicToggle" class="music-btn">🎵 Music</button>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital@0;1&family=Inter:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <!-- Marker Cluster -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
 
-  <!-- Marker Cluster CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
-
-  <!-- Video.js CSS -->
-  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <!-- Video.js -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet"/>
 
   <!-- Site CSS -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 
-  <!-- Small layout fix -->
   <style>
     #map {
       height: 75vh;
@@ -55,6 +35,22 @@
 </head>
 
 <body>
+
+<!-- 🔥 VERSE TICKER (moved correctly) -->
+<div class="verse-ticker">
+  <div class="verse-track">
+    “Be still and know that I am God.” — Psalm 46:10 &nbsp;&nbsp;&nbsp;
+    “Could you not watch with me one hour?” — Matthew 26:40 &nbsp;&nbsp;&nbsp;
+    “I am the bread of life.” — John 6:35 &nbsp;&nbsp;&nbsp;
+    “Remain in me, as I remain in you.” — John 15:4
+  </div>
+</div>
+
+<!-- 🔥 AUDIO -->
+<audio id="bgMusic" loop>
+  <source src="204-stay with me.mp3" type="audio/mpeg">
+</audio>
+
 <header class="header">
 
   <!-- LEFT -->
@@ -62,8 +58,10 @@
     <img src="logo.png" class="logo" />
   </div>
 
-  <!-- CENTER (MAIN SEARCH FOCUS) -->
+  <!-- CENTER -->
   <div class="header-center">
+    <h2 class="subtitle">Live Eucharistic Adoration Map</h2>
+
     <input
       id="searchInput"
       placeholder="Search by city, country, or chapel..."
@@ -77,73 +75,74 @@
     <button id="startAdoration">Start</button>
     <button id="findChapel">Nearby</button>
     <button id="pledgeButton">Pledge</button>
+    <button id="musicToggle">🎵</button>
   </div>
 
 </header>
-  <main>
-    <!-- Map -->
-    <div id="map"></div>
 
-    <!-- Pledge Section -->
-    <section id="pledge" class="hidden">
-      <h2>Pledge an Hour of Prayer</h2>
-      <form id="pledgeForm">
-        <input type="text" name="name" placeholder="Your name" />
-        <input type="email" name="email" placeholder="Optional email" />
-        <input type="datetime-local" name="time" required />
-        <textarea name="intention" placeholder="Prayer intention" rows="3"></textarea>
-        <button type="submit">Pledge My Hour</button>
-      </form>
-      <p id="thanks" class="hidden">
-        Thank you — your hour joins adorers worldwide.
-      </p>
-    </section>
-  </main>
+<main>
+  <!-- Map -->
+  <div id="map"></div>
 
-  <footer>
-    <p>© 2024 WouldYouJoinMeForOneHour.org | Ad Majorem Dei Gloriam 🕊️</p>
-  </footer>
-
-  <!-- Video Modal -->
-  <div id="videoModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-
-      <!-- YouTube / iframe streams -->
-      <iframe
-        id="adorationFrame"
-        width="560"
-        height="315"
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
-
-      <!-- HLS video player -->
-      <video
-        id="adorationVideo"
-        class="video-js vjs-default-skin"
-        controls
-        autoplay
-        style="display:none; width:100%; max-width:800px;"
-      ></video>
-    </div>
+  <!-- 🔥 Nearby Panel -->
+  <div id="nearbyPanel" class="nearby hidden">
+    <h3>📍 Nearby Adoration</h3>
+    <div id="nearbyList"></div>
   </div>
 
-  <!-- Scripts (CORRECT ORDER) -->
+  <!-- Pledge -->
+  <section id="pledge" class="hidden">
+    <h2>Pledge an Hour of Prayer</h2>
+    <form id="pledgeForm">
+      <input type="text" name="name" placeholder="Your name" />
+      <input type="email" name="email" placeholder="Optional email" />
+      <input type="datetime-local" name="time" required />
+      <textarea name="intention" placeholder="Prayer intention"></textarea>
+      <button type="submit">Pledge My Hour</button>
+    </form>
+    <p id="thanks" class="hidden">
+      Thank you — your hour joins adorers worldwide.
+    </p>
+  </section>
+</main>
 
-  <!-- Leaflet -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<footer>
+  <p>© 2024 WouldYouJoinMeForOneHour.org | Ad Majorem Dei Gloriam 🕊️</p>
+</footer>
 
-  <!-- Marker Cluster -->
-  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<!-- VIDEO MODAL -->
+<div id="videoModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
 
-  <!-- PapaParse -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <!-- iframe -->
+    <iframe
+      id="adorationFrame"
+      width="560"
+      height="315"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>
 
-  <!-- Video.js -->
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <!-- HLS player -->
+    <video
+      id="adorationVideo"
+      class="video-js vjs-default-skin"
+      controls
+      autoplay
+      style="display:none; width:100%; max-width:800px;"
+    ></video>
+  </div>
+</div>
 
-  <!-- Your Script -->
-  <script src="main.js" defer></script>
+<!-- SCRIPTS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+<script src="main.js" defer></script>
+
 </body>
 </html>
