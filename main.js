@@ -27,12 +27,20 @@ music.play().then(() => {
 });
 
 // Stop music on FIRST interaction (your UX choice)
-function stopOnInteraction() {
-  if (!userStopped && !music.paused) {
-    fadeOutMusic();
-    userStopped = true;
-    musicBtn.innerText = "🎵 Resume";
-  }
+function stopOnInteraction(e) {
+  // ❌ Ignore clicks on music button
+  if (e.target.closest("#musicToggle")) return;
+
+  // ❌ Ignore if already stopped
+  if (userStopped) return;
+
+  // ✅ Only stop if actually playing
+  if (!music.paused) {
+    setTimeout(() => {
+      fadeOutMusic();
+      userStopped = true;
+      musicBtn.innerText = "🎵 Resume";
+    }, 300); // small grace delay
 }
 
 ["click", "scroll", "keydown"].forEach(event => {
@@ -334,12 +342,40 @@ document.addEventListener("click", e => {
   });
 
   // --- START ADORATION (UNCHANGED) ---
-  document.getElementById("startAdoration").addEventListener("click", () => {
-    const live = chapelData.find(c => c.live === "TRUE" && c.youtube);
-    if (live) playChapel(live.youtube);
-    else alert("No live adoration stream available.");
-  });
+document.getElementById("startAdoration").addEventListener("click", () => {
+  
+  // 1. Check featured chapels FIRST (most reliable)
+  const featuredLive = featuredChapels.find(c => c.stream);
 
+  if (featuredLive) {
+    playChapel(featuredLive.stream);
+    return;
+  }
+
+  // 2. Then check CSV (normalize values)
+  const live = chapelData.find(c =>
+    (c.live || "").toString().toLowerCase() === "true" &&
+    c.youtube
+  );
+
+  if (live) {
+    playChapel(live.youtube);
+    return;
+  }
+
+  // 3. Fallback
+  alert("No live adoration stream available.");
+});
+
+
+  const lives = chapelData.filter(c =>
+  (c.live || "").toString().toLowerCase() === "true" && c.youtube
+);
+
+if (lives.length) {
+  const random = lives[Math.floor(Math.random() * lives.length)];
+  playChapel(random.youtube);
+}
   // --- PLEDGE UI (UNCHANGED) ---
   document.getElementById("pledgeButton").addEventListener("click", () => {
     document.getElementById("pledge").classList.toggle("hidden");
