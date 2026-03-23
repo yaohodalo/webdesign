@@ -10,6 +10,65 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize video.js AFTER DOM is ready
   player = videojs("adorationVideo");
 
+  const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicToggle");
+
+let musicStarted = false;
+let userStopped = false;
+
+// Start music automatically (may be blocked until interaction)
+music.volume = 0.35;
+
+music.play().then(() => {
+  musicStarted = true;
+  musicBtn.innerText = "⏸ Music";
+}).catch(() => {
+  // autoplay blocked → wait for interaction
+});
+
+// Stop music on FIRST interaction (your UX choice)
+function stopOnInteraction() {
+  if (musicStarted && !userStopped) {
+    fadeOutMusic();
+    userStopped = true;
+    musicBtn.innerText = "🎵 Resume";
+  }
+}
+
+["click", "scroll", "keydown"].forEach(event => {
+  document.addEventListener(event, stopOnInteraction, { once: true });
+});
+
+// Toggle button
+musicBtn.addEventListener("click", () => {
+  if (music.paused) {
+    music.volume = 0.35;
+    music.play();
+    musicBtn.innerText = "⏸ Music";
+    userStopped = false;
+  } else {
+    music.pause();
+    musicBtn.innerText = "🎵 Resume";
+    userStopped = true;
+  }
+});
+
+// Smooth fade out
+function fadeOutMusic() {
+  let vol = music.volume;
+
+  const fade = setInterval(() => {
+    if (vol > 0.05) {
+      vol -= 0.05;
+      music.volume = vol;
+    } else {
+      clearInterval(fade);
+      music.pause();
+      music.volume = 0.35; // reset for next play
+    }
+  }, 120);
+}
+
   // --- FEATURED CHAPELS (NOT IN CSV) ---
   const featuredChapels = [
     {
