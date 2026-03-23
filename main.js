@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   player = videojs("adorationVideo");
 
   const music = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicToggle");
+  const musicBtn = document.getElementById("musicToggle");
 
 let musicStarted = false;
 let userStopped = false;
@@ -68,7 +68,9 @@ function fadeOutMusic() {
     }
   }, 120);
 }
+musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
 
+  
   // --- FEATURED CHAPELS (NOT IN CSV) ---
   const featuredChapels = [
     {
