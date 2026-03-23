@@ -372,3 +372,76 @@ document.addEventListener("click", e => {
     }[m]));
   }
 });
+
+// GLOBAL FUNCTION (FIX)
+window.playChapel = function (stream) {
+  const modal = document.getElementById("videoModal");
+  const frame = document.getElementById("adorationFrame");
+  const video = document.getElementById("adorationVideo");
+
+  modal.style.display = "flex";
+  stream = stream.trim();
+
+  // YOUTUBE
+  if (/youtube\.com|youtu\.be/.test(stream)) {
+    video.style.display = "none";
+    frame.style.display = "block";
+
+    let id = "";
+
+    if (stream.includes("watch?v=")) {
+      id = stream.split("watch?v=")[1];
+    } else if (stream.includes("youtu.be/")) {
+      id = stream.split("youtu.be/")[1];
+    }
+
+    if (id.includes("&")) id = id.split("&")[0];
+
+    frame.src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
+  }
+
+  // HLS (.m3u8)
+  else if (stream.includes(".m3u8")) {
+    frame.style.display = "none";
+    video.style.display = "block";
+
+    const player = videojs("adorationVideo");
+
+    player.src({
+      src: stream,
+      type: "application/x-mpegURL"
+    });
+
+    player.play();
+  }
+
+  // DEFAULT (iframe/webcam/etc)
+  else {
+    video.style.display = "none";
+    frame.style.display = "block";
+    frame.src = stream;
+  }
+
+  // CLOSE MODAL
+  document.getElementById("closeModal").onclick = () => {
+    modal.style.display = "none";
+    frame.src = "";
+
+    try {
+      const player = videojs("adorationVideo");
+      player.pause();
+    } catch {}
+  };
+
+  window.onclick = e => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+      frame.src = "";
+
+      try {
+        const player = videojs("adorationVideo");
+        player.pause();
+      } catch {}
+    }
+  };
+};
