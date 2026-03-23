@@ -6,24 +6,7 @@ body {
   text-align: center;
 }
 
-/* Typography */
-h1 {
-  font-family: "Crimson Pro", serif;
-  font-weight: 600;
-  margin: 1.5rem 0 0.3rem;
-}
-
-h2 {
-  margin-top: 0.5rem;
-}
-
-.verse {
-  font-style: italic;
-  margin: 0 0 1rem;
-  color: #6e6256;
-}
-
-/* HEADER */
+/* ---------- HEADER ---------- */
 .header {
   display: flex;
   align-items: center;
@@ -33,41 +16,22 @@ h2 {
   color: white;
 }
 
-/* LEFT */
-.header-left {
-  flex: 1;
-}
+.header-left { flex: 1; }
+.header-center { flex: 2; position: relative; }
+.header-right { flex: 1; text-align: right; }
 
+/* LOGO */
 .logo {
-  width: 60px;
+  width: 90px;
 }
 
-/* CENTER (MAIN SEARCH) */
-.header-center {
-  flex: 2;
-  position: relative;
-}
-
+/* SEARCH */
 #searchInput {
   width: 100%;
   padding: 0.6rem 1rem;
   border-radius: 20px;
   border: none;
   outline: none;
-}
-
-/* RIGHT */
-.header-right {
-  flex: 1;
-  text-align: right;
-}
-
-.header-right button {
-  background: #D4AF37;
-  color: white;
-  border-radius: 20px;
-  padding: 0.4rem 0.9rem;
-  margin-left: 0.3rem;
 }
 
 /* SUGGESTIONS */
@@ -81,6 +45,7 @@ h2 {
   border-radius: 8px;
   max-height: 200px;
   overflow-y: auto;
+  z-index: 1000;
 }
 
 .suggestions div {
@@ -92,7 +57,18 @@ h2 {
   background: #eee;
 }
 
-/* VERSE TICKER */
+/* HEADER BUTTONS */
+.header-right button {
+  background: #D4AF37;
+  color: white;
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  margin-left: 0.3rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------- VERSE TICKER ---------- */
 .verse-ticker {
   width: 100%;
   overflow: hidden;
@@ -102,151 +78,58 @@ h2 {
   font-family: "Crimson Pro", serif;
   font-size: 0.95rem;
   padding: 0.3rem 0;
-  position: relative;
 }
 
-/* Moving text */
 .verse-track {
   display: inline-block;
   padding-left: 100%;
-  animation: scrollVerse 35s linear infinite;
+  animation: scrollVerse 40s linear infinite;
 }
 
-/* Animation */
 @keyframes scrollVerse {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
 }
 
-/* Buttons */
-.cta-container {
-  margin: 1rem 0 1.5rem;
-}
-
-.music-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #D4AF37;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  padding: 10px 14px;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  z-index: 9999;
-  transition: all 0.2s ease;
-}
-
-.music-btn:hover {
-  background: #b8962e;
-}
-
-button {
-  background-color: #B59B6A;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.7em 1.3em;
-  margin: 0.3em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-button:hover {
-  background-color: #A68A58;
-  transform: translateY(-1px);
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-/* --- TOP BAR LAYOUT --- */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  flex-wrap: wrap;
-}
-
-/* LEFT */
-.left {
-  flex: 1;
-  text-align: left;
-}
-
-/* CENTER */
-.center {
-  flex: 2;
-  text-align: center;
-}
-
-/* RIGHT */
-.right {
-  flex: 1;
-  text-align: right;
-}
-
-/* LOGO */
-.logo {
-  width: 80px;
-  background: transparent; /* removes white feel */
-}
-
-/* SEARCH */
-.search-container {
-  position: relative;
-  max-width: 400px;
-  margin: 0.5rem auto;
-}
-
-#searchInput {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #D4AF37;
-}
-
-/* SUGGESTIONS DROPDOWN */
-.suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-top: none;
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.suggestions div {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-.suggestions div:hover {
-  background: #f5f5f5;
-}
-
-/* Map */
+/* ---------- MAP ---------- */
 #map {
-  height: 75vh; /* responsive instead of fixed */
+  height: 75vh;
   width: 100%;
   border-top: 2px solid #B59B6A;
   border-bottom: 2px solid #B59B6A;
 }
 
-/* Pledge form */
+/* ---------- BUTTONS ---------- */
+button {
+  background-color: #D4AF37;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6em 1.2em;
+  margin: 0.3em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #b8962e;
+  transform: translateY(-1px);
+}
+
+/* ---------- NEARBY PANEL ---------- */
+.nearby {
+  padding: 1rem;
+  background: #fff;
+  border-top: 2px solid #B59B6A;
+}
+
+.nearby-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ---------- PLEDGE ---------- */
 #pledge {
   margin: 2rem auto;
   width: 90%;
@@ -260,53 +143,9 @@ button:active {
   padding: 0.6rem;
   border: 1px solid #B59B6A;
   border-radius: 5px;
-  font-family: inherit;
 }
 
-#pledge button {
-  margin-top: 1rem;
-}
-
-.hidden {
-  display: none;
-}
-
-/* Logo */
-.logo {
-  width: 110px;
-  margin-top: 1rem;
-}
-
-/* Search */
-.search-container {
-  margin: 1rem auto;
-  width: 90%;
-  max-width: 400px;
-}
-
-#searchInput {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #D4AF37;
-  border-radius: 6px;
-  font-family: inherit;
-}
-
-/* Gold theme tweak */
-button {
-  background-color: #D4AF37 !important;
-}
-
-button:hover {
-  background-color: #b8962e !important;
-}
-
-/* Cluster color match */
-.marker-cluster div {
-  background-color: #D4AF37 !important;
-}
-
-/* Modal */
+/* ---------- MODAL ---------- */
 .modal {
   display: none;
   position: fixed;
@@ -315,7 +154,6 @@ button:hover {
   justify-content: center;
   align-items: center;
   z-index: 5000;
-  padding: 1rem;
 }
 
 .modal-content {
@@ -327,7 +165,6 @@ button:hover {
   position: relative;
 }
 
-/* Close button */
 .close {
   position: absolute;
   top: 8px;
@@ -336,47 +173,24 @@ button:hover {
   cursor: pointer;
 }
 
-/* Video + iframe responsiveness */
 #adorationFrame,
 #adorationVideo {
   width: 100%;
   height: 60vh;
-  border-radius: 6px;
 }
 
-/* Footer */
+/* ---------- FOOTER ---------- */
 footer {
   color: #776D5F;
   margin: 2rem 0 1rem;
   font-size: 0.9rem;
 }
 
-/* --- Marker Cluster Styling (optional but nice) --- */
-.marker-cluster-small {
-  background-color: rgba(181, 155, 106, 0.6);
-}
-.marker-cluster-small div {
-  background-color: rgba(181, 155, 106, 0.9);
-}
-
-.marker-cluster-medium {
-  background-color: rgba(166, 138, 88, 0.6);
-}
-.marker-cluster-medium div {
-  background-color: rgba(166, 138, 88, 0.9);
-}
-
-.marker-cluster-large {
-  background-color: rgba(120, 100, 70, 0.6);
-}
-.marker-cluster-large div {
-  background-color: rgba(120, 100, 70, 0.9);
-}
-
-/* --- Mobile tweaks --- */
+/* ---------- MOBILE ---------- */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 1.5rem;
+  .header {
+    flex-direction: column;
+    gap: 10px;
   }
 
   #adorationFrame,
@@ -386,6 +200,5 @@ footer {
 
   button {
     width: 90%;
-    max-width: 300px;
   }
 }
