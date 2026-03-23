@@ -28,7 +28,7 @@ music.play().then(() => {
 
 // Stop music on FIRST interaction (your UX choice)
 function stopOnInteraction() {
-  if (musicStarted && !userStopped) {
+  if (!userStopped && !music.paused) {
     fadeOutMusic();
     userStopped = true;
     musicBtn.innerText = "🎵 Resume";
@@ -36,7 +36,7 @@ function stopOnInteraction() {
 }
 
 ["click", "scroll", "keydown"].forEach(event => {
-  document.addEventListener(event, stopOnInteraction, { once: true });
+  document.addEventListener(event, stopOnInteraction);
 });
 
 // Toggle button
@@ -168,7 +168,7 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
       marker.chapelData = { ...c, type: "virtual" }; // NEW
 
       marker.bindPopup(`
-        <b>🕯️ ${c.name}</b><br>
+        <b> 🕯️ ${c.name}</b><br>
         ${c.city}, ${c.country}<br><br>
         <button onclick="playChapel('${c.stream}')">
           Watch Live Adoration
@@ -202,7 +202,7 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
         ${escapeHTML(c.city)}, ${escapeHTML(c.country)}<br><br>
         ${
           c.youtube
-            ? `<button onclick="playChapel('${c.youtube}')">Watch Live</button>`
+            ? `<button onclick="playChapel('${c.youtube}')"> Watch Live Adoration</button>`
             : "No stream available"
         }
       `);
