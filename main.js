@@ -75,6 +75,7 @@ const translations = {
   }
 };
 let currentLang = "en";
+setLanguage("en");
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -591,11 +592,8 @@ document.getElementById("chapelForm").addEventListener("submit", e => {
 const verseTrack = document.querySelector(".verse-track");
 document.getElementById("languageSelect").addEventListener("change", e => {
 
-setLanguage("en");
 const userLang = navigator.language.slice(0,2);
 if (translations[userLang]) setLanguage(userLang);
-
-
 
 function setLanguage(lang) {
   currentLang = lang;
