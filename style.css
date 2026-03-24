@@ -8,6 +8,7 @@ body {
 
 /* ---------- HEADER ---------- */
 .header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,8 +18,14 @@ body {
 }
 
 .header-center {
-  flex: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
+  width: max-content;
+}
+.header-center h1 {
+  margin-bottom: 6px;
 }
 
 .header-right {
@@ -43,10 +50,11 @@ body {
 
 /* SEARCH */
 #searchInput {
-  width: 100%;
-  max-width: 260px;
+  width: 320px;
+  max-width: 80vw;
   text-align: center;
 }
+
 .music-container {
   text-align: center;
   margin: 20px 0;
@@ -113,7 +121,12 @@ body {
   background-size: cover;
   background-position: center;
   transition: all 0.4s ease;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
+
 
 .search-wrapper input {
   border: none;
