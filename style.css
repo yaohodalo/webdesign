@@ -39,23 +39,25 @@ body {
   text-align: center;
   margin: 20px 0;
 }
-#musicFloating {
-  position: fixed;
-  bottom: 100px;   /* sits above footer */
-  right: 20px;     /* bottom-right corner */
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
-  padding: 10px 14px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+#musicBelowMap {
+  width: 100%;
+  text-align: center;
+  background: #0b2a4a; /* match your theme */
+  padding: 10px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 500;
 }
 
 #musicToggle {
-  background: none;
-  border: none;
+  background: #b59b6a;
   color: white;
-  font-size: 14px;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
