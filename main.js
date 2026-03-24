@@ -30,15 +30,6 @@ music.play().then(() => {
 function stopOnInteraction(e) {
   if (e.target.closest("#musicToggle")) return;
   if (userStopped) return;
-
-  map.on("mousedown zoomstart", () => {
-  if (!music.paused && !userStopped) {
-    fadeOutMusic();
-    userStopped = true;
-    musicBtn.innerText = "🎵 Resume";
-  }
-});
-
 }, 300); // small grace delay
 
 
@@ -77,6 +68,27 @@ function fadeOutMusic() {
   }, 120);
 }
 musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
+
+
+
+const API_KEY = "AIzaSyBx63zE887NDnhEKQBnfVkS_baF9rG0mIE";
+
+async function getChannelIdFromVideo(url) {
+  try {
+    const videoId = url.split("v=")[1]?.split("&")[0];
+    if (!videoId) return null;
+
+    const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${API_KEY}`
+    );
+
+    const data = await res.json();
+
+    return data.items?.[0]?.snippet?.channelId || null;
+  } catch {
+    return null;
+  }
+}
 
   
   // --- FEATURED CHAPELS (NOT IN CSV) ---
@@ -212,6 +224,15 @@ Promise.all([
       maxZoom: 18
     }).addTo(map);
 
+map.on("mousedown zoomstart", () => {
+  if (!music.paused && !userStopped) {
+    fadeOutMusic();
+    userStopped = true;
+    musicBtn.innerText = "🎵 Resume";
+  }
+});
+
+
     // NEW: use global cluster group
     markersGroup = L.markerClusterGroup({
       maxClusterRadius: 50,
@@ -259,21 +280,43 @@ featuredChapels.forEach(c => {
 	marker
 });
 
+allMarkers.push(marker);
   markerList.push(marker);
 });
 
 
     // --- CSV ---
-    csvChapels.forEach(c => {
-      const lat = parseFloat(c.latitude);
-      const lng = parseFloat(c.longitude);
+csvChapels.forEach(async c => {
+  const lat = parseFloat(c.latitude);
+  const lng = parseFloat(c.longitude);
+  if (isNaN(lat) || isNaN(lng)) return;
 
-      if (isNaN(lat) || isNaN(lng)) return;
+  let streamUrl = c.youtube;
 
-      const icon = c.live === "TRUE" ? "🕯️" : "⛪";
+  // 🔥 NEW: auto-fetch channel live
+  if (c.youtube && c.youtube.includes("youtube")) {
+    const channelId = await getChannelIdFromVideo(c.youtube);
 
-      const marker = L.marker([jitter(lat), jitter(lng)]);
+    if (channelId) {
+      const live = await getLiveStream(channelId);
+      if (live) streamUrl = live;
+    }
+  }
 
+  const marker = L.marker([lat, lng]);
+
+  marker.bindPopup(`
+    <b>${c.name}</b><br>
+    ${c.city}, ${c.country}<br><br>
+    ${
+      streamUrl
+        ? `<button onclick="playChapel('${streamUrl}')">Watch Live Adoration</button>`
+        : "No stream available"
+    }
+  `);
+
+  markersGroup.addLayer(marker);
+});
       marker.chapelData = {
         name: c.name,
         city: c.city,
@@ -502,6 +545,13 @@ document.getElementById("startAdoration").onclick = () => {
 });
 
 // GLOBAL FUNCTION (FIX)
+	
+  function getYouTubeID(url) {
+  const regExp = /(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+};
+
 window.playChapel = function (stream) {
   const modal = document.getElementById("videoModal");
   const frame = document.getElementById("adorationFrame");
@@ -514,18 +564,8 @@ window.playChapel = function (stream) {
   if (/youtube\.com|youtu\.be/.test(stream)) {
     video.style.display = "none";
     frame.style.display = "block";
-	
-	
-	
-  function getYouTubeID(url) {
-  const regExp = /(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
-  const match = url.match(regExp);
-  return match ? match[1] : null;
-}
    const id = getYouTubeID(stream);
-   frame.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-
-
+   frame.src = `https://www.youtube.com/embed/${id}?autoplay=1`
   // HLS (.m3u8)
   else if (stream.includes(".m3u8")) {
     frame.style.display = "none";
