@@ -74,8 +74,6 @@ const translations = {
     ]
   }
 };
-const translations = { ... };
-
 let currentLang = "en";
 
 function updateMusicButton() {
