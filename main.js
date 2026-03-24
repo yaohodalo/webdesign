@@ -480,6 +480,33 @@ if (pledgeBtn && pledgeSection) {
   });
 }
 
+/* ================= Add Chapel ================= */
+const addBtn = document.getElementById("addChapelBtn");
+const modal = document.getElementById("addChapelModal");
+const closeModal = document.getElementById("closeAddChapel");
+
+addBtn.onclick = () => modal.style.display = "flex";
+closeModal.onclick = () => modal.style.display = "none";
+
+// SUBMIT
+document.getElementById("chapelForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target));
+
+  fetch("https://formspree.io/f/YOUR_FORM_ID", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(() => {
+    alert("Thank you! Chapel submitted.");
+    modal.style.display = "none";
+    e.target.reset();
+  })
+  .catch(() => alert("Submission failed."));
+});
+
 /* ================= GLOBAL PLAYER ================= */
 
 window.playChapel = function (stream) {
@@ -521,5 +548,5 @@ window.playChapel = function (stream) {
   };
  };
 	 };
-	 };
+	 });
  
