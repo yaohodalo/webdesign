@@ -42,11 +42,6 @@
   <div class="verse-track"></div>
 </div>
 
-<!-- 🔥 AUDIO -->
-<audio id="bgMusic" loop>
-  <source src="204-stay with me.mp3" type="audio/mpeg">
-</audio>
-
 <header class="header">
 
   <!-- LEFT -->
@@ -58,8 +53,7 @@
   <div class="header-center">
     <h2 class="subtitle">Eucharistic Adoration Map</h2>
     <div class="search-wrapper" id="searchWrapper">
-  <input id="searchInput" placeholder="Search by city, country, or chapel..." 
-    autocomplete="off" />
+  <input id="searchInput" placeholder="Search by city, country, or chapel..."  />
     </div>
     <div id="suggestions" class="suggestions"></div>
   </div>
@@ -69,6 +63,8 @@
     <button id="startAdoration">Start Adoration </button>
     <button id="findChapel">Nearby Chapel</button>
     <button id="pledgeButton">Pledge 1h </button>
+   <button id="addChapelBtn">Add a Chapel</button>
+</div>
   </div>
 
 </header>
@@ -77,9 +73,13 @@
   <!-- Map -->
   <div id="map"></div>
 
-  <div class="music-container">
+  <!-- 🔥 AUDIO -->
+  <div id="musicFloating">
   <button id="musicToggle">🎵 Play Music</button>
-  </div>
+  <audio id="bgMusic" loop>
+    <source src="204-stay with me.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
   <!-- 🔥 Nearby Panel -->
   <div id="nearbyPanel" class="nearby hidden">
