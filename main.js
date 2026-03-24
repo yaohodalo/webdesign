@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   music.play().catch(() => {});
 
-  musicBtn.innerText = "🎵 Music";
+  musicBtn.innerText = "🎵 PlayMusic";
 
 
   document.addEventListener("click", (e) => {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (music.paused) {
       music.volume = 0.35;
       music.play();
-      musicBtn.innerText = "🎵 Music";
+      musicBtn.innerText = "🎵 PlayMusic";
       userStopped = false;
     } else {
       music.pause();
@@ -422,7 +422,7 @@ if (searchInput && suggestionsBox) {
           distance
         };
       })
-      ..filter(item => item.marker.chapelData.type === "virtual" || item.distance <= 100)
+      .filter(item => item.marker.chapelData.type === "virtual" || item.distance <= 100)
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 50);
 
@@ -466,7 +466,7 @@ document.getElementById("startAdoration").onclick = () => {
 
 /* ================= Pledge One Hour ================= */
 
-	const pledgeBtn = document.getElementById("pledgeButton");
+const pledgeBtn = document.getElementById("pledgeButton");
 const pledgeSection = document.getElementById("pledge");
 
 if (pledgeBtn && pledgeSection) {
