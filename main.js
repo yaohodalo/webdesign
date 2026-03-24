@@ -13,9 +13,9 @@ const state = {
 /* ================= TRANSLATIONS ================= */
 const translations = {
   en: {
-    start: "Start",
-    nearby: "Nearby",
-    pledge: "Pledge",
+    start: "Start Adoration",
+    nearby: "Nearby Chapel",
+    pledge: "Pledge 1h",
     addChapel: "Add a Chapel",
     musicPlay: "🎵 Play Music",
     musicPause: "⏸ Pause Music",
@@ -27,9 +27,9 @@ const translations = {
     ]
   },
   es: {
-    start: "Comenzar",
-    nearby: "Cercanos",
-    pledge: "Compromiso",
+    start: "Comenzar Adoración",
+    nearby: "Capilla Cercana",
+    pledge: "Compromiso 1h",
     addChapel: "Agregar Capilla",
     musicPlay: "🎵 Reproducir música",
     musicPause: "⏸ Pausa Música",
@@ -41,9 +41,9 @@ const translations = {
     ]
   },
   fr: {
-    start: "Commencer",
-    nearby: "À proximité",
-    pledge: "Engagement",
+    start: "Commencer l'Adoration",
+    nearby: "Chapelle Proche",
+    pledge: "Engagement 1h",
     addChapel: "Ajouter une chapelle",
     musicPlay: "🎵 Jouer la musique",
     musicPause: "⏸ Pause Musique",
@@ -55,9 +55,9 @@ const translations = {
     ]
   },
   it: {
-    start: "Inizia",
-    nearby: "Vicino a me",
-    pledge: "Impegno",
+    start: "Inizia Adorazione",
+    nearby: "Cappella Vicina",
+    pledge: "Impegno 1h",
     addChapel: "Aggiungi Cappella",
     musicPlay: "🎵 Riproduci musica",
     musicPause: "⏸ Metti in Pausa",
@@ -69,9 +69,9 @@ const translations = {
     ]
   },
   pt: {
-    start: "Iniciar",
-    nearby: "Perto de mim",
-    pledge: "Compromisso",
+    start: "Iniciar Adoração",
+    nearby: "Capela Próxima",
+    pledge: "Compromisso 1h",
     addChapel: "Adicionar Capela",
     musicPlay: "🎵 Tocar música",
     musicPause: "⏸ Pausar Música",
@@ -181,10 +181,10 @@ function setLanguage(lang) {
   state.currentLang = lang;
   const t = translations[lang];
 
-  document.getElementById("startAdoration").innerText = t.Start Adoration;
-  document.getElementById("findChapel").innerText = t.Nearby Chapel;
-  document.getElementById("pledgeButton").innerText = t.Pledge 1h;
-  document.getElementById("addChapelBtn").innerText = t.Add Chapel;
+  document.getElementById("startAdoration").innerText = t.start;
+  document.getElementById("findChapel").innerText = t.nearby;
+  document.getElementById("pledgeButton").innerText = t.pledge;
+  document.getElementById("addChapelBtn").innerText = t.AddChapel;
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
@@ -491,18 +491,70 @@ if (pledgeBtn && pledgeSection) {
   });
 }
 
+document.getElementById("chapelForm")?.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target));
+
+  fetch("https://formspree.io/f/YOUR_FORM_ID", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(() => {
+    alert("Chapel submitted!");
+    modal.style.display = "none";
+    e.target.reset();
+  })
+  .catch(() => alert("Submission failed."));
+});
+
+
+document.getElementById("contactForm")?.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target));
+
+  fetch("https://formspree.io/f/YOUR_FORM_ID", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(() => {
+    alert("Message sent!");
+    e.target.reset();
+  })
+  .catch(() => alert("Failed to send message."));
+});
+
 /* ================= PLAYER ================= */
 window.playChapel = function (stream) {
-  stopMusic();
+stopMusic();
 
-  const modal = document.getElementById("videoModal");
-  const frame = document.getElementById("adorationFrame");
-  const video = document.getElementById("adorationVideo");
+const addBtn = document.getElementById("addChapelBtn");
+const modal = document.getElementById("addChapelModal");
+const closeAdd = document.getElementById("closeAddChapel");
 
- if (addBtn && modal && closeModal) {
-  addBtn.addEventListener("click", () => {
+if (addBtn && modal) {
+  addBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     modal.style.display = "flex";
   });
+}
+
+if (closeAdd && modal) {
+  closeAdd.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+}
+
+// click outside closes
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
   const yt = stream.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
 
@@ -522,11 +574,5 @@ window.playChapel = function (stream) {
     video.style.display = "none";
     frame.src = stream;
   }
-
-
-
-  closeModal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
 }
 };
