@@ -79,7 +79,6 @@ const translations = {
 
 let currentLang = "en";
 
-
 let music, musicBtn;
 
 function stopMusic() {
@@ -134,24 +133,26 @@ document.addEventListener("click", () => {
 }, { once: true });
 // Stop music on interaction
 document.addEventListener("click", (e) => {
+function fadeOutMusic() {
+  if (!music) return;
+
+  let vol = music.volume;
+  const fade = setInterval(() => {
+    if (vol > 0.05) {
+      vol -= 0.05;
+      music.volume = vol;
+    } else {
+      clearInterval(fade);
+      music.pause();
+      music.volume = 0.35;
+    }
+  }, 120);
+}
   if (!e.target.closest("#musicToggle") && !music.paused) {
     music.pause();
     updateMusicButton();
   }
 });
-  function fadeOutMusic() {
-    let vol = music.volume;
-    const fade = setInterval(() => {
-      if (vol > 0.05) {
-        vol -= 0.05;
-        music.volume = vol;
-      } else {
-        clearInterval(fade);
-        music.pause();
-        music.volume = 0.35;
-      }
-    }, 120);
-  }
 
 
   /* ================= YOUTUBE API ================= */
@@ -317,15 +318,18 @@ document.addEventListener("click", (e) => {
 
     const markerList = [];
 
-    function addMarker(lat, lng, data, popupHTML) {
-      const marker = L.marker([lat, lng]);
+ function addMarker(lat, lng, data, popupHTML) {
+  const marker = L.marker([lat, lng]);
 
-      marker.chapelData = data;
-      marker.bindPopup(popupHTML);
+  marker.chapelData = data;
+  marker.bindPopup(popupHTML);
 
-      allMarkers.push(marker);
-      markerList.push(marker);
-    }
+  allMarkers.push(marker);
+  markerList.push(marker);
+
+  // ✅ FIX: add ONE marker at a time (not full list every time)
+  markersGroup.addLayer(marker);
+}
 
     /* FEATURED */
     featuredChapels.forEach(c => {
@@ -342,43 +346,29 @@ chapelData.forEach(c => {
   const lng = parseFloat(c.longitude);
   if (isNaN(lat) || isNaN(lng)) return;
 
-  const marker = L.marker([lat, lng]);
-
-  marker.chapelData = {
+  addMarker(lat, lng, {
     name: c.name,
     city: c.city,
     country: c.country,
     type: "virtual"
-  };
-
-  marker.bindPopup(`
-    
-    <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
-    
-   
-    
-      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`: "No stream available"}
+  }, `
+    <b>🕯️ ${c.name}</b><br>
+    ${c.city}, ${c.country}<br><br>
+    ${
+      c.youtube
+        ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`
+        : "No stream available"
+    }
   `);
-
-  allMarkers.push(marker);
-  markerList.push(marker);
 });
     /* PHYSICAL */
- physicalChapels.forEach(c => {
-  const marker = L.marker([c.lat, c.lng]);
-
-  marker.chapelData = { ...c, type: "physical" };
-
-  marker.bindPopup(`
+physicalChapels.forEach(c => {
+  addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
     <b>⛪ ${c.name}</b><br>
     ${c.city}, ${c.country}<br><br>
     ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
   `);
-
-  allMarkers.push(marker);
-  markerList.push(marker);
 });
- markersGroup.addLayers(markerList);
   /* ================= SEARCH ================= */
 
 const searchInput = document.getElementById("searchInput");
@@ -471,77 +461,62 @@ if (searchInput && suggestionsBox) {
 
   /* ================= NEARBY ================= */
 
-  document.getElementById("findChapel").addEventListener("click", () => {
+ document.getElementById("findChapel").addEventListener("click", () => {
+
   if (!navigator.geolocation) {
     alert("Geolocation not supported.");
     return;
   }
 
   navigator.geolocation.getCurrentPosition(pos => {
+
     const { latitude, longitude } = pos.coords;
 
-    // Center map
     map.setView([latitude, longitude], 10);
 
-    // Show user radius
-    L.circle([latitude, longitude], {
-      radius: 10000,
-      color: "#B59B6A"
-    }).addTo(map);
+    function getDistance(lat1, lng1, lat2, lng2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
 
-    // --- DISTANCE FUNCTION ---
-function getDistance(lat1, lng1, lat2, lng2) {
-  const R = 6371;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLng / 2) ** 2;
 
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
 
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-    // --- FIND NEARBY (BOTH TYPES) ---
-   const nearby = allMarkers.filter(m => {
-  const [lat, lng] = m.getLatLng();
-  return getDistance(latitude, longitude, lat, lng) <= 100; // 100 km
-});
+    const nearby = allMarkers
+      .map(m => {
+        const { lat, lng } = m.getLatLng();
+        return {
+          marker: m,
+          distance: getDistance(latitude, longitude, lat, lng)
+        };
       })
-      .filter(item => item.marker.chapelData.type === "virtual" || item.distance <= 100)
       .sort((a, b) => a.distance - b.distance)
-      .slice(0, 50);
+      .slice(0, 30);
 
-    const nearbyMarkers = nearby.map(n => n.marker);
+    if (!nearby.length) {
+      alert("No nearby chapels found.");
+      return;
+    }
 
-    // Update map
     markersGroup.clearLayers();
-    markersGroup.addLayers(nearbyMarkers);
+    markersGroup.addLayers(nearby.map(n => n.marker));
 
-   if (!nearby.length) {
-  alert("No nearby chapels found. Showing closest ones instead.");
+  }, () => {
+    alert("Location permission denied.");
+  });
 
-  const sorted = allMarkers
-    .map(m => {
-      const [lat, lng] = m.getLatLng();
-      return {
-        marker: m,
-        dist: getDistance(latitude, longitude, lat, lng)
-      };
-    })
-    .sort((a, b) => a.dist - b.dist)
-    .slice(0, 20)
-    .map(x => x.marker);
-
-  markersGroup.clearLayers();
-  markersGroup.addLayers(sorted);
-  return;
-}
+});
   /* ================= START BUTTON ================= */
 
-document.getElementById("startAdoration").onclick = () => {
+/* ================= START BUTTON ================= */
+document.getElementById("startAdoration").addEventListener("click", () => {
+
   stopMusic();
 
   const available = [
@@ -556,11 +531,10 @@ document.getElementById("startAdoration").onclick = () => {
 
   const random = available[Math.floor(Math.random() * available.length)];
   playChapel(random.stream || random.youtube);
-};
+});
 
 
-/* ================= Pledge One Hour ================= */
-
+/* ================= PLEDGE ================= */
 const pledgeBtn = document.getElementById("pledgeButton");
 const pledgeSection = document.getElementById("pledge");
 
@@ -575,34 +549,16 @@ if (pledgeBtn && pledgeSection) {
   });
 }
 
-/* ================= Add Chapel ================= */
+
+/* ================= ADD CHAPEL ================= */
 const addBtn = document.getElementById("addChapelBtn");
 const modal = document.getElementById("addChapelModal");
 const closeModal = document.getElementById("closeAddChapel");
 
-addBtn.onclick = () => modal.style.display = "flex";
-closeModal.onclick = () => modal.style.display = "none";
-
-// SUBMIT
-document.getElementById("chapelForm").addEventListener("submit", e => {
-  e.preventDefault();
-
-  const data = Object.fromEntries(new FormData(e.target));
-
-  fetch("https://formspree.io/f/YOUR_FORM_ID", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(() => {
-    alert("Thank you! Chapel submitted.");
-    modal.style.display = "none";
-    e.target.reset();
-  })
-  .catch(() => alert("Submission failed."));
-});
-
-
+if (addBtn && modal && closeModal) {
+  addBtn.onclick = () => modal.style.display = "flex";
+  closeModal.onclick = () => modal.style.display = "none";
+}
 
 /* ================= Languages ================= */
 
