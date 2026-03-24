@@ -200,7 +200,7 @@ Promise.all([
     playChapel(random.youtube);
   }
 });
-})
+
 .catch(err => console.error("Data load error:", err));
 
   // --- INIT MAP ---
@@ -290,9 +290,16 @@ featuredChapels.forEach(c => {
             : "No stream available"
         }
       `);
+		
+  const chapelIndex = [];
+  chapelIndex.push({
+	name: c.name,
+	city: c.city,
+	country: c.country,
+	marker
+});
 
-      allMarkers.push(marker); // NEW
-      markerList.push(marker);
+  markerList.push(marker);
     });
 
     // --- PHYSICAL CHAPELS (NEW) ---
@@ -307,8 +314,15 @@ featuredChapels.forEach(c => {
         In-person Eucharistic Adoration
       `);
 
-      allMarkers.push(marker);
-      markerList.push(marker);
+      al  const chapelIndex = [];
+  chapelIndex.push({
+	name: c.name,
+	city: c.city,
+	country: c.country,
+	marker
+});
+
+  markerList.push(marker);
     });
 
     markersGroup.addLayers(markerList);
