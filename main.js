@@ -331,7 +331,7 @@ document.addEventListener("click", (e) => {
     });
 
     /* CSV */
-csvChapels.forEach(c => {
+chapelData.forEach(c => {
   const lat = parseFloat(c.latitude);
   const lng = parseFloat(c.longitude);
   if (isNaN(lat) || isNaN(lng)) return;
