@@ -74,6 +74,9 @@ const translations = {
     ]
   }
 };
+
+  /* ================= MUSIC ================= */
+
 let currentLang = "en";
 
 function updateMusicButton() {
@@ -97,20 +100,6 @@ function setLanguage(lang) {
 
   updateMusicButton();
 }
-
-// ✅ call AFTER everything exists
-document.addEventListener("DOMContentLoaded", () => {
-  setLanguage("en");
-  let map;
-  let chapelData = [];
-  let physicalChapels = [];
-  let allMarkers = [];
-  let markersGroup;
-
-  const player = videojs("adorationVideo");
-
-  /* ================= MUSIC ================= */
-
 // Try autoplay
 music.play().then(() => {
   updateMusicButton();
@@ -148,6 +137,19 @@ document.addEventListener("click", (e) => {
       }
     }, 120);
   }
+
+// ✅ call AFTER everything exists
+document.addEventListener("DOMContentLoaded", () => {
+  setLanguage("en");
+  let map;
+  let chapelData = [];
+  let physicalChapels = [];
+  let allMarkers = [];
+  let markersGroup;
+
+  const player = videojs("adorationVideo");
+
+
 
   /* ================= YOUTUBE API ================= */
 
