@@ -360,8 +360,8 @@ chapelData.forEach(c => {
       ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`: "No stream available"}
   `);
 
-  //allMarkers.push(marker);
-  //markerList.push(marker);
+  allMarkers.push(marker);
+  markerList.push(marker);
 });
     /* PHYSICAL */
  physicalChapels.forEach(c => {
@@ -375,8 +375,8 @@ chapelData.forEach(c => {
     ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
   `);
 
-  //allMarkers.push(marker);
-  //markerList.push(marker);
+  allMarkers.push(marker);
+  markerList.push(marker);
 });
  markersGroup.addLayers(markerList);
   /* ================= SEARCH ================= */
