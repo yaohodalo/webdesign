@@ -1,0 +1,195 @@
+[
+  {
+    "name": "Shrine of the Most Blessed Sacrament",
+    "address": "3222 County Road 548, Hanceville, AL 35077, USA",
+    "lat": 34.0606,
+    "lng": -86.7675,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St. Stanislaus Kostka Church",
+    "address": "1351 W Evergreen Ave, Chicago, IL 60642, USA",
+    "lat": 41.9065,
+    "lng": -87.6611,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St. John Cantius Church",
+    "address": "825 N Carpenter St, Chicago, IL 60642, USA",
+    "lat": 41.8977,
+    "lng": -87.6533,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "National Shrine of The Divine Mercy",
+    "address": "2 Prospect Hill Rd, Stockbridge, MA 01262, USA",
+    "lat": 42.2876,
+    "lng": -73.3204,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Our Lady of Peace Shrine",
+    "address": "2800 Mission College Blvd, Santa Clara, CA 95054, USA",
+    "lat": 37.3852,
+    "lng": -121.9692,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St. Peter Catholic Church",
+    "address": "243 W Argonne Dr, Kirkwood, MO 63122, USA",
+    "lat": 38.5817,
+    "lng": -90.4068,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St. Theresa Catholic Church",
+    "address": "705 St Theresa Blvd, Sugar Land, TX 77498, USA",
+    "lat": 29.6197,
+    "lng": -95.6349,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Holy Family Catholic Church",
+    "address": "9100 Crockett Rd, Brentwood, TN 37027, USA",
+    "lat": 35.9918,
+    "lng": -86.8078,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Basilica of the Sacred Heart of Montmartre",
+    "address": "35 Rue du Chevalier de la Barre, 75018 Paris, France",
+    "lat": 48.8867,
+    "lng": 2.3431,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Tyburn Convent",
+    "address": "8 Hyde Park Place, London W2 2LJ, United Kingdom",
+    "lat": 51.5125,
+    "lng": -0.159,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St. Peter\u2019s Basilica (Blessed Sacrament Chapel)",
+    "address": "Piazza San Pietro, 00120 Vatican City",
+    "lat": 41.9022,
+    "lng": 12.4539,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Basilica of Saint Mary Major",
+    "address": "Piazza di Santa Maria Maggiore, 00100 Rome, Italy",
+    "lat": 41.8978,
+    "lng": 12.4989,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Cologne Cathedral (Blessed Sacrament Chapel)",
+    "address": "Domkloster 4, 50667 K\u00f6ln, Germany",
+    "lat": 50.9413,
+    "lng": 6.9583,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Basilica of Our Lady of Guadalupe",
+    "address": "Plaza de las Am\u00e9ricas 1, Villa de Guadalupe, 07050 Ciudad de M\u00e9xico, Mexico",
+    "lat": 19.4849,
+    "lng": -99.1175,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Sanctuary of Divine Mercy",
+    "address": "ul. Siostry Faustyny 3, 30-420 Krak\u00f3w, Poland",
+    "lat": 50.0138,
+    "lng": 19.9366,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Holy Family Basilica",
+    "address": "City Hall Way, Nairobi, Kenya",
+    "lat": -1.2864,
+    "lng": 36.8219,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Cathedral of Christ the King",
+    "address": "5 Catholic Mission St, Onitsha, Nigeria",
+    "lat": 6.1454,
+    "lng": 6.7857,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "Perpetual Adoration Monastery (Aradhana Madam)",
+    "address": "Kollam, Kerala 691001, India",
+    "lat": 8.8932,
+    "lng": 76.6141,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Pink Sisters Adoration Convent",
+    "address": "Tagaytay, Cavite, Philippines",
+    "lat": 14.1153,
+    "lng": 120.962,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St Mary\u2019s Cathedral",
+    "address": "St Marys Rd, Sydney NSW 2000, Australia",
+    "lat": -33.8688,
+    "lng": 151.2093,
+    "perpetual": false,
+    "verified": true
+  },
+  {
+    "name": "St. John Neumann Catholic Church",
+    "address": "9000 Warfield Rd, Gaithersburg, MD 20882, United States",
+    "lat": 39.194321,
+    "lng": -77.185857,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Our Lady of the Visitation Parish",
+    "address": "14130 Darnestown Rd, Germantown, MD 20874, United States",
+    "lat": 39.103407,
+    "lng": -77.294801,
+    "perpetual": true,
+    "verified": true
+  },
+
+    {
+    "name": "Our Lady of the Visitation Parish",
+    "address": "14130 Darnestown Rd, Germantown, MD 20874, United States",
+    "lat": 39.103407,
+    "lng": -77.294801,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "St. John the Evangelist Catholic Church",
+    "address": "10103 Georgia Ave, Silver Spring, MD 20902, United States",
+    "lat": 39.022687,
+    "lng": -77.044427,
+    "perpetual": true,
+    "verified": true
+  }
+]
