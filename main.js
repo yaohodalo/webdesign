@@ -196,12 +196,14 @@ function setLanguage(lang) {
 
 /* ================= MUSIC ================= */
 function updateMusicButton() {
-  if (!state.music || !state.musicBtn) return;
+  if (!music || !musicBtn) return;
 
-  state.musicBtn.innerText = state.music.paused
-    ? translations[state.currentLang].musicPlay
-    : translations[state.currentLang].musicPause;
+  musicBtn.innerText = music.paused
+    ? translations[currentLang].musicPlay
+    : translations[currentLang].musicPause;
 }
+
+
 
 function stopMusic() {
   if (state.music && !state.music.paused) {
@@ -240,6 +242,19 @@ document.addEventListener("DOMContentLoaded", () => {
       updateMusicButton();
     }
   }, { once: true });
+ document.addEventListener("click", (e) => {
+  e.stopPropagation(); // prevents global click from stopping it
+
+  if (!music) return;
+
+  if (music.paused) {
+    music.play().catch(() => {});
+  } else {
+    music.pause();
+  }
+
+  updateMusicButton();
+});
 
   // fade out on interaction
   document.addEventListener("click", (e) => {
