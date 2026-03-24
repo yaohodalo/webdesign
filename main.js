@@ -125,7 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
 music = document.getElementById("bgMusic");
 musicBtn = document.getElementById("musicToggle");
 
-
+//Play Music
+document.addEventListener("click", () => {
+  if (music && music.paused) {
+    music.play().catch(() => {});
+    updateMusicButton();
+  }
+}, { once: true });
 // Stop music on interaction
 document.addEventListener("click", (e) => {
   if (!e.target.closest("#musicToggle") && !music.paused) {
@@ -319,6 +325,7 @@ document.addEventListener("click", (e) => {
 
       allMarkers.push(marker);
       markerList.push(marker);
+	  markersGroup.addLayers(markerList);
     }
 
     /* FEATURED */
@@ -485,30 +492,25 @@ if (searchInput && suggestionsBox) {
     }).addTo(map);
 
     // --- DISTANCE FUNCTION ---
-    function getDistance(lat1, lng1, lat2, lng2) {
-      const R = 6371; // km
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLng = (lng2 - lng1) * Math.PI / 180;
+function getDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
 
-      const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLng / 2) ** 2;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2;
 
-      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    }
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
     // --- FIND NEARBY (BOTH TYPES) ---
-    const nearby = allMarkers
-      .map(marker => {
-        const [lat, lng] = marker.getLatLng();
-        const distance = getDistance(latitude, longitude, lat, lng);
-
-        return {
-          marker,
-          distance
-        };
+   const nearby = allMarkers.filter(m => {
+  const [lat, lng] = m.getLatLng();
+  return getDistance(latitude, longitude, lat, lng) <= 100; // 100 km
+});
       })
       .filter(item => item.marker.chapelData.type === "virtual" || item.distance <= 100)
       .sort((a, b) => a.distance - b.distance)
@@ -520,18 +522,25 @@ if (searchInput && suggestionsBox) {
     markersGroup.clearLayers();
     markersGroup.addLayers(nearbyMarkers);
 
-    // Fit bounds nicely
-    if (nearbyMarkers.length) {
-      const group = new L.featureGroup(nearbyMarkers);
-      map.fitBounds(group.getBounds(), { padding: [50, 50] });
-    } else {
-      alert("No nearby chapels found.");
-    }
+   if (!nearby.length) {
+  alert("No nearby chapels found. Showing closest ones instead.");
 
-  }, () => {
-    alert("Location permission denied.");
-  });
-});
+  const sorted = allMarkers
+    .map(m => {
+      const [lat, lng] = m.getLatLng();
+      return {
+        marker: m,
+        dist: getDistance(latitude, longitude, lat, lng)
+      };
+    })
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, 20)
+    .map(x => x.marker);
+
+  markersGroup.clearLayers();
+  markersGroup.addLayers(sorted);
+  return;
+}
   /* ================= START BUTTON ================= */
 
 document.getElementById("startAdoration").onclick = () => {
