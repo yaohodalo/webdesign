@@ -346,6 +346,7 @@ function initMap() {
   });
 
   initSearch();
+ loadSaintOfDay();
   initNearby();
 }
 
@@ -407,6 +408,47 @@ function initNearby() {
 
     }, () => alert("Location denied"));
   });
+}
+
+async function loadSaintOfDay() {
+  try {
+    const res = await fetch("https://calapi.inadiutorium.cz/api/v0/en/calendars/default/today");
+    const data = await res.json();
+
+    const saintName = data.celebrations?.[0]?.title || "Saint of the Day";
+    const liturgicalColor = data.celebrations?.[0]?.colour || "green";
+
+    applyLiturgicalTheme(saintName, liturgicalColor);
+
+  } catch (err) {
+    console.warn("Liturgical API failed, using fallback.");
+    applyLiturgicalTheme("Catholic Saint of the Day", "green");
+  }
+}
+function applyLiturgicalTheme(name, color) {
+  const searchWrapper = document.getElementById("searchWrapper");
+
+  const colorMap = {
+    green: "#2e7d32",
+    red: "#b71c1c",
+    white: "#f5f5f5",
+    violet: "#6a1b9a",
+    purple: "#6a1b9a",
+    rose: "#ff8a80",
+    black: "#222"
+  };
+
+  const bg = colorMap[color?.toLowerCase()] || "#2e7d32";
+
+  if (searchWrapper) {
+    searchWrapper.style.background = bg;
+    searchWrapper.title = name;
+
+    searchWrapper.onclick = () => {
+      const query = encodeURIComponent(name);
+      window.open(`https://www.google.com/search?q=${query}`, "_blank");
+    };
+  }
 }
 
 /* ================= PLAYER ================= */
