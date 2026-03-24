@@ -290,7 +290,7 @@ document.addEventListener("click", (e) => {
 
   Promise.all([
     fetch("Adorationchapels.csv").then(r => r.text()),
-    fetch("global_adoration_dataset_200_named.json").then(r => r.json())
+    fetch("adoration_chapels_20_verified.json").then(r => r.json())
   ])
   .then(([csvText, jsonData]) => {
 
