@@ -294,8 +294,18 @@ function initMap() {
   state.markersGroup = L.markerClusterGroup();
   state.map.addLayer(state.markersGroup);
 
-  state.map.on("click zoomstart dragstart", stopMusic);
+  map.on("click zoomstart dragstart", () => {
+  stopMusic();
 
+  const el = document.getElementById("musicFloating");
+  if (el) el.style.opacity = "0.5";
+});
+
+document.addEventListener("mousemove", () => {
+  const el = document.getElementById("musicFloating");
+  if (el) el.style.opacity = "1";
+});
+	
   function addMarker(lat, lng, data, html) {
     const m = L.marker([lat, lng]);
     m.chapelData = data;
