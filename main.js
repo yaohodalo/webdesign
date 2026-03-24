@@ -1,3 +1,81 @@
+const translations = {
+  en: {
+    start: "Start",
+    nearby: "Nearby",
+    pledge: "Pledge",
+    addChapel: "Add a Chapel",
+    musicPlay: "🎵 Play Music",
+    musicPause: "⏸ Pause Music",
+    verses: [
+      "“Be still and know that I am God.” — Psalm 46:10",
+      "“Could you not watch with me one hour?” — Matthew 26:40",
+      "“I am the bread of life.” — John 6:35",
+      "“Remain in me, as I remain in you.” — John 15:4"
+    ]
+  },
+
+  es: {
+    start: "Comenzar",
+    nearby: "Cercanos",
+    pledge: "Compromiso",
+    addChapel: "Agregar Capilla",
+    musicPlay: "🎵 Reproducir música",
+    musicPause: "⏸ Pausa Música",
+    verses: [
+      "“Estad quietos y conoced que yo soy Dios.” — Salmo 46:10",
+      "“¿No habéis podido velar conmigo una hora?” — Mateo 26:40",
+      "“Yo soy el pan de vida.” — Juan 6:35",
+      "“Permaneced en mí, como yo en vosotros.” — Juan 15:4"
+    ]
+  },
+
+  fr: {
+    start: "Commencer",
+    nearby: "À proximité",
+    pledge: "Engagement",
+    addChapel: "Ajouter une chapelle",
+    musicPlay: "🎵 Jouer la musique",
+    musicPause: "⏸ Pause Musique",
+    verses: [
+      "“Arrêtez, et sachez que je suis Dieu.” — Psaume 46:10",
+      "“N'avez-vous pas pu veiller une heure avec moi ?” — Matthieu 26:40",
+      "“Je suis le pain de vie.” — Jean 6:35",
+      "“Demeurez en moi, comme je demeure en vous.” — Jean 15:4"
+    ]
+  },
+
+  it: {
+    start: "Inizia",
+    nearby: "Vicino a me",
+    pledge: "Impegno",
+    addChapel: "Aggiungi Cappella",
+    musicPlay: "🎵 Riproduci musica",
+    musicPause: "⏸ Metti in Pausa",
+    verses: [
+      "“Fermatevi e sappiate che io sono Dio.” — Salmo 46:10",
+      "“Non siete riusciti a vegliare un'ora con me?” — Matteo 26:40",
+      "“Io sono il pane della vita.” — Giovanni 6:35",
+      "“Rimanete in me e io in voi.” — Giovanni 15:4"
+    ]
+  },
+
+  pt: {
+    start: "Iniciar",
+    nearby: "Perto de mim",
+    pledge: "Compromisso",
+    addChapel: "Adicionar Capela",
+    musicPlay: "🎵 Tocar música",
+    musicPause: "⏸ Pausar Música",
+    verses: [
+      "“Aquietai-vos e sabei que eu sou Deus.” — Salmo 46:10",
+      "“Não pudestes vigiar uma hora comigo?” — Mateus 26:40",
+      "“Eu sou o pão da vida.” — João 6:35",
+      "“Permanecei em mim, e eu permanecerei em vós.” — João 15:4"
+    ]
+  }
+};
+let currentLang = "en";
+
 document.addEventListener("DOMContentLoaded", () => {
 
   let map;
@@ -509,83 +587,6 @@ document.getElementById("chapelForm").addEventListener("submit", e => {
 
 
 /* ================= Languages ================= */
-const translations = {
-  en: {
-    start: "Start",
-    nearby: "Nearby",
-    pledge: "Pledge",
-    addChapel: "Add a Chapel",
-    musicPlay: "🎵 Play Music",
-    musicPause: "⏸ Pause Music",
-    verses: [
-      "“Be still and know that I am God.” — Psalm 46:10",
-      "“Could you not watch with me one hour?” — Matthew 26:40",
-      "“I am the bread of life.” — John 6:35",
-      "“Remain in me, as I remain in you.” — John 15:4"
-    ]
-  },
-
-  es: {
-    start: "Comenzar",
-    nearby: "Cercanos",
-    pledge: "Compromiso",
-    addChapel: "Agregar Capilla",
-    musicPlay: "🎵 Reproducir música",
-    musicPause: "⏸ Pausa Música",
-    verses: [
-      "“Estad quietos y conoced que yo soy Dios.” — Salmo 46:10",
-      "“¿No habéis podido velar conmigo una hora?” — Mateo 26:40",
-      "“Yo soy el pan de vida.” — Juan 6:35",
-      "“Permaneced en mí, como yo en vosotros.” — Juan 15:4"
-    ]
-  },
-
-  fr: {
-    start: "Commencer",
-    nearby: "À proximité",
-    pledge: "Engagement",
-    addChapel: "Ajouter une chapelle",
-    musicPlay: "🎵 Jouer la musique",
-    musicPause: "⏸ Pause Musique",
-    verses: [
-      "“Arrêtez, et sachez que je suis Dieu.” — Psaume 46:10",
-      "“N'avez-vous pas pu veiller une heure avec moi ?” — Matthieu 26:40",
-      "“Je suis le pain de vie.” — Jean 6:35",
-      "“Demeurez en moi, comme je demeure en vous.” — Jean 15:4"
-    ]
-  },
-
-  it: {
-    start: "Inizia",
-    nearby: "Vicino a me",
-    pledge: "Impegno",
-    addChapel: "Aggiungi Cappella",
-    musicPlay: "🎵 Riproduci musica",
-    musicPause: "⏸ Metti in Pausa",
-    verses: [
-      "“Fermatevi e sappiate che io sono Dio.” — Salmo 46:10",
-      "“Non siete riusciti a vegliare un'ora con me?” — Matteo 26:40",
-      "“Io sono il pane della vita.” — Giovanni 6:35",
-      "“Rimanete in me e io in voi.” — Giovanni 15:4"
-    ]
-  },
-
-  pt: {
-    start: "Iniciar",
-    nearby: "Perto de mim",
-    pledge: "Compromisso",
-    addChapel: "Adicionar Capela",
-    musicPlay: "🎵 Tocar música",
-    musicPause: "⏸ Pausar Música",
-    verses: [
-      "“Aquietai-vos e sabei que eu sou Deus.” — Salmo 46:10",
-      "“Não pudestes vigiar uma hora comigo?” — Mateus 26:40",
-      "“Eu sou o pão da vida.” — João 6:35",
-      "“Permanecei em mim, e eu permanecerei em vós.” — João 15:4"
-    ]
-  }
-};
-
 
 const verseTrack = document.querySelector(".verse-track");
 document.getElementById("languageSelect").addEventListener("change", e => {
@@ -594,7 +595,7 @@ setLanguage("en");
 const userLang = navigator.language.slice(0,2);
 if (translations[userLang]) setLanguage(userLang);
 
-let currentLang = "en";
+
 
 function setLanguage(lang) {
   currentLang = lang;
