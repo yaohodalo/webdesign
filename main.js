@@ -75,7 +75,22 @@ const translations = {
   }
 };
 let currentLang = "en";
-setLanguage("en");
+
+const userLang = navigator.language.slice(0,2);
+if (translations[userLang]) setLanguage(userLang);
+
+function setLanguage(lang) {
+  currentLang = lang;
+ setLanguage("en");
+
+  // Update verses
+  document.querySelector(".verse-track").innerText =
+  translations[lang].verses;
+
+  // Update music button text
+  updateMusicButton();
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -592,19 +607,6 @@ document.getElementById("chapelForm").addEventListener("submit", e => {
 const verseTrack = document.querySelector(".verse-track");
 document.getElementById("languageSelect").addEventListener("change", e => {
 
-const userLang = navigator.language.slice(0,2);
-if (translations[userLang]) setLanguage(userLang);
-
-function setLanguage(lang) {
-  currentLang = lang;
-
-  // Update verses
-  document.querySelector(".verse-track").innerText =
-  translations[lang].verses;
-
-  // Update music button text
-  updateMusicButton();
-}
   const lang = e.target.value;
   const t = translations[lang];
 
