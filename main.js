@@ -1,3 +1,16 @@
+/* ================= STATE ================= */
+const state = {
+  currentLang: "en",
+  map: null,
+  chapelData: [],
+  physicalChapels: [],
+  allMarkers: [],
+  markersGroup: null,
+  music: null,
+  musicBtn: null
+};
+
+/* ================= TRANSLATIONS ================= */
 const translations = {
   en: {
     start: "Start",
@@ -13,7 +26,6 @@ const translations = {
       "“Remain in me, as I remain in you.” — John 15:4"
     ]
   },
-
   es: {
     start: "Comenzar",
     nearby: "Cercanos",
@@ -28,7 +40,6 @@ const translations = {
       "“Permaneced en mí, como yo en vosotros.” — Juan 15:4"
     ]
   },
-
   fr: {
     start: "Commencer",
     nearby: "À proximité",
@@ -43,7 +54,6 @@ const translations = {
       "“Demeurez en moi, comme je demeure en vous.” — Jean 15:4"
     ]
   },
-
   it: {
     start: "Inizia",
     nearby: "Vicino a me",
@@ -58,7 +68,6 @@ const translations = {
       "“Rimanete in me e io in voi.” — Giovanni 15:4"
     ]
   },
-
   pt: {
     start: "Iniciar",
     nearby: "Perto de mim",
@@ -75,127 +84,8 @@ const translations = {
   }
 };
 
-  /* ================= MUSIC ================= */
-
-let currentLang = "en";
-
-let music, musicBtn;
-
-function stopMusic() {
-  if (music && !music.paused) {
-    music.pause();
-    updateMusicButton();
-  }
-}
-
-function updateMusicButton() {
-  if (!music || !musicBtn) return;
-
-  musicBtn.innerText = music.paused
-    ? translations[currentLang].musicPlay
-    : translations[currentLang].musicPause;
-}
-
-function setLanguage(lang) {
-  currentLang = lang;
-
-  const verseEl = document.querySelector(".verse-track");
-  if (verseEl) {
-    verseEl.innerHTML = translations[lang].verses.join(" &nbsp;&nbsp;&nbsp; ");
-  }
-
-  updateMusicButton();
-}
-
-
-
-// ✅ call AFTER everything exists
-document.addEventListener("DOMContentLoaded", () => {
-  setLanguage("en");
-  let map;
-  let chapelData = [];
-  let physicalChapels = [];
-  let allMarkers = [];
-  let markersGroup;
-
-  const player = videojs("adorationVideo");
-
-//Music setup
-music = document.getElementById("bgMusic");
-musicBtn = document.getElementById("musicToggle");
-
-//Play Music
-document.addEventListener("click", () => {
-  if (music && music.paused) {
-    music.play().catch(() => {});
-    updateMusicButton();
-  }
-}, { once: true });
-// Stop music on interaction
-document.addEventListener("click", (e) => {
-function fadeOutMusic() {
-  if (!music) return;
-
-  let vol = music.volume;
-  const fade = setInterval(() => {
-    if (vol > 0.05) {
-      vol -= 0.05;
-      music.volume = vol;
-    } else {
-      clearInterval(fade);
-      music.pause();
-      music.volume = 0.35;
-    }
-  }, 120);
-}
-  if (!e.target.closest("#musicToggle") && !music.paused) {
-    music.pause();
-    updateMusicButton();
-  }
-});
-
-
-  /* ================= YOUTUBE API ================= */
-
-  const API_KEY = "AIzaSyBx63zE887NDnhEKQBnfVkS_baF9rG0mIE";
-
-  async function getChannelIdFromVideo(url) {
-    try {
-      const videoId = url.split("v=")[1]?.split("&")[0];
-      if (!videoId) return null;
-
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${API_KEY}`
-      );
-
-      const data = await res.json();
-      return data.items?.[0]?.snippet?.channelId || null;
-    } catch {
-      return null;
-    }
-  }
-
-  async function getLiveStream(channelId) {
-    try {
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${API_KEY}`
-      );
-
-      const data = await res.json();
-
-      if (data.items?.length) {
-        return `https://www.youtube.com/watch?v=${data.items[0].id.videoId}`;
-      }
-
-      return null;
-    } catch {
-      return null;
-    }
-  }
-
-  /* ================= FEATURED CHAPELS ================= */
-
-  const featuredChapels = [
+/* ================= FEATURED ================= */
+const featuredChapels = [
 {
     name: "Sisters of Divine Mercy",
     city: "Calgary",
@@ -284,354 +174,272 @@ function fadeOutMusic() {
     lng: 18.084085010485204,
     stream: "https://apps.csweb.sk/sspsap/"
   }
-	
-  ];
-
-  /* ================= LOAD DATA ================= */
-
-  Promise.all([
-    fetch("Adorationchapels.csv").then(r => r.text()),
-    fetch("global_adoration_dataset_200_named.json").then(r => r.json())
-  ])
-  .then(([csvText, jsonData]) => {
-
-    chapelData = Papa.parse(csvText, { header: true }).data;
-    physicalChapels = jsonData;
-
-    initMap();
-
-  })
-  .catch(err => console.error("Load error:", err));
-
-  /* ================= MAP ================= */
-
-  function initMap() {
-
-    map = L.map("map").setView([20, 0], 2);
-
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png").addTo(map);
-
-    markersGroup = L.markerClusterGroup();
-    map.addLayer(markersGroup);
-
-	map.on("click zoomstart dragstart", stopMusic);
-
-    const markerList = [];
-
- function addMarker(lat, lng, data, popupHTML) {
-  const marker = L.marker([lat, lng]);
-
-  marker.chapelData = data;
-  marker.bindPopup(popupHTML);
-
-  allMarkers.push(marker);
-  markerList.push(marker);
-
-  // ✅ FIX: add ONE marker at a time (not full list every time)
-  markersGroup.addLayer(marker);
-}
-
-    /* FEATURED */
-    featuredChapels.forEach(c => {
-      addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-        
-	<b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
-        <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
-      `);
-    });
-
-    /* CSV */
-chapelData.forEach(c => {
-  const lat = parseFloat(c.latitude);
-  const lng = parseFloat(c.longitude);
-  if (isNaN(lat) || isNaN(lng)) return;
-
-  addMarker(lat, lng, {
-    name: c.name,
-    city: c.city,
-    country: c.country,
-    type: "virtual"
-  }, `
-    <b>🕯️ ${c.name}</b><br>
-    ${c.city}, ${c.country}<br><br>
-    ${
-      c.youtube
-        ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`
-        : "No stream available"
-    }
-  `);
-});
-    /* PHYSICAL */
-physicalChapels.forEach(c => {
-  addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-    <b>⛪ ${c.name}</b><br>
-    ${c.city}, ${c.country}<br><br>
-    ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-  `);
-});
-  /* ================= SEARCH ================= */
-
-const searchInput = document.getElementById("searchInput");
-const suggestionsBox = document.getElementById("suggestions");
-
-if (searchInput && suggestionsBox) {
-
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase().trim();
-
-    if (!query) {
-      suggestionsBox.innerHTML = "";
-      return;
-    }
-
-    const matches = [];
-
-    allMarkers.forEach(m => {
-      const d = m.chapelData;
-      if (!d) return;
-
-      // Chapel name
-      if (d.name?.toLowerCase().includes(query)) {
-        matches.push({
-          label: d.name,
-          type: d.type
-        });
-      }
-
-      // City
-      if (d.city?.toLowerCase().includes(query)) {
-        matches.push({
-          label: d.city,
-          type: "location"
-        });
-      }
-
-      // Country
-      if (d.country?.toLowerCase().includes(query)) {
-        matches.push({
-          label: d.country,
-          type: "location"
-        });
-      }
-    });
-
-    // Remove duplicates
-    const unique = [];
-    const seen = new Set();
-
-    matches.forEach(m => {
-      if (!seen.has(m.label)) {
-        seen.add(m.label);
-        unique.push(m);
-      }
-    });
-
-    const top = unique.slice(0, 8);
-
-    // Render with icons
-    suggestionsBox.innerHTML = top.map(item => {
-      let icon = "📍";
-
-      if (item.type === "virtual") icon = "🕯️";
-      if (item.type === "physical") icon = "⛪";
-
-      return `<div class="suggestion-item">${icon} ${item.label}</div>`;
-    }).join("");
-  });
-
-  // Click suggestion
-  suggestionsBox.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("suggestion-item")) return;
-
-    const text = e.target.innerText.replace(/^[^\s]+\s/, ""); // remove emoji
-
-    searchInput.value = text;
-    suggestionsBox.innerHTML = "";
-
-    searchInput.dispatchEvent(new Event("input"));
-  });
-
-  // Hide on outside click
-  document.addEventListener("click", e => {
-    if (!e.target.closest(".header-center")) {
-      suggestionsBox.innerHTML = "";
-    }
-  });
-}
-
-  /* ================= NEARBY ================= */
-
- document.getElementById("findChapel").addEventListener("click", () => {
-
-  if (!navigator.geolocation) {
-    alert("Geolocation not supported.");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(pos => {
-
-    const { latitude, longitude } = pos.coords;
-
-    map.setView([latitude, longitude], 10);
-
-    function getDistance(lat1, lng1, lat2, lng2) {
-      const R = 6371;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLng = (lng2 - lng1) * Math.PI / 180;
-
-      const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLng / 2) ** 2;
-
-      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    }
-
-    const nearby = allMarkers
-      .map(m => {
-        const { lat, lng } = m.getLatLng();
-        return {
-          marker: m,
-          distance: getDistance(latitude, longitude, lat, lng)
-        };
-      })
-      .sort((a, b) => a.distance - b.distance)
-      .slice(0, 30);
-
-    if (!nearby.length) {
-      alert("No nearby chapels found.");
-      return;
-    }
-
-    markersGroup.clearLayers();
-    markersGroup.addLayers(nearby.map(n => n.marker));
-
-  }, () => {
-    alert("Location permission denied.");
-  });
-
-});
-  /* ================= START BUTTON ================= */
-
-/* ================= START BUTTON ================= */
-document.getElementById("startAdoration").addEventListener("click", () => {
-
-  stopMusic();
-
-  const available = [
-    ...featuredChapels.filter(c => c.stream),
-    ...chapelData.filter(c => c.youtube)
-  ];
-
-  if (!available.length) {
-    alert("No live adoration available right now.");
-    return;
-  }
-
-  const random = available[Math.floor(Math.random() * available.length)];
-  playChapel(random.stream || random.youtube);
-});
-
-
-/* ================= PLEDGE ================= */
-const pledgeBtn = document.getElementById("pledgeButton");
-const pledgeSection = document.getElementById("pledge");
-
-if (pledgeBtn && pledgeSection) {
-  pledgeBtn.addEventListener("click", () => {
-    pledgeSection.classList.remove("hidden");
-
-    pledgeSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  });
-}
-
-
-/* ================= ADD CHAPEL ================= */
-const addBtn = document.getElementById("addChapelBtn");
-const modal = document.getElementById("addChapelModal");
-const closeModal = document.getElementById("closeAddChapel");
-
-if (addBtn && modal && closeModal) {
-  addBtn.onclick = () => modal.style.display = "flex";
-  closeModal.onclick = () => modal.style.display = "none";
-}
-
-/* ================= Languages ================= */
-
-const verseTrack = document.querySelector(".verse-track");
-document.getElementById("languageSelect").addEventListener("change", e => {
-
-  const lang = e.target.value;
+	];
+
+/* ================= LANGUAGE ================= */
+function setLanguage(lang) {
+  state.currentLang = lang;
   const t = translations[lang];
 
-  // Buttons
   document.getElementById("startAdoration").innerText = t.start;
   document.getElementById("findChapel").innerText = t.nearby;
   document.getElementById("pledgeButton").innerText = t.pledge;
   document.getElementById("addChapelBtn").innerText = t.addChapel;
 
-  // Music button
-  const musicBtn = document.getElementById("musicToggle");
-  if (!music.paused) {
-    musicBtn.innerText = t.musicPause;
-  } else {
-    musicBtn.innerText = t.musicPlay;
+  const verseEl = document.querySelector(".verse-track");
+  if (verseEl) {
+    verseEl.innerHTML = t.verses.join(" &nbsp;&nbsp;&nbsp; ");
   }
 
-  // Verse ticker (scrolling text)
-  if (verseTrack) {
-    verseTrack.innerHTML = t.verses.join(" &nbsp;&nbsp;&nbsp; ");
+  updateMusicButton();
+}
+
+/* ================= MUSIC ================= */
+function updateMusicButton() {
+  if (!state.music || !state.musicBtn) return;
+
+  state.musicBtn.innerText = state.music.paused
+    ? translations[state.currentLang].musicPlay
+    : translations[state.currentLang].musicPause;
+}
+
+function stopMusic() {
+  if (state.music && !state.music.paused) {
+    state.music.pause();
+    updateMusicButton();
   }
+}
+
+function fadeOutMusic() {
+  if (!state.music) return;
+
+  let vol = state.music.volume;
+  const fade = setInterval(() => {
+    if (vol > 0.05) {
+      vol -= 0.05;
+      state.music.volume = vol;
+    } else {
+      clearInterval(fade);
+      state.music.pause();
+      state.music.volume = 0.35;
+      updateMusicButton();
+    }
+  }, 120);
+}
+
+/* ================= INIT ================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+  state.music = document.getElementById("bgMusic");
+  state.musicBtn = document.getElementById("musicToggle");
+
+  // autoplay on first interaction
+  document.addEventListener("click", () => {
+    if (state.music && state.music.paused) {
+      state.music.play().catch(() => {});
+      updateMusicButton();
+    }
+  }, { once: true });
+
+  // fade out on interaction
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#musicToggle") && !state.music.paused) {
+      fadeOutMusic();
+    }
+  });
+
+  // language
+  setLanguage("en");
+  document.getElementById("languageSelect")
+    .addEventListener("change", e => setLanguage(e.target.value));
+
+  // start button
+  document.getElementById("startAdoration").addEventListener("click", () => {
+    stopMusic();
+
+    const available = [
+      ...featuredChapels.filter(c => c.stream),
+      ...state.chapelData.filter(c => c.youtube)
+    ];
+
+    if (!available.length) {
+      alert("No live adoration available.");
+      return;
+    }
+
+    const random = available[Math.floor(Math.random() * available.length)];
+    playChapel(random.stream || random.youtube);
+  });
+
+  // load data
+  Promise.all([
+    fetch("Adorationchapels.csv").then(r => r.text()),
+    fetch("global_adoration_dataset_200_named.json").then(r => r.json())
+  ])
+  .then(([csvText, jsonData]) => {
+    state.chapelData = Papa.parse(csvText, { header: true }).data;
+    state.physicalChapels = jsonData;
+    initMap();
+  });
+
 });
 
+/* ================= MAP ================= */
+function initMap() {
+  state.map = L.map("map").setView([20, 0], 2);
 
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
+    .addTo(state.map);
 
-/* ================= GLOBAL PLAYER ================= */
+  state.markersGroup = L.markerClusterGroup();
+  state.map.addLayer(state.markersGroup);
 
+  state.map.on("click zoomstart dragstart", stopMusic);
+
+  function addMarker(lat, lng, data, html) {
+    const m = L.marker([lat, lng]);
+    m.chapelData = data;
+    m.bindPopup(html);
+
+    state.allMarkers.push(m);
+    state.markersGroup.addLayer(m);
+  }
+
+  // FEATURED
+  featuredChapels.forEach(c => {
+    addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
+      <b>🕯️ ${c.name}</b><br>
+      ${c.city}, ${c.country}<br><br>
+      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
+    `);
+  });
+
+  // CSV
+  state.chapelData.forEach(c => {
+    const lat = parseFloat(c.latitude);
+    const lng = parseFloat(c.longitude);
+    if (isNaN(lat) || isNaN(lng)) return;
+
+    addMarker(lat, lng, {
+      name: c.name,
+      city: c.city,
+      country: c.country,
+      type: "virtual"
+    }, `
+      <b>🕯️ ${c.name}</b><br>
+      ${c.city}, ${c.country}<br><br>
+      ${
+        c.youtube
+          ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`
+          : "No stream available"
+      }
+    `);
+  });
+
+  // PHYSICAL
+  state.physicalChapels.forEach(c => {
+    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+      <b>⛪ ${c.name}</b><br>
+      ${c.city}, ${c.country}<br><br>
+      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+    `);
+  });
+
+  initSearch();
+  initNearby();
+}
+
+/* ================= SEARCH ================= */
+function initSearch() {
+  const input = document.getElementById("searchInput");
+  const box = document.getElementById("suggestions");
+
+  let timeout;
+
+  input.addEventListener("input", () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+
+      const q = input.value.toLowerCase().trim();
+      if (!q) return box.innerHTML = "";
+
+      const matches = [];
+
+      state.allMarkers.forEach(m => {
+        const d = m.chapelData;
+        if (!d) return;
+
+        if (d.name?.toLowerCase().includes(q)) matches.push(d.name);
+        if (d.city?.toLowerCase().includes(q)) matches.push(d.city);
+        if (d.country?.toLowerCase().includes(q)) matches.push(d.country);
+      });
+
+      const unique = [...new Set(matches)].slice(0, 8);
+
+      box.innerHTML = unique.map(t =>
+        `<div class="suggestion-item">📍 ${t}</div>`
+      ).join("");
+
+    }, 200);
+  });
+}
+
+/* ================= NEARBY ================= */
+function initNearby() {
+  document.getElementById("findChapel").addEventListener("click", () => {
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude, longitude } = pos.coords;
+
+      const nearby = state.allMarkers
+        .map(m => {
+          const { lat, lng } = m.getLatLng();
+          const d = Math.hypot(lat - latitude, lng - longitude);
+          return { marker: m, d };
+        })
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 30);
+
+      state.markersGroup.clearLayers();
+      state.markersGroup.addLayers(nearby.map(n => n.marker));
+
+      state.map.setView([latitude, longitude], 10);
+
+    }, () => alert("Location denied"));
+  });
+}
+
+/* ================= PLAYER ================= */
 window.playChapel = function (stream) {
-	stopMusic();
- const modal = document.getElementById("videoModal");
+  stopMusic();
+
+  const modal = document.getElementById("videoModal");
   const frame = document.getElementById("adorationFrame");
   const video = document.getElementById("adorationVideo");
 
   modal.style.display = "flex";
 
-  function getYouTubeID(url) {
-    const match = url.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
-    return match ? match[1] : null;
-  }
+  const yt = stream.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
 
-  if (/youtube|youtu\.be/.test(stream)) {
+  if (yt) {
     frame.style.display = "block";
     video.style.display = "none";
-    frame.src = `https://www.youtube.com/embed/${getYouTubeID(stream)}?autoplay=1`;
-  }
-
-  else if (stream.includes(".m3u8")) {
+    frame.src = `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
+  } else if (stream.includes(".m3u8")) {
     frame.style.display = "none";
     video.style.display = "block";
 
     const player = videojs("adorationVideo");
     player.src({ src: stream, type: "application/x-mpegURL" });
     player.play();
-  }
-
-  else {
+  } else {
     frame.style.display = "block";
     video.style.display = "none";
     frame.src = stream;
   }
+
   document.getElementById("closeModal").onclick = () => {
     modal.style.display = "none";
     frame.src = "";
   };
- };
-	 });
-	 };
-});
-
- 
+};
