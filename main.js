@@ -40,7 +40,7 @@ function stopOnInteraction(e) {
 });
 
 }, 300); // small grace delay
-}
+
 
 
 ["click", "scroll", "keydown"].forEach(event => {
