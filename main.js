@@ -628,7 +628,7 @@ function setLanguage(lang) {
     verseTrack.innerHTML = t.verses.join(" &nbsp;&nbsp;&nbsp; ");
   }
 });
-});
+
 
 
 /* ================= GLOBAL PLAYER ================= */
