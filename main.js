@@ -31,14 +31,17 @@ function stopOnInteraction(e) {
   if (e.target.closest("#musicToggle")) return;
   if (userStopped) return;
 
-  if (!music.paused) {
-    setTimeout(() => {
-      fadeOutMusic();
-      userStopped = true;
-      musicBtn.innerText = "🎵 Resume";
-    }, 300); // small grace delay
+  map.on("mousedown zoomstart", () => {
+  if (!music.paused && !userStopped) {
+    fadeOutMusic();
+    userStopped = true;
+    musicBtn.innerText = "🎵 Resume";
+  }
+});
+
+}, 300); // small grace delay
 }
-}
+
 
 ["click", "scroll", "keydown"].forEach(event => {
   document.addEventListener(event, stopOnInteraction);
@@ -186,6 +189,17 @@ Promise.all([
   console.log("JSON:", jsonData);
 
   initMap(parsed);
+  
+    // MOVE HERE
+  const lives = chapelData.filter(c =>
+    (c.live || "").toString().toLowerCase() === "true" && c.youtube
+  );
+
+  if (lives.length) {
+    const random = lives[Math.floor(Math.random() * lives.length)];
+    playChapel(random.youtube);
+  }
+});
 })
 .catch(err => console.error("Data load error:", err));
 
@@ -237,7 +251,15 @@ featuredChapels.forEach(c => {
     </button>
   `);
 
-  allMarkers.push(marker);
+  const chapelIndex = [];
+  chapelIndex.push({
+	name: c.name,
+	city: c.city,
+	country: c.country,
+	marker
+});
+
+  markerList.push(marker);
 });
 
 
@@ -312,8 +334,11 @@ featuredChapels.forEach(c => {
         );
       });
 
-      markersGroup.clearLayers();
-      markersGroup.addLayers(filtered);
+     allMarkers.forEach(marker => {
+     const match = filtered.includes(marker);
+     marker.setOpacity(match ? 1 : 0.2);
+});
+
 
       if (filtered.length) {
         const group = new L.featureGroup(filtered);
@@ -388,7 +413,27 @@ document.addEventListener("click", e => {
       }).addTo(map);
 
       // NEW: filter ONLY physical
-      const nearby = allMarkers.filter(m => m.chapelData.type === "physical");
+
+  const nearby = allMarkers.filter(m => {
+  if (m.chapelData.type !== "physical") return false;
+
+  const [lat, lng] = m.getLatLng();
+  return getDistance(latitude, longitude, lat, lng) <= 50; // 50km radius
+});
+
+  function getDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371; // km
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
       markersGroup.clearLayers();
       markersGroup.addLayers(nearby);
@@ -409,15 +454,6 @@ document.getElementById("startAdoration").onclick = () => {
   if (live) playChapel(live.youtube);
 };
 
-
-  const lives = chapelData.filter(c =>
-  (c.live || "").toString().toLowerCase() === "true" && c.youtube
-);
-
-if (lives.length) {
-  const random = lives[Math.floor(Math.random() * lives.length)];
-  playChapel(random.youtube);
-}
   // --- PLEDGE UI (UNCHANGED) ---
   document.getElementById("pledgeButton").addEventListener("click", () => {
     document.getElementById("pledge").classList.toggle("hidden");
@@ -464,19 +500,17 @@ window.playChapel = function (stream) {
   if (/youtube\.com|youtu\.be/.test(stream)) {
     video.style.display = "none";
     frame.style.display = "block";
+	
+	
+	
+  function getYouTubeID(url) {
+  const regExp = /(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
+  const match = url.match(regExp);
+  return match ? match[1] : null;
+}
+   const id = getYouTubeID(stream);
+   frame.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
 
-    let id = "";
-
-    if (stream.includes("watch?v=")) {
-      id = stream.split("watch?v=")[1];
-    } else if (stream.includes("youtu.be/")) {
-      id = stream.split("youtu.be/")[1];
-    }
-
-    if (id.includes("&")) id = id.split("&")[0];
-
-    frame.src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
-  }
 
   // HLS (.m3u8)
   else if (stream.includes(".m3u8")) {
