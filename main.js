@@ -100,22 +100,6 @@ function setLanguage(lang) {
 
   updateMusicButton();
 }
-// Try autoplay
-music.play().then(() => {
-  updateMusicButton();
-}).catch(() => {
-  updateMusicButton();
-});
-
-// Toggle
-musicBtn.addEventListener("click", () => {
-  if (music.paused) {
-    music.play();
-  } else {
-    music.pause();
-  }
-  updateMusicButton();
-});
 
 // Stop music on interaction
 document.addEventListener("click", (e) => {
