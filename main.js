@@ -79,15 +79,22 @@ const translations = {
 
 let currentLang = "en";
 
+
+let music, musicBtn;
+
+function stopMusic() {
+  if (music && !music.paused) {
+    music.pause();
+    updateMusicButton();
+  }
+}
+
 function updateMusicButton() {
-  const music = document.getElementById("bgMusic");
-  const btn = document.getElementById("musicToggle");
+  if (!music || !musicBtn) return;
 
-  if (!music || !btn) return;
-
-  btn.innerText = music.paused
-    ? translations[currentLang].playMusic
-    : translations[currentLang].pauseMusic;
+  musicBtn.innerText = music.paused
+    ? translations[currentLang].musicPlay
+    : translations[currentLang].musicPause;
 }
 
 function setLanguage(lang) {
@@ -100,6 +107,24 @@ function setLanguage(lang) {
 
   updateMusicButton();
 }
+
+
+
+// ✅ call AFTER everything exists
+document.addEventListener("DOMContentLoaded", () => {
+  setLanguage("en");
+  let map;
+  let chapelData = [];
+  let physicalChapels = [];
+  let allMarkers = [];
+  let markersGroup;
+
+  const player = videojs("adorationVideo");
+
+//Music setup
+music = document.getElementById("bgMusic");
+musicBtn = document.getElementById("musicToggle");
+
 
 // Stop music on interaction
 document.addEventListener("click", (e) => {
@@ -121,18 +146,6 @@ document.addEventListener("click", (e) => {
       }
     }, 120);
   }
-
-// ✅ call AFTER everything exists
-document.addEventListener("DOMContentLoaded", () => {
-  setLanguage("en");
-  let map;
-  let chapelData = [];
-  let physicalChapels = [];
-  let allMarkers = [];
-  let markersGroup;
-
-  const player = videojs("adorationVideo");
-
 
 
   /* ================= YOUTUBE API ================= */
