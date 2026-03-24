@@ -574,5 +574,4 @@ window.addEventListener("click", (e) => {
     video.style.display = "none";
     frame.src = stream;
   }
-}
 };
