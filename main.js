@@ -169,32 +169,25 @@ musicBtn.innerText = music.paused ? "🎵 Play Music" : "⏸ Pause Music";
 ];
 
   // NEW: PHYSICAL CHAPELS
-  const physicalChapels = [
-    {
-      name: "St Mary Catholic Church",
-      city: "Rockville",
-      country: "USA",
-      lat: 39.0839,
-      lng: -77.1528
-    },
-    {
-      name: "St Patrick Cathedral",
-      city: "New York",
-      country: "USA",
-      lat: 40.7585,
-      lng: -73.9760
-    }
-  ];
+let physicalChapels = [];
 
   // --- LOAD CSV ---
-  fetch("Adorationchapels.csv")
-    .then(r => r.text())
-    .then(text => {
-      const parsed = Papa.parse(text, { header: true }).data;
-      chapelData = parsed;
-      initMap(parsed);
-    })
-    .catch(err => console.error("CSV load error:", err));
+Promise.all([
+  fetch("Adorationchapels.csv").then(r => r.text()),
+  fetch("global_adoration_dataset_200_named.json").then(r => r.json())
+])
+.then(([csvText, jsonData]) => {
+  const parsed = Papa.parse(csvText, { header: true }).data;
+
+  chapelData = parsed;
+  physicalChapels = jsonData;
+
+  console.log("CSV:", parsed);
+  console.log("JSON:", jsonData);
+
+  initMap(parsed);
+})
+.catch(err => console.error("Data load error:", err));
 
   // --- INIT MAP ---
   function initMap(csvChapels) {
