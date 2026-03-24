@@ -11,41 +11,40 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ================= MUSIC ================= */
 
   const music = document.getElementById("bgMusic");
-  const musicBtn = document.getElementById("musicToggle");
+const musicBtn = document.getElementById("musicToggle");
 
-  let userStopped = false;
+music.volume = 0.35;
 
-  music.volume = 0.35;
+function updateMusicButton() {
+  musicBtn.innerText = music.paused
+    ? translations[currentLang].playMusic
+    : translations[currentLang].pauseMusic;
+}
 
-  music.play().catch(() => {});
+// Try autoplay
+music.play().then(() => {
+  updateMusicButton();
+}).catch(() => {
+  updateMusicButton();
+});
 
-  musicBtn.innerText = "🎵 PlayMusic";
-
-
-  document.addEventListener("click", (e) => {
-    if (e.target.closest("#musicToggle")) return;
-	function stopMusic() {
-    if (!music.paused) {
-    	fadeOutMusic();
-    	userStopped = true;
-    	musicBtn.innerText = "⏸ Resume";
+// Toggle
+musicBtn.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+  } else {
+    music.pause();
   }
-} 
-  }, { once: true });
+  updateMusicButton();
+});
 
-  musicBtn.addEventListener("click", () => {
-    if (music.paused) {
-      music.volume = 0.35;
-      music.play();
-      musicBtn.innerText = "🎵 PlayMusic";
-      userStopped = false;
-    } else {
-      music.pause();
-      musicBtn.innerText = "⏸ Resume";
-      userStopped = true;
-    }
-  });
-
+// Stop music on interaction
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#musicToggle") && !music.paused) {
+    music.pause();
+    updateMusicButton();
+  }
+});
   function fadeOutMusic() {
     let vol = music.volume;
     const fade = setInterval(() => {
@@ -507,6 +506,54 @@ document.getElementById("chapelForm").addEventListener("submit", e => {
   .catch(() => alert("Submission failed."));
 });
 
+
+
+/* ================= Languages ================= */
+
+
+const verseTrack = document.querySelector(".verse-track");
+
+document.getElementById("languageSelect").addEventListener("change", e => {
+
+setLanguage("en");
+const userLang = navigator.language.slice(0,2);
+if (translations[userLang]) setLanguage(userLang);
+
+let currentLang = "en";
+
+function setLanguage(lang) {
+  currentLang = lang;
+
+  // Update verses
+  document.querySelector(".verse-track").innerText =
+  translations[lang].verses;
+
+  // Update music button text
+  updateMusicButton();
+}
+  const lang = e.target.value;
+  const t = translations[lang];
+
+  // Buttons
+  document.getElementById("startAdoration").innerText = t.start;
+  document.getElementById("findChapel").innerText = t.nearby;
+  document.getElementById("pledgeButton").innerText = t.pledge;
+  document.getElementById("addChapelBtn").innerText = t.addChapel;
+
+  // Music button
+  const musicBtn = document.getElementById("musicToggle");
+  if (!music.paused) {
+    musicBtn.innerText = t.musicPause;
+  } else {
+    musicBtn.innerText = t.musicPlay;
+  }
+
+  // Verse ticker (scrolling text)
+  if (verseTrack) {
+    verseTrack.innerHTML = t.verses.join(" &nbsp;&nbsp;&nbsp; ");
+  }
+});
+});
 /* ================= GLOBAL PLAYER ================= */
 
 window.playChapel = function (stream) {
