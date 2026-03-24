@@ -181,10 +181,10 @@ function setLanguage(lang) {
   state.currentLang = lang;
   const t = translations[lang];
 
-  document.getElementById("startAdoration").innerText = t.start;
-  document.getElementById("findChapel").innerText = t.nearby;
-  document.getElementById("pledgeButton").innerText = t.pledge;
-  document.getElementById("addChapelBtn").innerText = t.addChapel;
+  document.getElementById("startAdoration").innerText = t.Start Adoration;
+  document.getElementById("findChapel").innerText = t.Nearby Chapel;
+  document.getElementById("pledgeButton").innerText = t.Pledge 1h;
+  document.getElementById("addChapelBtn").innerText = t.Add Chapel;
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
@@ -196,11 +196,11 @@ function setLanguage(lang) {
 
 /* ================= MUSIC ================= */
 function updateMusicButton() {
-  if (!music || !musicBtn) return;
+  if (!state.music || !musicBtn) return;
 
-  musicBtn.innerText = music.paused
-    ? translations[currentLang].musicPlay
-    : translations[currentLang].musicPause;
+  musicBtn.innerText = state.music.paused
+    ? translations[currentLang].state.musicPlay
+    : translations[currentLang].state.musicPause;
 }
 
 
