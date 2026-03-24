@@ -102,7 +102,7 @@ function setLanguage(lang) {
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
-    verseEl.innerText = translations[lang].verses;
+    verseEl.innerHTML = translations[lang].verses.join(" &nbsp;&nbsp;&nbsp; ");
   }
 
   updateMusicButton();
@@ -325,14 +325,13 @@ document.addEventListener("click", (e) => {
 
       allMarkers.push(marker);
       markerList.push(marker);
-	  markersGroup.addLayers(markerList);
     }
 
     /* FEATURED */
     featuredChapels.forEach(c => {
       addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-        <b>🕯️ ${c.name}</b><br>
-        ${c.city}, ${c.country}<br><br>
+        
+	<b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
         <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
       `);
     });
@@ -353,17 +352,16 @@ chapelData.forEach(c => {
   };
 
   marker.bindPopup(`
-    <b>🕯️ ${c.name}</b><br>
-    ${c.city}, ${c.country}<br><br>
-    ${
-      c.youtube
-        ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`
-        : "No stream available"
-    }
+    
+    <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
+    
+   
+    
+      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`: "No stream available"}
   `);
 
-  allMarkers.push(marker);
-  markerList.push(marker);
+  //allMarkers.push(marker);
+  //markerList.push(marker);
 });
     /* PHYSICAL */
  physicalChapels.forEach(c => {
@@ -377,10 +375,10 @@ chapelData.forEach(c => {
     ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
   `);
 
-  allMarkers.push(marker);
-  markerList.push(marker);
+  //allMarkers.push(marker);
+  //markerList.push(marker);
 });
-
+ markersGroup.addLayers(markerList);
   /* ================= SEARCH ================= */
 
 const searchInput = document.getElementById("searchInput");
