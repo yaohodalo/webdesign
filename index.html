@@ -50,27 +50,24 @@
 
   <!-- LEFT -->
   <div class="header-left">
-    <img src="logo.png" class="logo" />
+    <img src="logo.png" class="site-logo" />
   </div>
 
   <!-- CENTER -->
   <div class="header-center">
-    <h2 class="subtitle">Live Eucharistic Adoration Map</h2>
-
-    <input
-      id="searchInput"
-      placeholder="Search by city, country, or chapel..."
-      autocomplete="off"
-    />
+    <h2 class="subtitle">Eucharistic Adoration Map</h2>
+    <div class="search-wrapper" id="searchWrapper">
+  <input id="searchInput" placeholder="Search by city, country, or chapel..." 
+    autocomplete="off" />
+    </div>
     <div id="suggestions" class="suggestions"></div>
   </div>
 
   <!-- RIGHT -->
   <div class="header-right">
-    <button id="startAdoration">Start</button>
-    <button id="findChapel">Nearby</button>
-    <button id="pledgeButton">Pledge</button>
-    <button id="musicToggle">🎵</button>
+    <button id="startAdoration">Start Adoration </button>
+    <button id="findChapel">Nearby Chapel</button>
+    <button id="pledgeButton">Pledge 1h </button>
   </div>
 
 </header>
@@ -78,6 +75,10 @@
 <main>
   <!-- Map -->
   <div id="map"></div>
+
+  <div class="music-container">
+  <button id="musicToggle">🎵 Play Music</button>
+  </div>
 
   <!-- 🔥 Nearby Panel -->
   <div id="nearbyPanel" class="nearby hidden">
@@ -96,7 +97,7 @@
       <button type="submit">Pledge My Hour</button>
     </form>
     <p id="thanks" class="hidden">
-      Thank you — your hour joins adorers worldwide.
+      Thank you for signing up, please join adorers worldwide at your hour.
     </p>
   </section>
 </main>
@@ -128,7 +129,7 @@
     <!-- Column 3: Get Involved -->
     <div class="footer-col">
       <h3>Get Involved</h3>
-      <a href="#" class="footer-btn">Add a Chapel</a>
+      <button id="addChapelBtn" class="footer-btn">Add a Chapel</button>
     </div>
 
   </div>
@@ -140,7 +141,7 @@
 
     <div class="language-select">
       🌐 
-      <select>
+     <select id="languageSelect">
         <option>English</option>
         <option>Español</option>
         <option>Français</option>
