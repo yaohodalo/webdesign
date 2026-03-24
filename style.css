@@ -43,15 +43,10 @@ body {
   position: fixed;
   bottom: 100px;   /* sits above footer */
   right: 20px;     /* bottom-right corner */
-
   z-index: 9999;
-
-  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(6px);
-
   padding: 10px 14px;
   border-radius: 12px;
-
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 #musicBelowMap {
@@ -67,7 +62,7 @@ body {
 }
 
 #musicToggle {
-  background: #b59b6a;
+  background: #D4AF37;
   color: white;
   border: none;
   padding: 8px 18px;
