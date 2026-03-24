@@ -74,26 +74,35 @@ const translations = {
     ]
   }
 };
+const translations = { ... };
+
 let currentLang = "en";
 
-const userLang = navigator.language.slice(0,2);
-if (translations[userLang]) setLanguage(userLang);
+function updateMusicButton() {
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("musicToggle");
+
+  if (!music || !btn) return;
+
+  btn.innerText = music.paused
+    ? translations[currentLang].playMusic
+    : translations[currentLang].pauseMusic;
+}
 
 function setLanguage(lang) {
   currentLang = lang;
- setLanguage("en");
 
-  // Update verses
-  document.querySelector(".verse-track").innerText =
-  translations[lang].verses;
+  const verseEl = document.querySelector(".verse-track");
+  if (verseEl) {
+    verseEl.innerText = translations[lang].verses;
+  }
 
-  // Update music button text
   updateMusicButton();
 }
 
-
+// ✅ call AFTER everything exists
 document.addEventListener("DOMContentLoaded", () => {
-
+  setLanguage("en");
   let map;
   let chapelData = [];
   let physicalChapels = [];
@@ -103,17 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const player = videojs("adorationVideo");
 
   /* ================= MUSIC ================= */
-
-  const music = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicToggle");
-
-music.volume = 0.35;
-
-function updateMusicButton() {
-  musicBtn.innerText = music.paused
-    ? translations[currentLang].playMusic
-    : translations[currentLang].pauseMusic;
-}
 
 // Try autoplay
 music.play().then(() => {
