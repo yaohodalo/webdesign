@@ -294,7 +294,7 @@ function initMap() {
   state.markersGroup = L.markerClusterGroup();
   state.map.addLayer(state.markersGroup);
 
-  map.on("click zoomstart dragstart", () => {
+  state.map.on("click zoomstart dragstart", () => {
   stopMusic();
 
   const el = document.getElementById("musicFloating");
