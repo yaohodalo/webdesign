@@ -678,6 +678,6 @@ window.playChapel = function (stream) {
  };
 	 });
 	 };
-};
+});
 
  
