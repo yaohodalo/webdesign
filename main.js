@@ -471,26 +471,33 @@ function initSearch() {
     ).join("");
   });
 }
-// CLICK suggestion → MOVE MAP
-box.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("suggestion-item")) return;
 
-  const text = e.target.innerText.replace(/^[^\s]+\s/, "");
+const box = document.getElementById("suggestions");
 
-  input.value = text;
-  box.innerHTML = "";
+if (box) {
+  box.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("suggestion-item")) return;
 
-  // find matching marker
-  const match = state.allMarkers.find(m => {
-    const d = m.chapelData;
-    return d.name === text || d.city === text || d.country === text;
+    const text = e.target.innerText.replace(/^[^\s]+\s/, "");
+
+    document.getElementById("searchInput").value = text;
+
+    box.innerHTML = "";
+
+    // OPTIONAL: move map to match
+    const match = state.allMarkers.find(m =>
+      m.chapelData?.name === text ||
+      m.chapelData?.city === text ||
+      m.chapelData?.country === text
+    );
+
+    if (match) {
+      const { lat, lng } = match.getLatLng();
+      state.map.setView([lat, lng], 10);
+      match.openPopup();
+    }
   });
-
-  if (match) {
-    state.map.setView(match.getLatLng(), 10);
-    match.openPopup();
-  }
-});
+}
 /* ================= NEARBY ================= */
 function initNearby() {
   document.getElementById("findChapel").addEventListener("click", () => {
