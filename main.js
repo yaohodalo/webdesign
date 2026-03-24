@@ -398,8 +398,9 @@ function initNearby() {
           const d = Math.hypot(lat - latitude, lng - longitude);
           return { marker: m, d };
         })
+		.filter(item => item.distance <= 100)
         .sort((a, b) => a.d - b.d)
-        .slice(0, 30);
+        .slice(0, 50);
 
       state.markersGroup.clearLayers();
       state.markersGroup.addLayers(nearby.map(n => n.marker));
@@ -451,6 +452,20 @@ function applyLiturgicalTheme(name, color) {
   }
 }
 
+const pledgeBtn = document.getElementById("pledgeButton");
+const pledgeSection = document.getElementById("pledge");
+
+if (pledgeBtn && pledgeSection) {
+  pledgeBtn.addEventListener("click", () => {
+    pledgeSection.style.display = "block"; // stronger than class toggle
+
+    pledgeSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  });
+}
+
 /* ================= PLAYER ================= */
 window.playChapel = function (stream) {
   stopMusic();
@@ -480,8 +495,13 @@ window.playChapel = function (stream) {
     frame.src = stream;
   }
 
-  document.getElementById("closeModal").onclick = () => {
+  if (addBtn && modal && closeModal) {
+  addBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  closeModal.addEventListener("click", () => {
     modal.style.display = "none";
-    frame.src = "";
-  };
+  });
+}
 };
