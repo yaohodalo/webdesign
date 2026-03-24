@@ -184,7 +184,7 @@ function setLanguage(lang) {
   document.getElementById("startAdoration").innerText = t.start;
   document.getElementById("findChapel").innerText = t.nearby;
   document.getElementById("pledgeButton").innerText = t.pledge;
-  document.getElementById("addChapelBtn").innerText = t.AddChapel;
+  document.getElementById("addChapelBtn").innerText = t.addChapel;
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
