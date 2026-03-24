@@ -21,17 +21,23 @@ body {
 .header-right { flex: 1; text-align: right; }
 
 /* LOGO */
-.logo {
-  width: 90px;
+.site-logo {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  height: 50px;
+  z-index: 1000;
+  pointer-events: auto;
 }
 
 /* SEARCH */
 #searchInput {
-  width: 100%;
-  padding: 0.6rem 1rem;
-  border-radius: 20px;
-  border: none;
-  outline: none;
+  width: 220px;   /* adjust to taste */
+  max-width: 60%;
+}
+.music-container {
+  text-align: center;
+  margin: 20px 0;
 }
 
 /* SUGGESTIONS */
@@ -45,7 +51,7 @@ body {
   border-radius: 8px;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .suggestions div {
@@ -56,7 +62,27 @@ body {
 .suggestions div:hover {
   background: #eee;
 }
+.search-wrapper {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 25px;
+  background-size: cover;
+  background-position: center;
+  transition: all 0.4s ease;
+}
 
+.search-wrapper input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #000;
+  font-size: 16px;
+  width: 180px;
+}
+.search-wrapper:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
 /* HEADER BUTTONS */
 .header-right button {
   background: #D4AF37;
@@ -103,13 +129,8 @@ body {
 button {
   background-color: #D4AF37;
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.6em 1.2em;
-  margin: 0.3em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
 }
 
 button:hover {
@@ -288,17 +309,11 @@ button:hover {
 }
 /* ---------- MOBILE ---------- */
 @media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    gap: 10px;
+  .header-right button {
+    width: auto;
   }
 
-  #adorationFrame,
-  #adorationVideo {
-    height: 40vh;
-  }
-
-  button {
+  main button {
     width: 90%;
   }
 }
