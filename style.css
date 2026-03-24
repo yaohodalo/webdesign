@@ -288,6 +288,10 @@ button:hover {
   color: #ffffff;
   text-decoration: underline;
 }
+.footer-col a::after {
+  content: " ↗";
+  font-size: 0.8em;
+}
 
 .footer-btn {
   display: inline-block;
