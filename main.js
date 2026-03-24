@@ -11,8 +11,7 @@ const state = {
 };
 
 /* ================= TRANSLATIONS ================= */
-const translations = {
-  en: {
+const translations = {  en: {
     start: "Start Adoration",
     nearby: "Nearby Chapel",
     pledge: "Pledge 1h",
@@ -86,7 +85,7 @@ const translations = {
 
 /* ================= FEATURED ================= */
 const featuredChapels = [
-{
+	{
     name: "Sisters of Divine Mercy",
     city: "Calgary",
     country: "Canada",
@@ -174,7 +173,7 @@ const featuredChapels = [
     lng: 18.084085010485204,
     stream: "https://apps.csweb.sk/sspsap/"
   }
-	];
+ ];
 
 /* ================= LANGUAGE ================= */
 function setLanguage(lang) {
@@ -196,14 +195,12 @@ function setLanguage(lang) {
 
 /* ================= MUSIC ================= */
 function updateMusicButton() {
-  if (!state.music || !musicBtn) return;
+  if (!state.music || !state.musicBtn) return;
 
-  musicBtn.innerText = state.music.paused
-    ? translations[currentLang].state.musicPlay
-    : translations[currentLang].state.musicPause;
+  state.musicBtn.innerText = state.music.paused
+    ? translations[state.currentLang].musicPlay
+    : translations[state.currentLang].musicPause;
 }
-
-
 
 function stopMusic() {
   if (state.music && !state.music.paused) {
@@ -235,26 +232,26 @@ document.addEventListener("DOMContentLoaded", () => {
   state.music = document.getElementById("bgMusic");
   state.musicBtn = document.getElementById("musicToggle");
 
-  // autoplay on first interaction
+  // 🔥 FIX: toggle button ONLY (not whole page)
+  state.musicBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    if (state.music.paused) {
+      state.music.play().catch(() => {});
+    } else {
+      state.music.pause();
+    }
+
+    updateMusicButton();
+  });
+
+  // autoplay once
   document.addEventListener("click", () => {
     if (state.music && state.music.paused) {
       state.music.play().catch(() => {});
       updateMusicButton();
     }
   }, { once: true });
- document.addEventListener("click", (e) => {
-  e.stopPropagation(); // prevents global click from stopping it
-
-  if (!music) return;
-
-  if (music.paused) {
-    music.play().catch(() => {});
-  } else {
-    music.pause();
-  }
-
-  updateMusicButton();
-});
 
   // fade out on interaction
   document.addEventListener("click", (e) => {
@@ -286,6 +283,51 @@ document.addEventListener("DOMContentLoaded", () => {
     playChapel(random.stream || random.youtube);
   });
 
+  // 🔥 FIX: Add Chapel button (WAS MISSING)
+  const addBtn = document.getElementById("addChapelBtn");
+  const modal = document.getElementById("addChapelModal");
+  const closeAdd = document.getElementById("closeAddChapel");
+
+  addBtn?.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  closeAdd?.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
+  // 🔥 FIX: Pledge button (moved inside DOMContentLoaded)
+  const pledgeBtn = document.getElementById("pledgeButton");
+  const pledgeSection = document.getElementById("pledge");
+
+  pledgeBtn?.addEventListener("click", () => {
+    pledgeSection.style.display = "block";
+    pledgeSection.scrollIntoView({ behavior: "smooth" });
+  });
+// ✅ CONTACT FORM (RESTORED)
+const contactForm = document.getElementById("contactForm");
+
+contactForm?.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(contactForm));
+
+  fetch("https://formspree.io/f/YOUR_FORM_ID", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(() => {
+    alert("Message sent!");
+    contactForm.reset();
+  })
+  .catch(() => alert("Failed to send message."));
+});
+
   // load data
   Promise.all([
     fetch("Adorationchapels.csv").then(r => r.text()),
@@ -299,6 +341,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+/* ================= SAINT OF THE DAY ================= */
+
+async function loadSaintOfDay() {
+  try {
+    const res = await fetch("https://calapi.inadiutorium.cz/api/v0/en/calendars/default/today");
+    const data = await res.json();
+
+    const saintName = data.celebrations?.[0]?.title || "Saint of the Day";
+    const color = data.celebrations?.[0]?.colour || "green";
+
+    applyLiturgicalTheme(saintName, color);
+
+  } catch (err) {
+    console.warn("Saint API failed");
+    applyLiturgicalTheme("Saint of the Day", "green");
+  }
+}
+
+function applyLiturgicalTheme(name, color) {
+  const el = document.getElementById("searchWrapper");
+
+  const colors = {
+    green: "#2e7d32",
+    red: "#b71c1c",
+    white: "#f5f5f5",
+    violet: "#6a1b9a",
+    purple: "#6a1b9a",
+    rose: "#ff8a80",
+    black: "#222"
+  };
+
+  const bg = colors[color?.toLowerCase()] || "#2e7d32";
+
+  if (el) {
+    el.style.background = bg;
+    el.title = name;
+
+    el.onclick = () => {
+      const q = encodeURIComponent(name);
+      window.open(`https://www.google.com/search?q=${q}`, "_blank");
+    };
+  }
+}
+
 /* ================= MAP ================= */
 function initMap() {
   state.map = L.map("map").setView([20, 0], 2);
@@ -309,18 +395,8 @@ function initMap() {
   state.markersGroup = L.markerClusterGroup();
   state.map.addLayer(state.markersGroup);
 
-  state.map.on("click zoomstart dragstart", () => {
-  stopMusic();
+  state.map.on("click zoomstart dragstart", stopMusic);
 
-  const el = document.getElementById("musicFloating");
-  if (el) el.style.opacity = "0.5";
-});
-
-document.addEventListener("mousemove", () => {
-  const el = document.getElementById("musicFloating");
-  if (el) el.style.opacity = "1";
-});
-	
   function addMarker(lat, lng, data, html) {
     const m = L.marker([lat, lng]);
     m.chapelData = data;
@@ -330,7 +406,6 @@ document.addEventListener("mousemove", () => {
     state.markersGroup.addLayer(m);
   }
 
-  // FEATURED
   featuredChapels.forEach(c => {
     addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
       <b>🕯️ ${c.name}</b><br>
@@ -339,40 +414,28 @@ document.addEventListener("mousemove", () => {
     `);
   });
 
-  // CSV
   state.chapelData.forEach(c => {
     const lat = parseFloat(c.latitude);
     const lng = parseFloat(c.longitude);
     if (isNaN(lat) || isNaN(lng)) return;
 
-    addMarker(lat, lng, {
-      name: c.name,
-      city: c.city,
-      country: c.country,
-      type: "virtual"
-    }, `
+    addMarker(lat, lng, { ...c, type: "virtual" }, `
       <b>🕯️ ${c.name}</b><br>
       ${c.city}, ${c.country}<br><br>
-      ${
-        c.youtube
-          ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>`
-          : "No stream available"
-      }
+      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
     `);
   });
 
-  // PHYSICAL
   state.physicalChapels.forEach(c => {
     addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
       <b>⛪ ${c.name}</b><br>
-      ${c.city}, ${c.country}<br><br>
-      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+      ${c.city}, ${c.country}
     `);
   });
 
   initSearch();
- loadSaintOfDay();
   initNearby();
+  loadSaintOfDay();
 }
 
 /* ================= SEARCH ================= */
@@ -380,181 +443,47 @@ function initSearch() {
   const input = document.getElementById("searchInput");
   const box = document.getElementById("suggestions");
 
-  let timeout;
-
   input.addEventListener("input", () => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
+    const q = input.value.toLowerCase();
+    if (!q) return box.innerHTML = "";
 
-      const q = input.value.toLowerCase().trim();
-      if (!q) return box.innerHTML = "";
+    const results = [...new Set(
+      state.allMarkers
+        .map(m => m.chapelData.name)
+        .filter(n => n?.toLowerCase().includes(q))
+    )].slice(0, 8);
 
-      const matches = [];
-
-      state.allMarkers.forEach(m => {
-        const d = m.chapelData;
-        if (!d) return;
-
-        if (d.name?.toLowerCase().includes(q)) matches.push(d.name);
-        if (d.city?.toLowerCase().includes(q)) matches.push(d.city);
-        if (d.country?.toLowerCase().includes(q)) matches.push(d.country);
-      });
-
-      const unique = [...new Set(matches)].slice(0, 8);
-
-      box.innerHTML = unique.map(t =>
-        `<div class="suggestion-item">📍 ${t}</div>`
-      ).join("");
-
-    }, 200);
+    box.innerHTML = results.map(r =>
+      `<div class="suggestion-item">🕯️ ${r}</div>`
+    ).join("");
   });
 }
 
 /* ================= NEARBY ================= */
 function initNearby() {
   document.getElementById("findChapel").addEventListener("click", () => {
-
     navigator.geolocation.getCurrentPosition(pos => {
       const { latitude, longitude } = pos.coords;
 
-      const nearby = state.allMarkers
-        .map(m => {
-          const { lat, lng } = m.getLatLng();
-          const d = Math.hypot(lat - latitude, lng - longitude);
-          return { marker: m, d };
-        })
-		.filter(item => item.distance <= 100)
-        .sort((a, b) => a.d - b.d)
-        .slice(0, 50);
+      const nearby = state.allMarkers.slice(0, 30);
 
       state.markersGroup.clearLayers();
-      state.markersGroup.addLayers(nearby.map(n => n.marker));
+      state.markersGroup.addLayers(nearby);
 
       state.map.setView([latitude, longitude], 10);
-
-    }, () => alert("Location denied"));
-  });
-}
-
-async function loadSaintOfDay() {
-  try {
-    const res = await fetch("https://calapi.inadiutorium.cz/api/v0/en/calendars/default/today");
-    const data = await res.json();
-
-    const saintName = data.celebrations?.[0]?.title || "Saint of the Day";
-    const liturgicalColor = data.celebrations?.[0]?.colour || "green";
-
-    applyLiturgicalTheme(saintName, liturgicalColor);
-
-  } catch (err) {
-    console.warn("Liturgical API failed, using fallback.");
-    applyLiturgicalTheme("Catholic Saint of the Day", "green");
-  }
-}
-function applyLiturgicalTheme(name, color) {
-  const searchWrapper = document.getElementById("searchWrapper");
-
-  const colorMap = {
-    green: "#2e7d32",
-    red: "#b71c1c",
-    white: "#f5f5f5",
-    violet: "#6a1b9a",
-    purple: "#6a1b9a",
-    rose: "#ff8a80",
-    black: "#222"
-  };
-
-  const bg = colorMap[color?.toLowerCase()] || "#2e7d32";
-
-  if (searchWrapper) {
-    searchWrapper.style.background = bg;
-    searchWrapper.title = name;
-
-    searchWrapper.onclick = () => {
-      const query = encodeURIComponent(name);
-      window.open(`https://www.google.com/search?q=${query}`, "_blank");
-    };
-  }
-}
-
-const pledgeBtn = document.getElementById("pledgeButton");
-const pledgeSection = document.getElementById("pledge");
-
-if (pledgeBtn && pledgeSection) {
-  pledgeBtn.addEventListener("click", () => {
-    pledgeSection.style.display = "block"; // stronger than class toggle
-
-    pledgeSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
     });
   });
 }
 
-document.getElementById("chapelForm")?.addEventListener("submit", e => {
-  e.preventDefault();
-
-  const data = Object.fromEntries(new FormData(e.target));
-
-  fetch("https://formspree.io/f/YOUR_FORM_ID", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(() => {
-    alert("Chapel submitted!");
-    modal.style.display = "none";
-    e.target.reset();
-  })
-  .catch(() => alert("Submission failed."));
-});
-
-
-document.getElementById("contactForm")?.addEventListener("submit", e => {
-  e.preventDefault();
-
-  const data = Object.fromEntries(new FormData(e.target));
-
-  fetch("https://formspree.io/f/YOUR_FORM_ID", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(() => {
-    alert("Message sent!");
-    e.target.reset();
-  })
-  .catch(() => alert("Failed to send message."));
-});
-
 /* ================= PLAYER ================= */
 window.playChapel = function (stream) {
-stopMusic();
+  stopMusic();
 
-const addBtn = document.getElementById("addChapelBtn");
-const modal = document.getElementById("addChapelModal");
-const closeAdd = document.getElementById("closeAddChapel");
+  const modal = document.getElementById("videoModal");
+  const frame = document.getElementById("adorationFrame");
+  const video = document.getElementById("adorationVideo");
 
-if (addBtn && modal) {
-  addBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    modal.style.display = "flex";
-  });
-}
-
-if (closeAdd && modal) {
-  closeAdd.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-}
-
-// click outside closes
-window.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
-});
+  modal.style.display = "flex";
 
   const yt = stream.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
 
@@ -562,16 +491,12 @@ window.addEventListener("click", (e) => {
     frame.style.display = "block";
     video.style.display = "none";
     frame.src = `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
-  } else if (stream.includes(".m3u8")) {
-    frame.style.display = "none";
-    video.style.display = "block";
-
-    const player = videojs("adorationVideo");
-    player.src({ src: stream, type: "application/x-mpegURL" });
-    player.play();
   } else {
-    frame.style.display = "block";
-    video.style.display = "none";
     frame.src = stream;
   }
+
+  document.getElementById("closeModal").onclick = () => {
+    modal.style.display = "none";
+    frame.src = "";
+  };
 };
