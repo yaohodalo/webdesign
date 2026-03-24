@@ -1,0 +1,304 @@
+body {
+  font-family: "Inter", sans-serif;
+  color: #38312B;
+  background-color: #FAF6F1;
+  margin: 0;
+  text-align: center;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: #0B1F3A;
+  color: white;
+}
+
+.header-left { flex: 1; }
+.header-center { flex: 2; position: relative; }
+.header-right { flex: 1; text-align: right; }
+
+/* LOGO */
+.logo {
+  width: 90px;
+}
+
+/* SEARCH */
+#searchInput {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+
+/* SUGGESTIONS */
+.suggestions {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: white;
+  color: black;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.suggestions div {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.suggestions div:hover {
+  background: #eee;
+}
+
+/* HEADER BUTTONS */
+.header-right button {
+  background: #D4AF37;
+  color: white;
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  margin-left: 0.3rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------- VERSE TICKER ---------- */
+.verse-ticker {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: #0B1F3A;
+  color: #D4AF37;
+  font-family: "Crimson Pro", serif;
+  font-size: 0.95rem;
+  padding: 0.3rem 0;
+}
+
+.verse-track {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollVerse 40s linear infinite;
+}
+
+@keyframes scrollVerse {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ---------- MAP ---------- */
+#map {
+  height: 75vh;
+  width: 100%;
+  border-top: 2px solid #B59B6A;
+  border-bottom: 2px solid #B59B6A;
+}
+
+/* ---------- BUTTONS ---------- */
+button {
+  background-color: #D4AF37;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6em 1.2em;
+  margin: 0.3em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #b8962e;
+  transform: translateY(-1px);
+}
+
+/* ---------- NEARBY PANEL ---------- */
+.nearby {
+  padding: 1rem;
+  background: #fff;
+  border-top: 2px solid #B59B6A;
+}
+
+.nearby-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ---------- PLEDGE ---------- */
+#pledge {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 600px;
+}
+
+#pledge input,
+#pledge textarea {
+  width: 100%;
+  margin: 0.4rem 0;
+  padding: 0.6rem;
+  border: 1px solid #B59B6A;
+  border-radius: 5px;
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.modal-content {
+  background: #fffaf2;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+#adorationFrame,
+#adorationVideo {
+  width: 100%;
+  height: 60vh;
+}
+
+.footer {
+  background-color: #0b2c4a;
+  color: #f5f5f5;
+  padding: 50px 20px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-col h3 {
+  color: #d4af37;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.footer-col p {
+  line-height: 1.6;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.footer-col ul li a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-btn {
+  display: inline-block;
+  background-color: #d4af37;
+  color: #0b2c4a;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.footer-btn:hover {
+  background-color: #e6c75a;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 40px;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.footer-bottom .motto {
+  margin: 5px 0;
+  font-style: italic;
+}
+
+.language-select {
+  margin-top: 10px;
+}
+
+.language-select select {
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-col {
+    margin-bottom: 30px;
+  }
+}
+/* ---------- MOBILE ---------- */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #adorationFrame,
+  #adorationVideo {
+    height: 40vh;
+  }
+
+  button {
+    width: 90%;
+  }
+}
