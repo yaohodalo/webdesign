@@ -308,14 +308,12 @@ document.addEventListener("DOMContentLoaded", () => {
     pledgeSection.style.display = "block";
     pledgeSection.scrollIntoView({ behavior: "smooth" });
   });
+
 // ✅ CONTACT FORM (RESTORED)
 const contactForm = document.getElementById("contactForm");
-
 contactForm?.addEventListener("submit", e => {
   e.preventDefault();
-
   const data = Object.fromEntries(new FormData(contactForm));
-
   fetch("https://formspree.io/f/YOUR_FORM_ID", {
     method: "POST",
     body: JSON.stringify(data),
@@ -327,7 +325,22 @@ contactForm?.addEventListener("submit", e => {
   })
   .catch(() => alert("Failed to send message."));
 });
+// ✅ CONTACT OPEN/CLOSE (FIXED)
+const contactBtn = document.getElementById("contactBtn"); // button in header
+const contactSection = document.getElementById("contactSection");
+if (contactBtn && contactSection) {
+  contactBtn.addEventListener("click", () => {
+    contactSection.style.display = "block";
 
+    contactSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  });
+}
+
+
+	
   // load data
   Promise.all([
     fetch("Adorationchapels.csv").then(r => r.text()),
@@ -380,7 +393,7 @@ function applyLiturgicalTheme(name, color) {
 
     el.onclick = () => {
       const q = encodeURIComponent(name);
-      window.open(`https://www.google.com/search?q=${q}`, "_blank");
+      window.open(`https://www.vaticannews.va/en/saints.html`, "_blank");
     };
   }
 }
@@ -458,7 +471,26 @@ function initSearch() {
     ).join("");
   });
 }
+// CLICK suggestion → MOVE MAP
+box.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("suggestion-item")) return;
 
+  const text = e.target.innerText.replace(/^[^\s]+\s/, "");
+
+  input.value = text;
+  box.innerHTML = "";
+
+  // find matching marker
+  const match = state.allMarkers.find(m => {
+    const d = m.chapelData;
+    return d.name === text || d.city === text || d.country === text;
+  });
+
+  if (match) {
+    state.map.setView(match.getLatLng(), 10);
+    match.openPopup();
+  }
+});
 /* ================= NEARBY ================= */
 function initNearby() {
   document.getElementById("findChapel").addEventListener("click", () => {
