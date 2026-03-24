@@ -515,7 +515,6 @@ window.playChapel = function (stream) {
     video.style.display = "none";
     frame.src = stream;
   }
-
   document.getElementById("closeModal").onclick = () => {
     modal.style.display = "none";
     frame.src = "";
