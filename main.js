@@ -484,7 +484,10 @@ window.playChapel = function (stream) {
   const frame = document.getElementById("adorationFrame");
   const video = document.getElementById("adorationVideo");
 
-  modal.style.display = "flex";
+ if (addBtn && modal && closeModal) {
+  addBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
 
   const yt = stream.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
 
@@ -505,10 +508,7 @@ window.playChapel = function (stream) {
     frame.src = stream;
   }
 
-  if (addBtn && modal && closeModal) {
-  addBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
+
 
   closeModal.addEventListener("click", () => {
     modal.style.display = "none";
