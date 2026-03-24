@@ -677,5 +677,5 @@ window.playChapel = function (stream) {
   };
  };
 	 });
-	 });
+	 };
  
