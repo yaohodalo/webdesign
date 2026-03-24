@@ -519,4 +519,7 @@ window.playChapel = function (stream) {
     modal.style.display = "none";
     frame.src = "";
   };
-
+ };
+	 };
+	 };
+ 
