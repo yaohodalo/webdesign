@@ -105,9 +105,60 @@
     </p>
   </section>
 </main>
+  
+  <footer class="footer">
+  <div class="footer-content">
 
-<footer>
-  <p>© 2024 WouldYouJoinMeForOneHour.org | Ad Majorem Dei Gloriam 🕊️</p>
+    <div class="footer-section">
+      <h3> Eucharistic Resources</h3>
+      <ul>
+        <li><a href="https://www.miracolieucaristici.org" target="_blank">
+          The Eucharistic Miracles of the World - St Carlo Acutis
+        </a></li>
+
+        <li><a href="https://www.vatican.va/content/paul-vi/en/encyclicals/documents/hf_p-vi_enc_03091965_mysterium.html" target="_blank">
+        Mysterium Fidei Encyclical of Pope Paul VI on the Holy Eucharist
+        </a></li>
+
+        <li><a href="https://www.vatican.va/content/benedict-xvi/en/apost_exhortations/documents/hf_ben-xvi_exh_20070222_sacramentum-caritatis.html" target="_blank">
+        Sacramentum Caritatis of Pope Benedict XVI on the Eucharist as The Source and Summit of The Church's Life and Mission
+        </a></li>
+
+        <li><a href="https://www.eucharisticrevival.org" target="_blank">
+        National Eucharistic Revival (USA)
+        </a></li>
+
+        <li><a href="https://www.eucharisticpilgrimage.org/" target="_blank">
+          National Eucharistic Pilgrimage (USA)
+        </a></li>
+
+       <li><a href="https://www.usccb.org/prayer-and-worship/prayers-and-devotions/eucharistic-devotion" target="_blank">
+        Eucharistic Devotion USCCB
+        </a></li> 
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Contribute</h3>
+      <button id="addChapelBtn">Add a Chapel</button>
+    </div>
+
+    <div class="footer-section">
+      <h3>Language</h3>
+      <select id="languageSelect">
+        <option value="en">En</option>
+        <option value="es">Es</option>
+        <option value="fr">Fr</option>
+        <option value="fr">It</option>
+        <option value="fr">Pr</option>
+      </select>
+    </div>
+
+  </div>
+
+  <p class="footer-bottom">
+    © 2024 WouldYouJoinMeForOneHour.org • Ad Majorem Dei Gloriam 🕊️
+  </p>
 </footer>
 
 <!-- VIDEO MODAL -->
@@ -133,6 +184,31 @@
       autoplay
       style="display:none; width:100%; max-width:800px;"
     ></video>
+  </div>
+</div>
+
+  <div id="addChapelModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeAddChapel">&times;</span>
+
+    <h2>Add a Chapel</h2>
+
+    <form id="chapelForm">
+      <input name="name" placeholder="Chapel Name" required />
+      <input name="city" placeholder="City" required />
+      <input name="country" placeholder="Country" required />
+      <input name="lat" placeholder="Latitude" required />
+      <input name="lng" placeholder="Longitude" required />
+
+      <select name="type">
+        <option value="physical">Physical</option>
+        <option value="virtual">Virtual</option>
+      </select>
+
+      <input name="stream" placeholder="YouTube or Stream Link (optional)" />
+
+      <button type="submit">Submit</button>
+    </form>
   </div>
 </div>
 
