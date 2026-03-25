@@ -473,7 +473,7 @@ function initMap() {
     `);
   });
 
-	physicalChapels.forEach(c => {
+	state.physicalChapels.forEach(c => {
    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
   <b>⛪ ${c.name}</b><br>
   📍 ${c.address ? c.address : "Location available"}<br><br>
