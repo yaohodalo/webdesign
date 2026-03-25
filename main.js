@@ -165,14 +165,6 @@ const featuredChapels = [
     lng: -74.10332138991909,
     stream: "https://www.youtube.com/watch?v=TIu6DyLTWLQ"
   },
-  {
-    name: "Servants of the Holy Spirit of Perpetual Adoration",
-    city: "Nitra",
-    country: "Slovakia",
-    lat: 48.32946693286068,
-    lng: 18.084085010485204,
-    stream: "https://apps.csweb.sk/sspsap/"
-  }
  ];
 
 /* ================= LANGUAGE ================= */
@@ -477,7 +469,7 @@ function initMap() {
     `);
   });
 
-  saddMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+  addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
   <b>⛪ ${c.name}</b><br>
   📍 ${c.address ? c.address : "Location available"}<br><br>
   ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
