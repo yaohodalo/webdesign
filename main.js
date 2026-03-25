@@ -339,6 +339,44 @@ if (contactBtn && contactSection) {
   });
 }
 
+  /* ================= YOUTUBE API ================= */
+
+  const API_KEY = "AIzaSyBx63zE887NDnhEKQBnfVkS_baF9rG0mIE";
+
+  async function getChannelIdFromVideo(url) {
+    try {
+      const videoId = url.split("v=")[1]?.split("&")[0];
+      if (!videoId) return null;
+
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${API_KEY}`
+      );
+
+      const data = await res.json();
+      return data.items?.[0]?.snippet?.channelId || null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function getLiveStream(channelId) {
+    try {
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&key=${API_KEY}`
+      );
+
+      const data = await res.json();
+
+      if (data.items?.length) {
+        return `https://www.youtube.com/watch?v=${data.items[0].id.videoId}`;
+      }
+
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
 
 	
   // load data
