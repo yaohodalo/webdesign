@@ -402,31 +402,35 @@ async function loadSaintOfDay() {
   }
 }
 
-function applyLiturgicalTheme(name, color) {
-  const el = document.getElementById("searchWrapper");
+function setLiturgicalTheme() {
+  const now = new Date();
+  const year = now.getFullYear();
 
-  const colors = {
-    green: "#2e7d32",
-    red: "#b71c1c",
-    white: "#f5f5f5",
-    violet: "#6a1b9a",
-    purple: "#6a1b9a",
-    rose: "#ff8a80",
-    black: "#222"
-  };
+  // Simple seasonal approximation
+  const lentStart = new Date(year, 1, 15);   // approx Feb 15
+  const easter = new Date(year, 3, 20);      // approx April
+  const adventStart = new Date(year, 10, 30); // approx Nov 30
+  const christmas = new Date(year, 11, 25);
 
-  const bg = colors[color?.toLowerCase()] || "#2e7d32";
+  let color = "#2e7d32"; // default green
 
-  if (el) {
-    el.style.background = bg;
-    el.title = name;
-
-    el.onclick = () => {
-      const q = encodeURIComponent(name);
-      window.open(`https://www.vaticannews.va/en/saints.html`, "_blank");
-    };
+  if (now >= lentStart && now <= easter) {
+    color = "#5b2c6f"; // purple
   }
+  else if (now >= adventStart && now < christmas) {
+    color = "#5b2c6f"; // purple
+  }
+  else if (
+    (now >= christmas) ||
+    (now <= new Date(year, 0, 10))
+  ) {
+    color = "#d4af37"; // gold
+  }
+
+  document.documentElement.style.setProperty("--liturgical-color", color);
 }
+
+setLiturgicalTheme();
 
 /* ================= MAP ================= */
 function initMap() {
@@ -469,11 +473,12 @@ function initMap() {
     `);
   });
 
-  addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+	physicalChapels.forEach(c => {
+   addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
   <b>⛪ ${c.name}</b><br>
   📍 ${c.address ? c.address : "Location available"}<br><br>
   ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-`);
+`);});
 
   initSearch();
   initNearby();
