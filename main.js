@@ -371,11 +371,11 @@ chapelData.forEach(c => {
 
   marker.chapelData = { ...c, type: "physical" };
 
-  marker.bindPopup(`
-    <b>⛪ ${c.name}</b><br>
-    ${c.city}, ${c.country}<br><br>
-    ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-  `);
+marker.bindPopup(`
+  <b>⛪ ${c.name}</b><br>
+  ${c.address || `${c.city || ""}${c.city && c.country ? ", " : ""}${c.country || ""}`}<br><br>
+  ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+`);
 
   allMarkers.push(marker);
   markerList.push(marker);
@@ -462,6 +462,26 @@ if (searchInput && suggestionsBox) {
 
     searchInput.dispatchEvent(new Event("input"));
   });
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const query = input.value.toLowerCase();
+
+    const match = state.allMarkers.find(marker => {
+      const d = marker.chapelData || {};
+      return (
+        d.name?.toLowerCase().includes(query) ||
+        d.city?.toLowerCase().includes(query) ||
+        d.country?.toLowerCase().includes(query)
+      );
+    });
+
+    if (match) {
+      state.map.setView(match.getLatLng(), 10);
+      match.openPopup();
+    }
+  }
+});
 
   // Hide on outside click
   document.addEventListener("click", e => {
