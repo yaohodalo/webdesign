@@ -477,12 +477,11 @@ function initMap() {
     `);
   });
 
-  state.physicalChapels.forEach(c => {
-    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-      <b>⛪ ${c.name}</b><br>
-      ${c.city}, ${c.country}
-    `);
-  });
+  saddMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+  <b>⛪ ${c.name}</b><br>
+  📍 ${c.address ? c.address : "Location available"}<br><br>
+  ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+`);
 
   initSearch();
   initNearby();
