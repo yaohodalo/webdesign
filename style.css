@@ -254,35 +254,58 @@ button:hover {
   margin: 10% auto;
   width: 300px;
 }
-
-#contactSection {
-  padding: 20px;
-  background: #0b2a4a;
-  color: white;
-  text-align: center;
+/* Container for the form */
+#contact-form {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
 }
 
-#contactForm {
-  max-width: 400px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-#contactForm input,
-#contactForm textarea {
-  padding: 8px;
+/* Input and textarea styling */
+#contact-form input,
+#contact-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  border: none;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-#contactForm button {
-  background: #b59b6a;
+#contact-form input:focus,
+#contact-form textarea:focus {
+  border-color: #0078d4;  /* highlight on focus */
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.3);
+  outline: none;
+}
+
+/* Button styling */
+#contact-form button {
+  background-color: #0078d4;
   color: white;
+  padding: 12px 20px;
   border: none;
-  padding: 10px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+#contact-form button:hover {
+  background-color: #005a9e;
+  transform: scale(1.03);
+}
+
+/* Tooltip or message feedback */
+#contact-form .form-message {
+  font-size: 14px;
+  color: green;
+  margin-top: 10px;
 }
 /* ---------- MODAL ---------- */
 .modal {
