@@ -527,6 +527,7 @@ function addMarker(lat, lng, data, html) {
       if (el) el.querySelector("div").classList.remove("marker-flash");
     });
   }
+}
 
   /*state.allMarkers.push(marker);
   group.addLayer(marker);
