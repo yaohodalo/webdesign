@@ -495,113 +495,105 @@ setLiturgicalTheme();
 
 /* ================= MAP ================= */
 function initMap() {
-  state.map = L.map("map", { maxZoom: 18, minZoom: 2 }).setView([20, 0], 2);
+  // 1️⃣ Initialize map
+  state.map = L.map("map", {
+    maxZoom: 18,
+    minZoom: 2
+  }).setView([20, 0], 2);
 
-  state.virtualMarkersGroup = L.markerClusterGroup();
-  state.physicalMarkersGroup = L.markerClusterGroup();
-
-  state.map.addLayer(state.virtualMarkersGroup);
-  state.map.addLayer(state.physicalMarkersGroup);
-
-	// Leaflet divIcons
-const virtualIcon = L.divIcon({ className: "marker-virtual" });
-const physicalIcon = L.divIcon({ className: "marker-physical" });
-	
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "&copy; OpenStreetMap"
   }).addTo(state.map);
 
-  state.map.on("click zoomstart dragstart", stopMusic);
+  state.allMarkers = []; // reset markers
 
-  // ---------------------
-  // ADD MARKER FUNCTION
-  // ---------------------
-  /*function addMarker(lat, lng, data, html) {
-    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-      console.warn("Invalid coordinates for marker:", data.name, lat, lng);
-      return;
-    }
+  // 2️⃣ Marker icons
+  const virtualIcon = L.divIcon({ className: "marker-virtual" });
+  const physicalIcon = L.divIcon({ className: "marker-physical" });
+
+  // 3️⃣ Add marker function
+  async function addMarker(lat, lng, data, html) {
+    if (!lat || !lng || isNaN(lat) || isNaN(lng)) return;
 
     const icon = data.type === "physical" ? physicalIcon : virtualIcon;
-    const group = data.type === "physical" ? state.physicalMarkersGroup : state.virtualMarkersGroup;
+    const marker = L.marker([lat, lng], { icon }).addTo(state.map);
 
-    const marker = L.marker([lat, lng], { icon });
     marker.chapelData = data;
     marker.bindPopup(html);
+    state.allMarkers.push(marker);
 
-    // live flashing
-    const isLive = !!data.stream || !!data.youtube;
-    if (isLive) {
-      marker.on("add", () => {
-        const el = marker.getElement();
-        if (el) el.querySelector("div")?.classList.add("marker-flash");
+    // Only flash virtual/live chapels
+    if (data.type === "virtual" && (data.stream || data.youtube)) {
+      marker.on("add", async () => {
+        const el = marker.getElement()?.querySelector("div");
+        if (!el) return;
+
+        const isLive = await checkStreamLive(data.stream || data.youtube);
+        if (isLive) el.classList.add("marker-flash");
       });
     }
-*/
-
-function addMarker(lat, lng, data, html) {
-  if (!lat || !lng || isNaN(lat) || isNaN(lng)) return;
-
-  const icon = data.type === "physical" ? physicalIcon : virtualIcon;
-  const marker = L.marker([lat, lng], { icon }).addTo(state.map);
-
-  marker.chapelData = data;
-  marker.bindPopup(html);
-
-  state.allMarkers.push(marker);
-
-  // Only flash if live stream is confirmed working
-  if (data.type === "virtual" && (data.stream || data.youtube)) {
-    checkStreamLive(data.stream || data.youtube).then(isLive => {
-      if (isLive) {
-        const el = marker.getElement();
-        if (el) el.querySelector("div")?.classList.add("marker-flash");
-      }
-    });
-  }
-}
-
-   // state.allMarkers.push(marker);
-    //group.addLayer(marker);
-  
-async function checkStreamLive(url) {
-  // Simple check for YouTube video availability
-  if (url.includes("youtube.com") || url.includes("youtu.be")) {
-    const videoId = url.split("v=")[1] || url.split("youtu.be/")[1];
-    if (!videoId) return false;
-
-    try {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=YOUR_API_KEY`);
-      const data = await res.json();
-      // If video exists and is live
-      return data.items?.[0]?.snippet?.liveBroadcastContent === "live";
-    } catch (e) {
-      return false;
-    }
   }
 
-  // For non-YouTube streams (HLS), assume working
-  // Optional: you can try HEAD request to check URL
-  return true;
-}
+  // 4️⃣ Add featured chapels
+  featuredChapels.forEach(c => {
+    addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
+      <b>🕯️ ${c.name}</b><br>
+      ${c.city}, ${c.country}<br><br>
+      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
+    `);
+  });
 
-featuredChapels.forEach(c => {
-  addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-    <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br>
-    <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
-  `);
-});
+  // 5️⃣ Add chapels from CSV/JSON
+  state.chapelData.forEach(c => {
+    const lat = parseFloat(c.latitude);
+    const lng = parseFloat(c.longitude);
+    if (isNaN(lat) || isNaN(lng)) return;
 
-state.physicalChapels.forEach(c => {
-  addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-    <b>⛪ ${c.name}</b><br>${c.address || "Location available"}
-  `);
-});
+    addMarker(lat, lng, { ...c, type: "virtual" }, `
+      <b>🕯️ ${c.name}</b><br>
+      ${c.city}, ${c.country}<br><br>
+      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
+    `);
+  });
 
- initSearch();
+  // 6️⃣ Add physical chapels
+  state.physicalChapels.forEach(c => {
+    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+      <b>⛪ ${c.name}</b><br>
+      📍 ${c.address ? c.address : "Location available"}<br><br>
+      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+    `);
+  });
+
+  // 7️⃣ Initialize search, nearby, saint of the day
+  initSearch();
   initNearby();
   loadSaintOfDay();
+}
+
+async function checkStreamLive(url) {
+  try {
+    if (!url) return false;
+
+    // YouTube live check
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      const videoId = url.split("v=")[1] || url.split("youtu.be/")[1];
+      if (!videoId) return false;
+
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=YOUR_API_KEY`
+      );
+      const data = await res.json();
+
+      return data.items?.[0]?.snippet?.liveBroadcastContent === "live";
+    }
+
+    // For other streams, assume live
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /* ================= SEARCH ================= */
