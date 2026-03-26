@@ -519,52 +519,6 @@ async function initMap() {
 })();
 /* ================= SAINT OF THE DAY ================= */
 
-async function loadSaintOfDay() {
-  try {
-    const res = await fetch("https://calapi.inadiutorium.cz/api/v0/en/calendars/default/today");
-    const data = await res.json();
-
-    const saintName = data.celebrations?.[0]?.title || "Saint of the Day";
-    const color = data.celebrations?.[0]?.colour || "green";
-
-    applyLiturgicalTheme(saintName, color);
-
-  } catch (err) {
-    console.warn("Saint API failed");
-    applyLiturgicalTheme("Saint of the Day", "green");
-  }
-}
-
-function setLiturgicalTheme() {
-  const now = new Date();
-  const year = now.getFullYear();
-
-  // Simple seasonal approximation
-  const lentStart = new Date(year, 1, 15);   // approx Feb 15
-  const easter = new Date(year, 3, 20);      // approx April
-  const adventStart = new Date(year, 10, 30); // approx Nov 30
-  const christmas = new Date(year, 11, 25);
-
-  let color = "#2e7d32"; // default green
-
-  if (now >= lentStart && now <= easter) {
-    color = "#5b2c6f"; // purple
-  }
-  else if (now >= adventStart && now < christmas) {
-    color = "#5b2c6f"; // purple
-  }
-  else if (
-    (now >= christmas) ||
-    (now <= new Date(year, 0, 10))
-  ) {
-    color = "#d4af37"; // gold
-  }
-
-  document.documentElement.style.setProperty("--liturgical-color", color);
-}
-
-setLiturgicalTheme();
-
 /* ================= MAP ================= */
 
 
