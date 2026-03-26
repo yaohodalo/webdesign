@@ -710,3 +710,5 @@ window.playChapel = function (stream) {
     frame.src = "";
   };
 };
+};
+
