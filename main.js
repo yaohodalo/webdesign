@@ -189,18 +189,26 @@ const featuredChapels = [
  ];
 
 /* ================= LANGUAGE ================= */
-function setLanguage() {
- // state.currentLang = lang;
-  const t = translations[state.currentLang];
+function setLanguage(lang) {
+  state.currentLang = lang;
+  const t = translations[lang];
 
   document.getElementById("startAdoration").innerText = t.start;
   document.getElementById("findChapel").innerText = t.nearby;
   document.getElementById("pledgeButton").innerText = t.pledge;
   document.getElementById("addChapelBtn").innerText = t.addChapel;
- document.getElementById("contactBtn").innerText = t.contact;
- document.querySelector("#contactForm button").innerText = t.send;
- document.getElementById("mission").innerText = t.mission;
-document.getElementById("missionstatement").innerText = t.missionstatement;
+
+  const contactBtn = document.getElementById("contactBtn");
+  if (contactBtn) contactBtn.innerText = t.contact;
+
+  const sendBtn = document.querySelector("#contactForm button");
+  if (sendBtn) sendBtn.innerText = t.send;
+
+  const mission = document.getElementById("mission");
+  if (mission) mission.innerText = t.mission;
+
+  const missionText = document.getElementById("missionstatement");
+  if (missionText) missionText.innerText = t.missionstatement;
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
