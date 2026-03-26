@@ -698,4 +698,3 @@ window.playChapel = function (stream) {
   };
 };
 
-});
