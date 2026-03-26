@@ -150,10 +150,17 @@
     <!-- Column 3: Get Involved -->
     <div class="footer-col">
       <h3>Get Involved</h3>
-      <button id="contactForm" class="footer-btn">Contact Us</button>
+      <button id="contactBtn" class="footer-btn">Contact Us</button>
+     <section id="contactSection" style="display:none; padding:40px;">
+     <h2>Contact Us</h2>
+     <form id="contactForm">
+    <input name="name" placeholder="Your Name" required />
+    <input name="email" type="email" placeholder="Email" required />
+    <textarea name="message" placeholder="Message" required></textarea>
+    <button type="submit">Send</button>
+   </form>
+   </section>
     </div>
-
-  </div>
 
   <!-- Bottom Bar -->
   <div class="footer-bottom">
@@ -224,15 +231,6 @@
   </div>
 </div>
 
-  <section id="contactSection" style="display:none; padding:40px;">
-  <h2>Contact Us</h2>
-   <form id="contactForm">
-    <input name="name" placeholder="Your Name" required />
-    <input name="email" type="email" placeholder="Email" required />
-    <textarea name="message" placeholder="Message" required></textarea>
-    <button type="submit">Send</button>
-  </form>
-</section>
 
 <!-- SCRIPTS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
