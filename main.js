@@ -550,6 +550,36 @@ function initMap() {
     const lng = parseFloat(c.longitude);
     if (isNaN(lat) || isNaN(lng)) return;
 
+	  async function checkStreamLive(url) {
+  try {
+    if (!url) return false;
+
+    // YouTube check
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      const videoId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
+      if (!videoId) return false;
+
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id=${videoId}&key=YOUR_API_KEY`
+      );
+      const data = await res.json();
+      const item = data.items?.[0];
+      if (!item) return false; // video unavailable
+
+      // Check if it is live now and not ended
+      const liveStatus = item.snippet?.liveBroadcastContent;
+      const actualLive = item.liveStreamingDetails?.concurrentViewers !== undefined;
+
+      return liveStatus === "live" && actualLive;
+    }
+
+    // For other streams, assume live if reachable
+    return true;
+  } catch {
+    return false;
+  }
+}
+
     addMarker(lat, lng, { ...c, type: "virtual" }, `
       <b>🕯️ ${c.name}</b><br>
       ${c.city}, ${c.country}<br><br>
@@ -572,29 +602,6 @@ function initMap() {
   loadSaintOfDay();
 }
 
-async function checkStreamLive(url) {
-  try {
-    if (!url) return false;
-
-    // YouTube live check
-    if (url.includes("youtube.com") || url.includes("youtu.be")) {
-      const videoId = url.split("v=")[1] || url.split("youtu.be/")[1];
-      if (!videoId) return false;
-
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=YOUR_API_KEY`
-      );
-      const data = await res.json();
-
-      return data.items?.[0]?.snippet?.liveBroadcastContent === "live";
-    }
-
-    // For other streams, assume live
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 /* ================= SEARCH ================= */
 function initSearch() {
