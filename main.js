@@ -539,6 +539,9 @@ function addMarker(lat, lng, data, html) {
     marker.on("remove", () => {
       const el = marker.getElement();
       if (el) el.querySelector("div").classList.remove("marker-flash");
+
+	state.allMarkers.push(marker);
+	group.addLayer(marker);
     });
   }
 }
