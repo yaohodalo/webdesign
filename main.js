@@ -495,24 +495,25 @@ setLiturgicalTheme();
 
 /* ================= MAP ================= */
 async function addMarker(lat, lng, data, html) {
-  let icon = virtualIcon;
-  let group = state.virtualMarkersGroup;
+  let icon = virtualIcon; // fallback
+  let group;
 
   if (data.type === "physical") {
     icon = physicalIcon;
     group = state.physicalMarkersGroup;
-  }
-
-  if (data.type === "virtual") {
+  } else {
+    // Check live stream only for virtual chapels
     const isLive = await checkStreamLive(data.stream || data.youtube);
-    if (!isLive) return; // skip offline streams
-    icon = goldIcon; // gold for live
+    if (!isLive) return; // skip offline
+    icon = goldIcon; // gold for live streams
+    group = state.virtualMarkersGroup;
   }
 
   const marker = L.marker([lat, lng], { icon });
   marker.chapelData = data;
   marker.bindPopup(html);
 
+  // Add flashing for live virtual markers
   if (data.type === "virtual" && icon === goldIcon) {
     marker.on("add", () => {
       const el = marker.getElement();
@@ -529,7 +530,12 @@ async function addMarker(lat, lng, data, html) {
 }
 
 async function initMap() {
-  state.map = L.map("map", { maxZoom: 18, minZoom: 2 }).setView([20, 0], 2);
+  state.map = L.map("map", {
+    maxZoom: 18,
+    minZoom: 2
+  }).setView([20, 0], 2);
+
+  // Use LayerGroups, no clustering
   state.virtualMarkersGroup = L.layerGroup().addTo(state.map);
   state.physicalMarkersGroup = L.layerGroup().addTo(state.map);
 
@@ -538,6 +544,10 @@ async function initMap() {
     attribution: "&copy; OpenStreetMap"
   }).addTo(state.map);
 
+  // Stop music on map interactions
+  state.map.on("click zoomstart dragstart", stopMusic);
+
+  // Add featured virtual chapels (live only)
   for (const c of featuredChapels) {
     await addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
       <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
@@ -545,6 +555,7 @@ async function initMap() {
     `);
   }
 
+  // Add other virtual chapels (live only)
   for (const c of state.chapelData) {
     const lat = parseFloat(c.latitude);
     const lng = parseFloat(c.longitude);
@@ -556,6 +567,7 @@ async function initMap() {
     `);
   }
 
+  // Add physical chapels (all)
   for (const c of state.physicalChapels) {
     await addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
       <b>⛪ ${c.name}</b><br>📍 ${c.address || "Location available"}<br><br>
@@ -567,7 +579,6 @@ async function initMap() {
   initNearby();
   loadSaintOfDay();
 }
-
 
 /* ================= SEARCH ================= */
 box.addEventListener("click", (e) => {
