@@ -253,20 +253,6 @@ function fadeOutMusic() {
   }, 120);
 }
 
-const virtualIcon = L.divIcon({
-  className: "custom-marker virtual",
-  html: `<div class="marker-circle virtual-circle"></div>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-});
-
-const physicalIcon = L.divIcon({
-  className: "custom-marker physical",
-  html: `<div class="marker-circle physical-circle"></div>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-});
-
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -447,13 +433,20 @@ contactForm?.addEventListener("submit", async (e) => {
   }
 /* ================= MAP FUNCTIONS ================= */
 
-// Physical marker
+ const virtualIcon = L.divIcon({
+  className: "custom-marker virtual",
+  html: `<div class="marker-circle virtual-circle"></div>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
+
 const physicalIcon = L.divIcon({
   className: "custom-marker physical",
   html: `<div class="marker-circle physical-circle"></div>`,
   iconSize: [20, 20],
   iconAnchor: [10, 10],
 });
+
 
 // Check if a YouTube stream is live
 async function checkStreamLive(url) {
@@ -469,28 +462,28 @@ async function checkStreamLive(url) {
 }
 
 // Add a marker to the map
+// Only add markers if YouTube is live
 async function addMarker(lat, lng, data, html) {
-  let icon = physicalIcon; // default physical
-  let group;
+  let icon, group;
 
   if (data.type === "physical") {
     icon = physicalIcon;
     group = state.physicalMarkersGroup;
   } else if (data.type === "virtual") {
-    // Only add live virtual chapels
-    const isLive = await checkStreamLive(data.stream || data.youtube);
-    if (!isLive) return; // skip offline
+    const url = data.stream || data.youtube;
+    if (!url) return; // skip if no URL
+    const isLive = await checkStreamLive(url);
+    if (!isLive) return; // skip if offline
     icon = goldIcon;
     group = state.virtualMarkersGroup;
   } else {
-    return; // unknown type
+    return;
   }
 
   const marker = L.marker([lat, lng], { icon });
   marker.chapelData = data;
   marker.bindPopup(html);
 
-  // Flashing effect for live virtual chapels
   if (data.type === "virtual" && icon === goldIcon) {
     marker.on("add", () => {
       const el = marker.getElement();
@@ -505,7 +498,6 @@ async function addMarker(lat, lng, data, html) {
   group.addLayer(marker);
   state.allMarkers.push(marker);
 }
-
 // Initialize the map and markers
 async function initMap() {
   state.map = L.map("map", { maxZoom: 18, minZoom: 2 }).setView([20, 0], 2);
