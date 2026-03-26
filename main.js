@@ -188,10 +188,11 @@ function setLanguage(lang) {
 /* ================= MUSIC ================= */
 function updateMusicButton() {
   if (!state.music || !state.musicBtn) return;
+	const t = translations[state.currentLang];
 
   state.musicBtn.innerText = state.music.paused
-    ? translations[state.currentLang].musicPlay
-    : translations[state.currentLang].musicPause;
+    ? t.musicPlay
+    : t.musicPause;
 }
 
 function stopMusic() {
@@ -234,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
       state.music.pause();
     }
 
-    updateMusicButton();
+    if (state.musicBtn) updateMusicButton();
   });
 
   // autoplay once
@@ -525,6 +526,8 @@ function initSearch() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+
 const box = document.getElementById("suggestions");
 
 if (box) {
@@ -551,6 +554,7 @@ if (box) {
     }
   });
 }
+});
 /* ================= NEARBY ================= */
 function initNearby() {
   document.getElementById("findChapel").addEventListener("click", () => {
