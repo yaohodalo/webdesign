@@ -426,9 +426,9 @@ contactForm?.addEventListener("submit", async (e) => {
   }
 /* ================= MAP FUNCTIONS ================= */
 
- const virtualIcon = L.divIcon({
-  className: "custom-marker virtual",
-  html: `<div class="marker-circle virtual-circle"></div>`,
+const goldIcon = L.divIcon({
+  className: "custom-marker gold",
+  html: `<div class="marker-circle gold-circle"></div>`,
   iconSize: [20, 20],
   iconAnchor: [10, 10],
 });
@@ -450,7 +450,7 @@ async function checkStreamLive(url) {
     const liveUrl = await getLiveStream(channelId);
     return !!liveUrl; // only true if live
   } catch {
-    return true;
+    return false;
   }
 }
 
@@ -467,7 +467,7 @@ async function addMarker(lat, lng, data, html) {
     if (!url) return; // skip if no URL
     const isLive = await checkStreamLive(url);
     if (!isLive) return; // skip if offline
-    icon = virtualIcon;
+    icon = goldIcon;
     group = state.virtualMarkersGroup;
   } else {
     return;
@@ -477,7 +477,7 @@ async function addMarker(lat, lng, data, html) {
   marker.chapelData = data;
   marker.bindPopup(html);
 
-  if (data.type === "virtual" && icon === virtualIcon) {
+  if (data.type === "virtual" && icon === goldIcon) {
     marker.on("add", () => {
       const el = marker.getElement();
       if (el) el.querySelector("div").classList.add("marker-flash");
