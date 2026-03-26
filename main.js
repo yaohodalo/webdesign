@@ -409,17 +409,8 @@ const physicalIcon = L.divIcon({
 
 // Check if a YouTube stream is live
 async function checkStreamLive(url) {
-  if (!url) return false;
-  try {
-    const channelId = await getChannelIdFromVideo(url);
-    if (!channelId) return false;
-    const liveUrl = await getLiveStream(channelId);
-    return !!liveUrl; // only true if live
-  } catch {
-    return false;
-  }
+  return true; // TEMP: treat all as live
 }
-
 // Add a marker to the map
 // Only add markers if YouTube is live
 async function addMarker(lat, lng, data, html) {
