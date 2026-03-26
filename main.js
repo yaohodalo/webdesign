@@ -540,14 +540,16 @@ async function initMap() {
 }
 
 // Load data and initialize map safely
-(async function loadDataAndInitMap() {
-  const [csvText, jsonData] = await Promise.all([
-    fetch("Adorationchapels.csv").then(r => r.text()),
-    fetch("adoration_chapels_20_verified.json").then(r => r.json()),
-  ]);
 
+ Promise.all([
+  fetch("Adorationchapels.csv").then(r => r.text()),
+  fetch("adoration_chapels_20_verified.json").then(r => r.json())
+])
+.then(([csvText, jsonData]) => {
   state.chapelData = Papa.parse(csvText, { header: true }).data;
   state.physicalChapels = jsonData;
+  initMap();
+});
 
   await initMap();
 })();
