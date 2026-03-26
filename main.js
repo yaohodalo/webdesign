@@ -18,6 +18,10 @@ const translations = {  en: {
     addChapel: "Add a Chapel",
     musicPlay: "🎵 Play Music",
     musicPause: "⏸ Pause Music",
+	contact: "Contact Us",
+    send: "Send",
+	mission: "Our Mission",
+	missionstatement: 'Helping people worldwide commit to an hour of Eucharistic Adoration and unite in prayer.",
     verses: [
       "“Be still and know that I am God.” — Psalm 46:10",
       "“Could you not watch with me one hour?” — Matthew 26:40",
@@ -32,6 +36,10 @@ const translations = {  en: {
     addChapel: "Agregar Capilla",
     musicPlay: "🎵 Reproducir música",
     musicPause: "⏸ Pausa Música",
+	contact: "Contáctanos",
+	send: "Enviar",
+	mission: "Nuestra Misión",
+	missionstatement: "Ayudando a personas en todo el mundo a comprometerse a una hora de Adoración Eucarística y unirse en oración."
     verses: [
       "“Estad quietos y conoced que yo soy Dios.” — Salmo 46:10",
       "“¿No habéis podido velar conmigo una hora?” — Mateo 26:40",
@@ -46,6 +54,10 @@ const translations = {  en: {
     addChapel: "Ajouter une chapelle",
     musicPlay: "🎵 Jouer la musique",
     musicPause: "⏸ Pause Musique",
+	contact: "Contáctanos",
+	send: "Enviar",
+	mission: "Nuestra Misión",
+	missionstatement: "Ayudando a personas en todo el mundo a comprometerse a una hora de Adoración Eucarística y unirse en oración."
     verses: [
       "“Arrêtez, et sachez que je suis Dieu.” — Psaume 46:10",
       "“N'avez-vous pas pu veiller une heure avec moi ?” — Matthieu 26:40",
@@ -60,6 +72,11 @@ const translations = {  en: {
     addChapel: "Aggiungi Cappella",
     musicPlay: "🎵 Riproduci musica",
     musicPause: "⏸ Metti in Pausa",
+	contact: "Contattaci",
+	send: "Invia",
+	mission: "La Nostra Missione",
+	missionstatement: "Aiutare le persone in tutto il mondo a impegnarsi per un'ora di Adorazione Eucaristica e a unirsi nella preghiera."
+
     verses: [
       "“Fermatevi e sappiate che io sono Dio.” — Salmo 46:10",
       "“Non siete riusciti a vegliare un'ora con me?” — Matteo 26:40",
@@ -176,6 +193,10 @@ function setLanguage() {
   document.getElementById("findChapel").innerText = t.nearby;
   document.getElementById("pledgeButton").innerText = t.pledge;
   document.getElementById("addChapelBtn").innerText = t.addChapel;
+ document.getElementById("contactBtn").innerText = t.contact;
+ document.querySelector("#contactForm button").innerText = t.send;
+ document.getElementById("mission").innerText = t.mission;
+	document.getElementById("missionstatement").innerText = t.missionstatement;
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
@@ -188,6 +209,7 @@ function setLanguage() {
 /* ================= MUSIC ================= */
 function updateMusicButton() {
   if (!state.music || !state.musicBtn) return;
+	
 	const t = translations[state.currentLang];
 
   state.musicBtn.innerText = state.music.paused
@@ -203,7 +225,7 @@ function stopMusic() {
 }
 
 function fadeOutMusic() {
-  if (!state.music) return;
+  if (!state.music || !state.musicBtn) return;
 
   let vol = state.music.volume;
   const fade = setInterval(() => {
@@ -218,6 +240,20 @@ function fadeOutMusic() {
     }
   }, 120);
 }
+
+const virtualIcon = L.divIcon({
+  className: "custom-marker virtual",
+  html: `<div class="marker-circle virtual-circle"></div>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
+
+const physicalIcon = L.divIcon({
+  className: "custom-marker physical",
+  html: `<div class="marker-circle physical-circle"></div>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
 
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -253,13 +289,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
 const contactBtn = document.getElementById("contactBtn");
 const contactSection = document.getElementById("contactSection");
 
-if (contactBtn && contactSection) {
-  contactBtn.addEventListener("click", () => {
-    contactSection.style.display = "block";
 
+if (contactBtn && contactSection) {
+  contactBtn?.addEventListener("click", () => {
+  contactSection.style.display = "block";
+  contactSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
     contactSection.scrollIntoView({
       behavior: "smooth",
       block: "center"
@@ -318,37 +360,29 @@ if (contactBtn && contactSection) {
 
 
 // ✅ CONTACT FORM (FIXED + SAFER)
-const contactForm = document.getElementById("contactForm");
+contactForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-if (contactForm) {
-  contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const data = Object.fromEntries(new FormData(contactForm));
 
-    const data = Object.fromEntries(new FormData(contactForm));
+  try {
+    const res = await fetch("https://formspree.io/f/REAL_ID_HERE", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-    try {
-      const res = await fetch("https://formspree.io/f/xjgpvape", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (res.ok) {
-        alert("Message sent!");
-        contactForm.reset();
-      } else {
-        alert("Error sending message.");
-      }
-
-    } catch {
-      alert("Network error.");
+    if (res.ok) {
+      alert("Message sent successfully!");
+      contactForm.reset();
+    } else {
+      alert("Failed to send message.");
     }
-  });
-}
 
+  } catch (err) {
+    alert("Network error.");
+  }
+});
 
   /* ================= YOUTUBE API ================= */
 
@@ -454,23 +488,58 @@ setLiturgicalTheme();
 /* ================= MAP ================= */
 function initMap() {
   state.map = L.map("map").setView([20, 0], 2);
+  state.virtualMarkersGroup = L.markerClusterGroup();
+  state.physicalMarkersGroup = L.markerClusterGroup();
+
+state.map.addLayer(state.virtualMarkersGroup);
+state.map.addLayer(state.physicalMarkersGroup);
 
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
     .addTo(state.map);
 
-  state.markersGroup = L.markerClusterGroup();
-  state.map.addLayer(state.markersGroup);
+  //state.markersGroup = L.markerClusterGroup();
+  //state.map.addLayer(state.markersGroup);
 
   state.map.on("click zoomstart dragstart", stopMusic);
 
+function addMarker(lat, lng, data, html) {
+  let icon = virtualIcon;
+  let group = state.virtualMarkersGroup;
+
+  if (data.type === "physical") {
+    icon = physicalIcon;
+    group = state.physicalMarkersGroup;
+  }
+
+  const marker = L.marker([lat, lng], { icon });
+  marker.chapelData = data;
+  marker.bindPopup(html);
+
+  // If it's a live stream, add flashing
+  const isLive = !!data.stream || !!data.youtube; // or some live flag you use
+  if (isLive) {
+    marker.on("add", () => {
+      const el = marker.getElement();
+      if (el) el.querySelector("div").classList.add("marker-flash");
+    });
+    marker.on("remove", () => {
+      const el = marker.getElement();
+      if (el) el.querySelector("div").classList.remove("marker-flash");
+    });
+  }
+
+  /*state.allMarkers.push(marker);
+  group.addLayer(marker);
+
   function addMarker(lat, lng, data, html) {
     const m = L.marker([lat, lng]);
+	  
     m.chapelData = data;
     m.bindPopup(html);
 
     state.allMarkers.push(m);
     state.markersGroup.addLayer(m);
-  }
+  }*/
 
   featuredChapels.forEach(c => {
     addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
