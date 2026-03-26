@@ -494,37 +494,39 @@ function setLiturgicalTheme() {
 setLiturgicalTheme();
 
 /* ================= MAP ================= */
-function initMap() {
-  // 1️⃣ Initialize map
-  state.map = L.map("map", {
-    maxZoom: 18,
-    minZoom: 2
-  }).setView([20, 0], 2);
+async function initMap() {
+  // Initialize map
+  state.map = L.map("map", { maxZoom: 18, minZoom: 2 }).setView([20, 0], 2);
 
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "&copy; OpenStreetMap"
   }).addTo(state.map);
 
-  state.allMarkers = []; // reset markers
+  state.allMarkers = [];
 
-  // 2️⃣ Marker icons
-  const virtualIcon = L.divIcon({ className: "marker-virtual" });
-  const physicalIcon = L.divIcon({ className: "marker-physical" });
+  state.map.on("click zoomstart dragstart", stopMusic);
 
-  // 3️⃣ Add marker function
+  // Helper to add marker
   async function addMarker(lat, lng, data, html) {
     if (!lat || !lng || isNaN(lat) || isNaN(lng)) return;
 
-    const icon = data.type === "physical" ? physicalIcon : virtualIcon;
-    const marker = L.marker([lat, lng], { icon }).addTo(state.map);
+    let icon = data.type === "physical" ? physicalIcon : virtualIcon;
 
+    // Check virtual live streams
+    if (data.type === "virtual") {
+      const isLive = await checkStreamLive(data.stream || data.youtube);
+      if (!isLive) return; // skip unavailable or offline streams
+      icon = goldIcon; // gold for live
+    }
+
+    const marker = L.marker([lat, lng], { icon }).addTo(state.map);
     marker.chapelData = data;
     marker.bindPopup(html);
     state.allMarkers.push(marker);
 
-    // Only flash virtual/live chapels
-    if (data.type === "virtual" && (data.stream || data.youtube)) {
+    // Add flashing animation for live virtual chapels
+    if (data.type === "virtual") {
       marker.on("add", async () => {
         const el = marker.getElement()?.querySelector("div");
         if (!el) return;
@@ -535,68 +537,42 @@ function initMap() {
     }
   }
 
-  // 4️⃣ Add featured chapels
-  featuredChapels.forEach(c => {
-    addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>
-      ${c.city}, ${c.country}<br><br>
-      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
-    `);
-  });
+  // Add Featured Chapels
+  for (const c of featuredChapels) {
+    await addMarker(
+      c.lat,
+      c.lng,
+      { ...c, type: "virtual" },
+      `<b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
+      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>`
+    );
+  }
 
-  // 5️⃣ Add chapels from CSV/JSON
-  state.chapelData.forEach(c => {
+  // Add CSV chapel data
+  for (const c of state.chapelData) {
     const lat = parseFloat(c.latitude);
     const lng = parseFloat(c.longitude);
-    if (isNaN(lat) || isNaN(lng)) return;
-
-	  async function checkStreamLive(url) {
-  try {
-    if (!url) return false;
-
-    // YouTube check
-    if (url.includes("youtube.com") || url.includes("youtu.be")) {
-      const videoId = url.includes("v=") ? url.split("v=")[1].split("&")[0] : url.split("youtu.be/")[1];
-      if (!videoId) return false;
-
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&id=${videoId}&key=YOUR_API_KEY`
-      );
-      const data = await res.json();
-      const item = data.items?.[0];
-      if (!item) return false; // video unavailable
-
-      // Check if it is live now and not ended
-      const liveStatus = item.snippet?.liveBroadcastContent;
-      const actualLive = item.liveStreamingDetails?.concurrentViewers !== undefined;
-
-      return liveStatus === "live" && actualLive;
-    }
-
-    // For other streams, assume live if reachable
-    return true;
-  } catch {
-    return false;
+    await addMarker(
+      lat,
+      lng,
+      { ...c, type: "virtual" },
+      `<b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
+      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}`
+    );
   }
-}
 
-    addMarker(lat, lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>
-      ${c.city}, ${c.country}<br><br>
-      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
-    `);
-  });
+  // Add physical chapels
+  for (const c of state.physicalChapels) {
+    await addMarker(
+      c.lat,
+      c.lng,
+      { ...c, type: "physical" },
+      `<b>⛪ ${c.name}</b><br>📍 ${c.address || "Location available"}<br><br>
+      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}`
+    );
+  }
 
-  // 6️⃣ Add physical chapels
-  state.physicalChapels.forEach(c => {
-    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-      <b>⛪ ${c.name}</b><br>
-      📍 ${c.address ? c.address : "Location available"}<br><br>
-      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-    `);
-  });
-
-  // 7️⃣ Initialize search, nearby, saint of the day
+  // Init other features
   initSearch();
   initNearby();
   loadSaintOfDay();
