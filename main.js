@@ -270,6 +270,22 @@ const physicalIcon = L.divIcon({
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
 
+const contactForm = document.getElementById("contactForm");
+
+// Define goldIcon for live virtual markers
+const goldIcon = L.divIcon({
+  className: "custom-marker gold",
+  html: `<div class="marker-circle gold-circle"></div>`,
+  iconSize: [20, 20],
+  iconAnchor: [10, 10],
+});
+
+// Add a placeholder checkStreamLive function (or implement your logic)
+async function checkStreamLive(url) {
+  // Basic placeholder: always return true
+  return true;
+}
+
   state.music = document.getElementById("bgMusic");
   state.musicBtn = document.getElementById("musicToggle");
 
