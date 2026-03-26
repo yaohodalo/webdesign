@@ -21,7 +21,7 @@ const translations = {  en: {
 	contact: "Contact Us",
     send: "Send",
 	mission: "Our Mission",
-	missionstatement: 'Helping people worldwide commit to an hour of Eucharistic Adoration and unite in prayer.",
+	missionstatement: "Helping people worldwide commit to an hour of Eucharistic Adoration and unite in prayer.",
     verses: [
       "“Be still and know that I am God.” — Psalm 46:10",
       "“Could you not watch with me one hour?” — Matthew 26:40",
@@ -39,7 +39,7 @@ const translations = {  en: {
 	contact: "Contáctanos",
 	send: "Enviar",
 	mission: "Nuestra Misión",
-	missionstatement: "Ayudando a personas en todo el mundo a comprometerse a una hora de Adoración Eucarística y unirse en oración."
+	missionstatement: "Ayudando a personas en todo el mundo a comprometerse a una hora de Adoración Eucarística y unirse en oración.",
     verses: [
       "“Estad quietos y conoced que yo soy Dios.” — Salmo 46:10",
       "“¿No habéis podido velar conmigo una hora?” — Mateo 26:40",
@@ -57,7 +57,7 @@ const translations = {  en: {
 	contact: "Contáctanos",
 	send: "Enviar",
 	mission: "Nuestra Misión",
-	missionstatement: "Ayudando a personas en todo el mundo a comprometerse a una hora de Adoración Eucarística y unirse en oración."
+	missionstatement: "Ayudando a personas en todo el mundo a comprometerse a una hora de Adoración Eucarística y unirse en oración.",
     verses: [
       "“Arrêtez, et sachez que je suis Dieu.” — Psaume 46:10",
       "“N'avez-vous pas pu veiller une heure avec moi ?” — Matthieu 26:40",
@@ -75,7 +75,7 @@ const translations = {  en: {
 	contact: "Contattaci",
 	send: "Invia",
 	mission: "La Nostra Missione",
-	missionstatement: "Aiutare le persone in tutto il mondo a impegnarsi per un'ora di Adorazione Eucaristica e a unirsi nella preghiera."
+	missionstatement: "Aiutare le persone in tutto il mondo a impegnarsi per un'ora di Adorazione Eucaristica e a unirsi nella preghiera.",
 
     verses: [
       "“Fermatevi e sappiate che io sono Dio.” — Salmo 46:10",
@@ -91,6 +91,10 @@ const translations = {  en: {
     addChapel: "Adicionar Capela",
     musicPlay: "🎵 Tocar música",
     musicPause: "⏸ Pausar Música",
+	contact: "Contacte-nos",
+	send: "Enviar",
+	mission: "A Nossa Missão",
+    missionstatement: "Ajudar as pessoas de todo o mundo a comprometerem-se com uma hora de Adoração Eucarística e a unirem-se em oração.",
     verses: [
       "“Aquietai-vos e sabei que eu sou Deus.” — Salmo 46:10",
       "“Não pudestes vigiar uma hora comigo?” — Mateus 26:40",
@@ -196,7 +200,7 @@ function setLanguage() {
  document.getElementById("contactBtn").innerText = t.contact;
  document.querySelector("#contactForm button").innerText = t.send;
  document.getElementById("mission").innerText = t.mission;
-	document.getElementById("missionstatement").innerText = t.missionstatement;
+document.getElementById("missionstatement").innerText = t.missionstatement;
 
   const verseEl = document.querySelector(".verse-track");
   if (verseEl) {
