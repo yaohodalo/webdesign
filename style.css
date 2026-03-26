@@ -181,7 +181,7 @@ body {
   100% { transform: translateX(-100%); }
 }
 /* Add this to your CSS */
-.custom-marker .marker-circle {
+.marker-circle {
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -190,10 +190,14 @@ body {
 
 .gold-circle {
   background-color: gold !important;
+   box-shadow: 0 0 12px gold;
 }
 
 .physical-circle {
   background-color: green !important;
+}
+.virtual-circle {
+  background-color: red !important;
 }
 
 .marker-flash {
