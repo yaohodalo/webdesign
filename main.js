@@ -306,11 +306,7 @@ if (contactBtn && contactSection) {
     block: "start"
   });
 });
-    contactSection.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-  });
+  };
 }
   // language
   setLanguage("en");
@@ -635,8 +631,8 @@ function initNearby() {
 
       const nearby = state.allMarkers.slice(0, 30);
 
-      state.markersGroup.clearLayers();
-      state.markersGroup.addLayers(nearby);
+      state.physicalMarkersGroup.clearLayers();
+      state.physicalMarkersGroup.addLayers(nearby);
 
       state.map.setView([latitude, longitude], 10);
     });
