@@ -447,14 +447,6 @@ contactForm?.addEventListener("submit", async (e) => {
   }
 /* ================= MAP FUNCTIONS ================= */
 
-// Virtual (live) marker
-const goldIcon = L.divIcon({
-  className: "custom-marker gold",
-  html: `<div class="marker-circle gold-circle"></div>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-});
-
 // Physical marker
 const physicalIcon = L.divIcon({
   className: "custom-marker physical",
