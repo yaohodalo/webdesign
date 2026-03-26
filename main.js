@@ -307,7 +307,7 @@ if (contactBtn && contactSection) {
   });
 });
   };
-}
+
   // language
   setLanguage("en");
   document.getElementById("languageSelect")
