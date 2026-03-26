@@ -472,6 +472,57 @@ async function checkStreamLive(url) {
   group.addLayer(marker);
   state.allMarkers.push(marker);
 }
+	async function initMap() {
+  state.map = L.map("map", {
+    maxZoom: 18,
+    minZoom: 2
+  }).setView([20, 0], 2);
+
+  // Use LayerGroups, no clustering
+  state.virtualMarkersGroup = L.layerGroup().addTo(state.map);
+  state.physicalMarkersGroup = L.layerGroup().addTo(state.map);
+
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap"
+  }).addTo(state.map);
+
+  // Stop music on map interactions
+  state.map.on("click zoomstart dragstart", stopMusic);
+
+  // Add featured virtual chapels (live only)
+  for (const c of featuredChapels) {
+    await addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
+      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
+      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
+    `);
+  }
+
+  // Add other virtual chapels (live only)
+  for (const c of state.chapelData) {
+    const lat = parseFloat(c.latitude);
+    const lng = parseFloat(c.longitude);
+    if (isNaN(lat) || isNaN(lng)) continue;
+
+    await addMarker(lat, lng, { ...c, type: "virtual" }, `
+      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
+      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
+    `);
+  }
+
+  // Add physical chapels (all)
+  for (const c of state.physicalChapels) {
+    await addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+      <b>⛪ ${c.name}</b><br>📍 ${c.address || "Location available"}<br><br>
+      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+    `);
+  }
+
+  initSearch();
+  initNearby();
+  loadSaintOfDay();
+}
+
 
 	
   // load data
@@ -536,56 +587,6 @@ function setLiturgicalTheme() {
 setLiturgicalTheme();
 
 /* ================= MAP ================= */
-async function initMap() {
-  state.map = L.map("map", {
-    maxZoom: 18,
-    minZoom: 2
-  }).setView([20, 0], 2);
-
-  // Use LayerGroups, no clustering
-  state.virtualMarkersGroup = L.layerGroup().addTo(state.map);
-  state.physicalMarkersGroup = L.layerGroup().addTo(state.map);
-
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "&copy; OpenStreetMap"
-  }).addTo(state.map);
-
-  // Stop music on map interactions
-  state.map.on("click zoomstart dragstart", stopMusic);
-
-  // Add featured virtual chapels (live only)
-  for (const c of featuredChapels) {
-    await addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
-      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
-    `);
-  }
-
-  // Add other virtual chapels (live only)
-  for (const c of state.chapelData) {
-    const lat = parseFloat(c.latitude);
-    const lng = parseFloat(c.longitude);
-    if (isNaN(lat) || isNaN(lng)) continue;
-
-    await addMarker(lat, lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
-      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
-    `);
-  }
-
-  // Add physical chapels (all)
-  for (const c of state.physicalChapels) {
-    await addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-      <b>⛪ ${c.name}</b><br>📍 ${c.address || "Location available"}<br><br>
-      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-    `);
-  }
-
-  initSearch();
-  initNearby();
-  loadSaintOfDay();
-}
 
 
 
