@@ -452,6 +452,26 @@ async function checkStreamLive(url) {
   const liveUrl = await getLiveStream(channelId);
   return !!liveUrl;
 }
+	async function addMarker(lat, lng, data, html) {
+  let icon = virtualIcon;
+  let group;
+
+  if (data.type === "physical") {
+    icon = physicalIcon;
+    group = state.physicalMarkersGroup;
+  } else {
+    const isLive = await checkStreamLive(data.stream || data.youtube);
+    if (!isLive) return; // skip offline
+    icon = goldIcon; // gold for live streams
+    group = state.virtualMarkersGroup;
+  }
+
+  const marker = L.marker([lat, lng], { icon });
+  marker.chapelData = data;
+  marker.bindPopup(html);
+  group.addLayer(marker);
+  state.allMarkers.push(marker);
+}
 
 	
   // load data
@@ -516,42 +536,6 @@ function setLiturgicalTheme() {
 setLiturgicalTheme();
 
 /* ================= MAP ================= */
-
-async function addMarker(lat, lng, data, html) {
-  let icon = virtualIcon; // fallback
-  let group;
-
-  if (data.type === "physical") {
-    icon = physicalIcon;
-    group = state.physicalMarkersGroup;
-  } else {
-    // Check live stream only for virtual chapels
-    const isLive = await checkStreamLive(data.stream || data.youtube);
-    if (!isLive) return; // skip offline
-    icon = goldIcon; // gold for live streams
-    group = state.virtualMarkersGroup;
-  }
-
-  const marker = L.marker([lat, lng], { icon });
-  marker.chapelData = data;
-  marker.bindPopup(html);
-
-  // Add flashing for live virtual markers
-  if (data.type === "virtual" && icon === goldIcon) {
-    marker.on("add", () => {
-      const el = marker.getElement();
-      if (el) el.querySelector("div").classList.add("marker-flash");
-    });
-    marker.on("remove", () => {
-      const el = marker.getElement();
-      if (el) el.querySelector("div").classList.remove("marker-flash");
-    });
-  }
-
-  group.addLayer(marker);
-  state.allMarkers.push(marker);
-}
-
 async function initMap() {
   state.map = L.map("map", {
     maxZoom: 18,
@@ -602,6 +586,8 @@ async function initMap() {
   initNearby();
   loadSaintOfDay();
 }
+
+
 
 /* ================= SEARCH ================= */
 function initSearch() {
