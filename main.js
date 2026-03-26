@@ -445,7 +445,13 @@ contactForm?.addEventListener("submit", async (e) => {
       return null;
     }
   }
-
+// ✅ This must be **before addMarker**
+async function checkStreamLive(url) {
+  const channelId = await getChannelIdFromVideo(url);
+  if (!channelId) return false;
+  const liveUrl = await getLiveStream(channelId);
+  return !!liveUrl;
+}
 
 	
   // load data
@@ -510,6 +516,7 @@ function setLiturgicalTheme() {
 setLiturgicalTheme();
 
 /* ================= MAP ================= */
+
 async function addMarker(lat, lng, data, html) {
   let icon = virtualIcon; // fallback
   let group;
