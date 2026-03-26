@@ -495,74 +495,56 @@ setLiturgicalTheme();
 
 /* ================= MAP ================= */
 function initMap() {
-  state.map = L.map("map", {
-  maxZoom: 18,
-  minZoom: 2
-}).setView([20, 0], 2);
-	
+  state.map = L.map("map", { maxZoom: 18, minZoom: 2 }).setView([20, 0], 2);
+
   state.virtualMarkersGroup = L.markerClusterGroup();
   state.physicalMarkersGroup = L.markerClusterGroup();
 
-state.map.addLayer(state.virtualMarkersGroup);
-state.map.addLayer(state.physicalMarkersGroup);
+  state.map.addLayer(state.virtualMarkersGroup);
+  state.map.addLayer(state.physicalMarkersGroup);
 
-L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: "&copy; OpenStreetMap"
-}).addTo(state.map);
-
-  //state.markersGroup = L.markerClusterGroup();
-  //state.map.addLayer(state.markersGroup);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap"
+  }).addTo(state.map);
 
   state.map.on("click zoomstart dragstart", stopMusic);
 
-function addMarker(lat, lng, data, html) {
-  let icon = virtualIcon;
-  let group = state.virtualMarkersGroup;
-
-  if (data.type === "physical") {
-    icon = physicalIcon;
-    group = state.physicalMarkersGroup;
-  }
-
-  const marker = L.marker([lat, lng], { icon });
-  marker.chapelData = data;
-  marker.bindPopup(html);
-
-  // If it's a live stream, add flashing
-  const isLive = !!data.stream || !!data.youtube; // or some live flag you use
-  if (isLive) {
-    marker.on("add", () => {
-      const el = marker.getElement();
-      if (el) el.querySelector("div").classList.add("marker-flash");
-    });
-    marker.on("remove", () => {
-      const el = marker.getElement();
-      if (el) el.querySelector("div").classList.remove("marker-flash");
-
-	state.allMarkers.push(marker);
-	group.addLayer(marker);
-    });
-  }
-}
-
-  /*state.allMarkers.push(marker);
-  group.addLayer(marker);
-
+  // ---------------------
+  // ADD MARKER FUNCTION
+  // ---------------------
   function addMarker(lat, lng, data, html) {
-    const m = L.marker([lat, lng]);
-	  
-    m.chapelData = data;
-    m.bindPopup(html);
+    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+      console.warn("Invalid coordinates for marker:", data.name, lat, lng);
+      return;
+    }
 
-    state.allMarkers.push(m);
-    state.markersGroup.addLayer(m);
-  }*/
+    const icon = data.type === "physical" ? physicalIcon : virtualIcon;
+    const group = data.type === "physical" ? state.physicalMarkersGroup : state.virtualMarkersGroup;
 
+    const marker = L.marker([lat, lng], { icon });
+    marker.chapelData = data;
+    marker.bindPopup(html);
+
+    // live flashing
+    const isLive = !!data.stream || !!data.youtube;
+    if (isLive) {
+      marker.on("add", () => {
+        const el = marker.getElement();
+        if (el) el.querySelector("div")?.classList.add("marker-flash");
+      });
+    }
+
+    state.allMarkers.push(marker);
+    group.addLayer(marker);
+  }
+
+  // ---------------------
+  // ADD MARKERS
+  // ---------------------
   featuredChapels.forEach(c => {
     addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>
-      ${c.city}, ${c.country}<br><br>
+      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
       <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
     `);
   });
@@ -570,27 +552,23 @@ function addMarker(lat, lng, data, html) {
   state.chapelData.forEach(c => {
     const lat = parseFloat(c.latitude);
     const lng = parseFloat(c.longitude);
-    if (isNaN(lat) || isNaN(lng)) return;
-
     addMarker(lat, lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>
-      ${c.city}, ${c.country}<br><br>
+      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
       ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
     `);
   });
 
-	state.physicalChapels.forEach(c => {
-   addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-  <b>⛪ ${c.name}</b><br>
-  📍 ${c.address ? c.address : "Location available"}<br><br>
-  ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-`);});
+  state.physicalChapels.forEach(c => {
+    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+      <b>⛪ ${c.name}</b><br>📍 ${c.address || "Location available"}<br><br>
+      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
+    `);
+  });
 
   initSearch();
   initNearby();
   loadSaintOfDay();
 }
-
 /* ================= SEARCH ================= */
 function initSearch() {
   const input = document.getElementById("searchInput");
