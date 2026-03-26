@@ -503,6 +503,10 @@ function initMap() {
   state.map.addLayer(state.virtualMarkersGroup);
   state.map.addLayer(state.physicalMarkersGroup);
 
+	// Leaflet divIcons
+const virtualIcon = L.divIcon({ className: "marker-virtual" });
+const physicalIcon = L.divIcon({ className: "marker-physical" });
+	
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: "&copy; OpenStreetMap"
@@ -513,7 +517,7 @@ function initMap() {
   // ---------------------
   // ADD MARKER FUNCTION
   // ---------------------
-  function addMarker(lat, lng, data, html) {
+  /*function addMarker(lat, lng, data, html) {
     if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
       console.warn("Invalid coordinates for marker:", data.name, lat, lng);
       return;
@@ -534,41 +538,72 @@ function initMap() {
         if (el) el.querySelector("div")?.classList.add("marker-flash");
       });
     }
+*/
 
-    state.allMarkers.push(marker);
-    group.addLayer(marker);
+function addMarker(lat, lng, data, html) {
+  if (!lat || !lng || isNaN(lat) || isNaN(lng)) return;
+
+  const icon = data.type === "physical" ? physicalIcon : virtualIcon;
+  const marker = L.marker([lat, lng], { icon }).addTo(state.map);
+
+  marker.chapelData = data;
+  marker.bindPopup(html);
+
+  state.allMarkers.push(marker);
+
+  // Only flash if live stream is confirmed working
+  if (data.type === "virtual" && (data.stream || data.youtube)) {
+    checkStreamLive(data.stream || data.youtube).then(isLive => {
+      if (isLive) {
+        const el = marker.getElement();
+        if (el) el.querySelector("div")?.classList.add("marker-flash");
+      }
+    });
+  }
+}
+
+   // state.allMarkers.push(marker);
+    //group.addLayer(marker);
+  
+async function checkStreamLive(url) {
+  // Simple check for YouTube video availability
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    const videoId = url.split("v=")[1] || url.split("youtu.be/")[1];
+    if (!videoId) return false;
+
+    try {
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=YOUR_API_KEY`);
+      const data = await res.json();
+      // If video exists and is live
+      return data.items?.[0]?.snippet?.liveBroadcastContent === "live";
+    } catch (e) {
+      return false;
+    }
   }
 
-  // ---------------------
-  // ADD MARKERS
-  // ---------------------
-  featuredChapels.forEach(c => {
-    addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
-      <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
-    `);
-  });
+  // For non-YouTube streams (HLS), assume working
+  // Optional: you can try HEAD request to check URL
+  return true;
+}
 
-  state.chapelData.forEach(c => {
-    const lat = parseFloat(c.latitude);
-    const lng = parseFloat(c.longitude);
-    addMarker(lat, lng, { ...c, type: "virtual" }, `
-      <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br><br>
-      ${c.youtube ? `<button onclick="playChapel('${c.youtube}')">Watch Live Adoration</button>` : "No stream"}
-    `);
-  });
+featuredChapels.forEach(c => {
+  addMarker(c.lat, c.lng, { ...c, type: "virtual" }, `
+    <b>🕯️ ${c.name}</b><br>${c.city}, ${c.country}<br>
+    <button onclick="playChapel('${c.stream}')">Watch Live Adoration</button>
+  `);
+});
 
-  state.physicalChapels.forEach(c => {
-    addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
-      <b>⛪ ${c.name}</b><br>📍 ${c.address || "Location available"}<br><br>
-      ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-    `);
-  });
+state.physicalChapels.forEach(c => {
+  addMarker(c.lat, c.lng, { ...c, type: "physical" }, `
+    <b>⛪ ${c.name}</b><br>${c.address || "Location available"}
+  `);
+});
 
-  initSearch();
+ initSearch();
   initNearby();
   loadSaintOfDay();
 }
+
 /* ================= SEARCH ================= */
 function initSearch() {
   const input = document.getElementById("searchInput");
