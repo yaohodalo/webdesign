@@ -180,40 +180,30 @@ body {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
 }
-.marker-circle {
+/* Add this to your CSS */
+.custom-marker .marker-circle {
   width: 20px;
   height: 20px;
   border-radius: 50%;
   border: 2px solid white;
 }
 
-/* Physical chapels - green */
-.marker-physical {
-  background-color: #2e7d32;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  border: 2px solid white;
+.gold-circle {
+  background-color: gold !important;
 }
 
-/* Virtual/live chapels - gold */
-.marker-virtual {
-  background-color: #d4af37;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  border: 2px solid white;
+.physical-circle {
+  background-color: green !important;
 }
 
-/* Flashing animation for live streams */
-@keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
 .marker-flash {
-  animation: flash 1s infinite;
+  animation: flash 1s infinite alternate;
 }
 
+@keyframes flash {
+  from { opacity: 1; }
+  to { opacity: 0.3; }
+}
 /* ---------- MAP ---------- */
 #map {
   height: 75vh;
