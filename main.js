@@ -495,15 +495,21 @@ setLiturgicalTheme();
 
 /* ================= MAP ================= */
 function initMap() {
-  state.map = L.map("map").setView([20, 0], 2);
+  state.map = L.map("map", {
+  maxZoom: 18,
+  minZoom: 2
+}).setView([20, 0], 2);
+	
   state.virtualMarkersGroup = L.markerClusterGroup();
   state.physicalMarkersGroup = L.markerClusterGroup();
 
 state.map.addLayer(state.virtualMarkersGroup);
 state.map.addLayer(state.physicalMarkersGroup);
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
-    .addTo(state.map);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "&copy; OpenStreetMap"
+}).addTo(state.map);
 
   //state.markersGroup = L.markerClusterGroup();
   //state.map.addLayer(state.markersGroup);
