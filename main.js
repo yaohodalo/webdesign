@@ -535,7 +535,7 @@ async function initMap() {
   }
 
   initSearch();
-  initNearby();
+ // initNearby();
   loadSaintOfDay();
 }
 
