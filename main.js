@@ -169,8 +169,8 @@ const featuredChapels = [
 
 /* ================= LANGUAGE ================= */
 function setLanguage(lang) {
-  state.currentLang = lang;
-  const t = translations[lang];
+ // state.currentLang = lang;
+  const t = translations[state.currentLang];
 
   document.getElementById("startAdoration").innerText = t.start;
   document.getElementById("findChapel").innerText = t.nearby;
@@ -301,22 +301,41 @@ document.addEventListener("DOMContentLoaded", () => {
     pledgeSection.scrollIntoView({ behavior: "smooth" });
   });
 
+
+	
 // ✅ CONTACT FORM (RESTORED)
+
+// ✅ CONTACT FORM (FIXED + SAFER)
 const contactForm = document.getElementById("contactForm");
-contactForm?.addEventListener("submit", e => {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(contactForm));
-  fetch("https://formspree.io/f/YOUR_FORM_ID", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(() => {
-    alert("Message sent!");
-    contactForm.reset();
-  })
-  .catch(() => alert("Failed to send message."));
-});
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(contactForm));
+
+    try {
+      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("Message sent!");
+        contactForm.reset();
+      } else {
+        alert("Something went wrong.");
+      }
+
+    } catch (err) {
+      alert("Failed to send message.");
+    }
+  });
+}
 // ✅ CONTACT OPEN/CLOSE (FIXED)
 const contactBtn = document.getElementById("contactBtn"); // button in header
 const contactSection = document.getElementById("contactSection");
