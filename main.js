@@ -190,8 +190,8 @@ function updateMusicButton() {
   if (!state.music || !state.musicBtn) return;
 
   state.musicBtn.innerText = state.music.paused
-    ? t.musicPlay
-    : t.musicPause;
+    ? translations[state.currentLang].musicPlay
+    : translations[state.currentLang].musicPause;
 }
 
 function stopMusic() {
