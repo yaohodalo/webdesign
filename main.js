@@ -188,10 +188,11 @@ function setLanguage(lang) {
 /* ================= MUSIC ================= */
 function updateMusicButton() {
   if (!state.music || !state.musicBtn) return;
+	const t = translations[lang];
 
   state.musicBtn.innerText = state.music.paused
-    ? translations[state.currentLang].musicPlay
-    : translations[state.currentLang].musicPause;
+    ? t.musicPlay
+    : t.musicPause;
 }
 
 function stopMusic() {
