@@ -502,7 +502,7 @@ async function initMap() {
 
   initSearch();
  // initNearby();
-  loadSaintOfDay();
+  //loadSaintOfDay();
 }
 
 // Load data and initialize map safely
