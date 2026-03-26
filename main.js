@@ -258,13 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const contactForm = document.getElementById("contactForm");
 
-// Define goldIcon for live virtual markers
-const goldIcon = L.divIcon({
-  className: "custom-marker gold",
-  html: `<div class="marker-circle gold-circle"></div>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
-});
 
 // Add a placeholder checkStreamLive function (or implement your logic)
 async function checkStreamLive(url) {
@@ -474,7 +467,7 @@ async function addMarker(lat, lng, data, html) {
     if (!url) return; // skip if no URL
     const isLive = await checkStreamLive(url);
     if (!isLive) return; // skip if offline
-    icon = goldIcon;
+    icon = virtualIcon;
     group = state.virtualMarkersGroup;
   } else {
     return;
