@@ -551,7 +551,7 @@ async function initMap() {
   initMap();
 });
 
-  await initMap();
+ // await initMap();
 })();
 
 /* ================= SAINT OF THE DAY ================= */
