@@ -168,7 +168,7 @@ const featuredChapels = [
  ];
 
 /* ================= LANGUAGE ================= */
-function setLanguage(lang) {
+function setLanguage() {
  // state.currentLang = lang;
   const t = translations[state.currentLang];
 
@@ -253,6 +253,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+const contactBtn = document.getElementById("contactBtn");
+const contactSection = document.getElementById("contactSection");
+
+if (contactBtn && contactSection) {
+  contactBtn.addEventListener("click", () => {
+    contactSection.style.display = "block";
+
+    contactSection.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  });
+}
   // language
   setLanguage("en");
   document.getElementById("languageSelect")
@@ -303,8 +316,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-	
-// ✅ CONTACT FORM (RESTORED)
 
 // ✅ CONTACT FORM (FIXED + SAFER)
 const contactForm = document.getElementById("contactForm");
@@ -329,27 +340,15 @@ if (contactForm) {
         alert("Message sent!");
         contactForm.reset();
       } else {
-        alert("Something went wrong.");
+        alert("Error sending message.");
       }
 
-    } catch (err) {
-      alert("Failed to send message.");
+    } catch {
+      alert("Network error.");
     }
   });
 }
-// ✅ CONTACT OPEN/CLOSE (FIXED)
-const contactBtn = document.getElementById("contactBtn"); // button in header
-const contactSection = document.getElementById("contactSection");
-if (contactBtn && contactSection) {
-  contactBtn.addEventListener("click", () => {
-    contactSection.style.display = "block";
 
-    contactSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  });
-}
 
   /* ================= YOUTUBE API ================= */
 
