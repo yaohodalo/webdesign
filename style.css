@@ -195,24 +195,32 @@ body {
   border: 2px solid white;
 }
 
-.virtual-circle {
-  background-color: #1E90FF; /* Dodger Blue */
+/* Physical chapels - green */
+.marker-physical {
+  background-color: #2e7d32;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
 }
 
-.physical-circle {
-  background-color: #32CD32; /* Lime Green */
+/* Virtual/live chapels - gold */
+.marker-virtual {
+  background-color: #d4af37;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
 }
 
-/* Flashing animation */
+/* Flashing animation for live streams */
 @keyframes flash {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0; }
 }
-
 .marker-flash {
   animation: flash 1s infinite;
 }
-
 
 /* ---------- MAP ---------- */
 #map {
