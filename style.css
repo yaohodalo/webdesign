@@ -216,7 +216,7 @@ body {
 /* Flashing animation for live streams */
 @keyframes flash {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50% { opacity: 0.3; }
 }
 .marker-flash {
   animation: flash 1s infinite;
