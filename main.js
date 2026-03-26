@@ -581,95 +581,71 @@ async function initMap() {
 }
 
 /* ================= SEARCH ================= */
-box.addEventListener("click", (e) => {
-  const item = e.target.closest(".suggestion-item");
-  if (!item) return;
+function initSearch() {
+  const input = document.getElementById("searchInput");
+  const box = document.getElementById("suggestions");
 
-  const text = item.innerText.replace(/^[^\s]+\s/, "");
+  if (!input || !box) return;
 
-  document.getElementById("searchInput").value = text;
-  box.innerHTML = "";
+  input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
 
-  const match = state.allMarkers.find(m =>
-    m.chapelData?.name === text ||
-    m.chapelData?.city === text ||
-    m.chapelData?.country === text
-  );
+    if (!q) {
+      box.innerHTML = "";
+      return;
+    }
 
-  if (match) {
-    const { lat, lng } = match.getLatLng();
-    state.map.setView([lat, lng], 10);
-    match.openPopup();
-  }
-});
+    const results = state.allMarkers
+      .map(m => {
+        const d = m.chapelData;
 
-box.addEventListener("click", (e) => {
-  const item = e.target.closest(".suggestion-item");
-  if (!item) return;
+        return {
+          marker: m,
+          name: d?.name || "",
+          searchText: `
+            ${d?.name || ""}
+            ${d?.city || ""}
+            ${d?.country || ""}
+            ${d?.address || ""}
+          `.toLowerCase()
+        };
+      })
+      .filter(item => item.searchText.includes(q))
+      .slice(0, 8);
 
-  const text = item.innerText.replace(/^[^\s]+\s/, "");
+    if (!results.length) {
+      box.innerHTML = `<div style="padding:8px;">No results</div>`;
+      return;
+    }
 
-  document.getElementById("searchInput").value = text;
-  box.innerHTML = "";
+    box.innerHTML = results.map(r => `
+      <div class="suggestion-item">
+        ⛪ ${r.name}
+      </div>
+    `).join("");
+  });
 
-  const match = state.allMarkers.find(m =>
-    m.chapelData?.name === text ||
-    m.chapelData?.city === text ||
-    m.chapelData?.country === text
-  );
-
-  if (match) {
-    const { lat, lng } = match.getLatLng();
-    state.map.setView([lat, lng], 10);
-    match.openPopup();
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-
-const box = document.getElementById("suggestions");
-
-if (box) {
+  // ✅ CLICK HANDLER
   box.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("suggestion-item")) return;
+    const item = e.target.closest(".suggestion-item");
+    if (!item) return;
 
-    const text = e.target.innerText.replace(/^[^\s]+\s/, "");
+    const text = item.innerText.replace(/^[^\s]+\s/, "");
 
-    document.getElementById("searchInput").value = text;
-
+    input.value = text;
     box.innerHTML = "";
 
-    // OPTIONAL: move map to match
     const match = state.allMarkers.find(m =>
-      m.chapelData?.name === text ||
-      m.chapelData?.city === text ||
-      m.chapelData?.country === text
+      m.chapelData?.name === text
     );
 
     if (match) {
       const { lat, lng } = match.getLatLng();
-      state.map.setView([lat, lng], 10);
+      state.map.setView([lat, lng], 12);
       match.openPopup();
     }
   });
 }
-});
-/* ================= NEARBY ================= */
-function initNearby() {
-  document.getElementById("findChapel").addEventListener("click", () => {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude, longitude } = pos.coords;
-
-      const nearby = state.allMarkers.slice(0, 30);
-
-      state.physicalMarkersGroup.clearLayers();
-      state.physicalMarkersGroup.addLayers(nearby);
-
-      state.map.setView([latitude, longitude], 10);
-    });
-  });
-}
-
 /* ================= PLAYER ================= */
 window.playChapel = function (stream) {
   stopMusic();
