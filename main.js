@@ -477,7 +477,7 @@ async function addMarker(lat, lng, data, html) {
   marker.chapelData = data;
   marker.bindPopup(html);
 
-  if (data.type === "virtual" && icon === goldIcon) {
+  if (data.type === "virtual" && icon === virtualIcon) {
     marker.on("add", () => {
       const el = marker.getElement();
       if (el) el.querySelector("div").classList.add("marker-flash");
