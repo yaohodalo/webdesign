@@ -188,8 +188,6 @@ function setLanguage(lang) {
 /* ================= MUSIC ================= */
 function updateMusicButton() {
   if (!state.music || !state.musicBtn) return;
-	state.currentLang = lang;
-   const t = translations[lang];
 
   state.musicBtn.innerText = state.music.paused
     ? t.musicPlay
