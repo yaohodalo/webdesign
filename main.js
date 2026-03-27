@@ -218,6 +218,7 @@ function setLanguage(lang) {
 
   updateMusicButton();
 }
+		}
 
 /* ================= MUSIC ================= */
 function updateMusicButton() {
