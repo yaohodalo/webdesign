@@ -217,7 +217,7 @@ function setLanguage(lang) {
   }
 
   updateMusicButton();
-};
+});
 		}
 
 /* ================= MUSIC ================= */
