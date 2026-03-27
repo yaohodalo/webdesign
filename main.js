@@ -391,7 +391,7 @@ input.addEventListener("keydown", (e) => {
       suggestionsBox.innerHTML = "";
     }
   });
-}
+
 
 
 // ✅ CONTACT FORM (FIXED + SAFER)
