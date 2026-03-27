@@ -193,11 +193,10 @@ function setLanguage(lang) {
   state.currentLang = lang;
   const t = translations[lang];
 
-  Promise.all([
-    fetch("Adorationchapels.csv").then(r => r.text()),
-    fetch("adoration_chapels_20_verified.json").then(r => r.json())
-  ])
-  .then(([csvText, jsonData]) => {
+  document.getElementById("startAdoration").innerText = t.start;
+  document.getElementById("findChapel").innerText = t.nearby;
+  document.getElementById("pledgeButton").innerText = t.pledge;
+  document.getElementById("addChapelBtn").innerText = t.addChapel;
 
   const contactBtn = document.getElementById("contactBtn");
   if (contactBtn) contactBtn.innerText = t.contact;
@@ -217,8 +216,7 @@ function setLanguage(lang) {
   }
 
   updateMusicButton();
-});
-		}
+}
 
 /* ================= MUSIC ================= */
 function updateMusicButton() {
@@ -299,11 +297,8 @@ async function checkStreamLive(url) {
   });
 
 
-marker.bindPopup(`
-  <b>⛪ ${c.name}</b><br>
-  ${c.address || `${c.city || ""}${c.city && c.country ? ", " : ""}${c.country || ""}`}<br><br>
-  ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-`);
+const contactBtn = document.getElementById("contactBtn");
+const contactSection = document.getElementById("contactSection");
 
 
 if (contactBtn && contactSection) {
@@ -363,33 +358,6 @@ if (contactBtn && contactSection) {
   pledgeBtn?.addEventListener("click", () => {
     pledgeSection.style.display = "block";
     pledgeSection.scrollIntoView({ behavior: "smooth" });
-  });
-
-input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const query = input.value.toLowerCase();
-
-    const match = state.allMarkers.find(marker => {
-      const d = marker.chapelData || {};
-      return (
-        d.name?.toLowerCase().includes(query) ||
-        d.city?.toLowerCase().includes(query) ||
-        d.country?.toLowerCase().includes(query)
-      );
-    });
-
-    if (match) {
-      state.map.setView(match.getLatLng(), 10);
-      match.openPopup();
-    }
-  }
-});
-
-  // Hide on outside click
-  document.addEventListener("click", e => {
-    if (!e.target.closest(".header-center")) {
-      suggestionsBox.innerHTML = "";
-    }
   });
 
 
@@ -640,4 +608,3 @@ window.playChapel = function (stream) {
   };
 };
 });
-
