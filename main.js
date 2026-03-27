@@ -433,6 +433,7 @@ async function addMarker(lat, lng, data, html) {
   }
 
   const marker = L.marker([lat, lng], { icon });
+  marker.streamUrl = data.stream || data.youtube;
   marker.chapelData = data;
   marker.bindPopup(html);
 
@@ -492,6 +493,23 @@ async function initMap() {
       ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
     `);
   }
+
+	function handleDeadStream(stream) {
+  alert("This stream is currently offline. Removing it from the map.");
+
+  const marker = state.allMarkers.find(m => m.streamUrl === stream);
+
+  if (marker) {
+    state.virtualMarkersGroup.removeLayer(marker);
+    state.allMarkers = state.allMarkers.filter(m => m !== marker);
+  }
+
+  const modal = document.getElementById("videoModal");
+  const frame = document.getElementById("adorationFrame");
+
+  modal.style.display = "none";
+  frame.src = "";
+}
 
   initSearch();
  // initNearby();
@@ -588,23 +606,32 @@ window.playChapel = function (stream) {
 
   const modal = document.getElementById("videoModal");
   const frame = document.getElementById("adorationFrame");
-  const video = document.getElementById("adorationVideo");
 
   modal.style.display = "flex";
 
   const yt = stream.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
 
   if (yt) {
-    frame.style.display = "block";
-    video.style.display = "none";
     frame.src = `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
   } else {
     frame.src = stream;
   }
+
+  // 👇 Detect YouTube "not available"
+  setTimeout(() => {
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+
+      if (doc && doc.body.innerText.includes("not available")) {
+        throw new Error("Stream unavailable");
+      }
+    } catch (e) {
+      handleDeadStream(stream);
+    }
+  }, 3000);
 
   document.getElementById("closeModal").onclick = () => {
     modal.style.display = "none";
     frame.src = "";
   };
 };
-});
