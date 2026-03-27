@@ -193,11 +193,10 @@ function setLanguage(lang) {
   state.currentLang = lang;
   const t = translations[lang];
 
-  Promise.all([
-    fetch("Adorationchapels.csv").then(r => r.text()),
-    fetch("adoration_chapels_20_verified.json").then(r => r.json())
-  ])
-  .then(([csvText, jsonData]) => {
+  document.getElementById("startAdoration").innerText = t.start;
+  document.getElementById("findChapel").innerText = t.nearby;
+  document.getElementById("pledgeButton").innerText = t.pledge;
+  document.getElementById("addChapelBtn").innerText = t.addChapel;
 
   const contactBtn = document.getElementById("contactBtn");
   if (contactBtn) contactBtn.innerText = t.contact;
@@ -298,11 +297,8 @@ async function checkStreamLive(url) {
   });
 
 
-marker.bindPopup(`
-  <b>⛪ ${c.name}</b><br>
-  ${c.address || `${c.city || ""}${c.city && c.country ? ", " : ""}${c.country || ""}`}<br><br>
-  ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
-`);
+const contactBtn = document.getElementById("contactBtn");
+const contactSection = document.getElementById("contactSection");
 
 
 if (contactBtn && contactSection) {
@@ -364,33 +360,6 @@ if (contactBtn && contactSection) {
     pledgeSection.scrollIntoView({ behavior: "smooth" });
   });
 
-input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    const query = input.value.toLowerCase();
-
-    const match = state.allMarkers.find(marker => {
-      const d = marker.chapelData || {};
-      return (
-        d.name?.toLowerCase().includes(query) ||
-        d.city?.toLowerCase().includes(query) ||
-        d.country?.toLowerCase().includes(query)
-      );
-    });
-
-    if (match) {
-      state.map.setView(match.getLatLng(), 10);
-      match.openPopup();
-    }
-  }
-});
-
-  // Hide on outside click
-  document.addEventListener("click", e => {
-    if (!e.target.closest(".header-center")) {
-      suggestionsBox.innerHTML = "";
-    }
-  });
-}
 
 
 // ✅ CONTACT FORM (FIXED + SAFER)
@@ -464,6 +433,7 @@ async function addMarker(lat, lng, data, html) {
   }
 
   const marker = L.marker([lat, lng], { icon });
+  marker.streamUrl = data.stream || data.youtube;
   marker.chapelData = data;
   marker.bindPopup(html);
 
@@ -523,6 +493,23 @@ async function initMap() {
       ${c.perpetual ? "🕯️ Perpetual Adoration (24/7)" : ""}
     `);
   }
+
+	function handleDeadStream(stream) {
+  alert("This stream is currently offline. Removing it from the map.");
+
+  const marker = state.allMarkers.find(m => m.streamUrl === stream);
+
+  if (marker) {
+    state.virtualMarkersGroup.removeLayer(marker);
+    state.allMarkers = state.allMarkers.filter(m => m !== marker);
+  }
+
+  const modal = document.getElementById("videoModal");
+  const frame = document.getElementById("adorationFrame");
+
+  modal.style.display = "none";
+  frame.src = "";
+}
 
   initSearch();
  // initNearby();
@@ -619,24 +606,33 @@ window.playChapel = function (stream) {
 
   const modal = document.getElementById("videoModal");
   const frame = document.getElementById("adorationFrame");
-  const video = document.getElementById("adorationVideo");
 
   modal.style.display = "flex";
 
   const yt = stream.match(/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/);
 
   if (yt) {
-    frame.style.display = "block";
-    video.style.display = "none";
     frame.src = `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
   } else {
     frame.src = stream;
   }
+
+  // 👇 Detect YouTube "not available"
+  setTimeout(() => {
+    try {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+
+      if (doc && doc.body.innerText.includes("not available")) {
+        throw new Error("Stream unavailable");
+      }
+    } catch (e) {
+      handleDeadStream(stream);
+    }
+  }, 3000);
 
   document.getElementById("closeModal").onclick = () => {
     modal.style.display = "none";
     frame.src = "";
   };
 };
-});
-
+	}); 
