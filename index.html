@@ -19,6 +19,7 @@
 
   <!-- Video.js -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet"/>
+  <link rel="icon" href="/favicon.ico">
 
   <!-- Site CSS -->
   <link rel="stylesheet" href="style.css"/>
@@ -41,36 +42,29 @@
   <div class="verse-track"></div>
 </div>
 
-<!-- 🔥 AUDIO -->
-<audio id="bgMusic" loop>
-  <source src="204-stay with me.mp3" type="audio/mpeg">
-</audio>
-
 <header class="header">
 
   <!-- LEFT -->
   <div class="header-left">
-    <img src="logo.png" class="logo" />
+    <img src="logo.png" class="site-logo" />
   </div>
 
   <!-- CENTER -->
   <div class="header-center">
-    <h2 class="subtitle">Live Eucharistic Adoration Map</h2>
-
-    <input
-      id="searchInput"
-      placeholder="Search by city, country, or chapel..."
-      autocomplete="off"
-    />
+    <h2 class="subtitle">Eucharistic Adoration Map</h2>
+    <div class="search-wrapper" id="searchWrapper">
+  <input id="searchInput" placeholder="Search by city, country, or chapel..."  />
+    </div>
     <div id="suggestions" class="suggestions"></div>
   </div>
 
   <!-- RIGHT -->
   <div class="header-right">
-    <button id="startAdoration">Start</button>
-    <button id="findChapel">Nearby</button>
-    <button id="pledgeButton">Pledge</button>
-    <button id="musicToggle">🎵</button>
+    <button id="startAdoration">Start Adoration </button>
+    <button id="findChapel">Nearby Chapel</button>
+    <button id="pledgeButton">Pledge 1h </button>
+   <button id="addChapelBtn">Add a Chapel</button>
+</div>
   </div>
 
 </header>
@@ -78,6 +72,14 @@
 <main>
   <!-- Map -->
   <div id="map"></div>
+
+  <!-- 🔥 AUDIO -->
+  <div id="musicFloating">
+  <button id="musicToggle">🎵 Play Music</button>
+  <audio id="bgMusic" loop>
+    <source src="204-stay with me.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
   <!-- 🔥 Nearby Panel -->
   <div id="nearbyPanel" class="nearby hidden">
@@ -96,7 +98,7 @@
       <button type="submit">Pledge My Hour</button>
     </form>
     <p id="thanks" class="hidden">
-      Thank you — your hour joins adorers worldwide.
+      Thank you for signing up, please join adorers worldwide at your hour.
     </p>
   </section>
 </main>
@@ -116,31 +118,61 @@
     <div class="footer-col">
       <h3>Resources</h3>
       <ul>
-        <li><a href="#">Eucharistic Miracles (St. Carlo Acutis)</a></li>
-        <li><a href="#">Mysterium Fidei (Pope Paul VI)</a></li>
-        <li><a href="#">Sacramentum Caritatis (Pope Benedict XVI)</a></li>
-        <li><a href="#">National Eucharistic Revival (USA)</a></li>
-        <li><a href="#">Eucharistic Devotion USCCB</a></li>
+        <li>
+  <a href="https://www.miracolieucaristici.org/en/liste/list.html" target="_blank">
+    Eucharistic Miracles (St. Carlo Acutis)
+  </a>
+</li>
+<li>
+  <a href="https://www.vatican.va/content/paul-vi/en/encyclicals/documents/hf_p-vi_enc_03091965_mysterium.html" target="_blank">
+    Mysterium Fidei (Pope Paul VI)
+  </a>
+</li>
+<li>
+  <a href="https://www.vatican.va/content/benedict-xvi/en/apost_exhortations/documents/hf_ben-xvi_exh_20070222_sacramentum-caritatis.html" target="_blank">
+    Sacramentum Caritatis (Pope Benedict XVI)
+  </a>
+</li>
+<li>
+  <a href="https://www.eucharisticrevival.org/" target="_blank">
+    National Eucharistic Revival (USA)
+  </a>
+</li>
+<li>
+  <a href="https://www.usccb.org/prayer-and-worship/prayers-and-devotions/eucharistic-devotion" target="_blank">
+    Eucharistic Devotion USCCB
+  </a>
+</li>
 
       </ul>
     </div>
-
+    
     <!-- Column 3: Get Involved -->
     <div class="footer-col">
       <h3>Get Involved</h3>
-      <a href="#" class="footer-btn">Add a Chapel</a>
+      <button id="contactBtn" class="footer-btn">Contact Us</button>
+     <section id="contactSection" style="display:none; padding:40px;">
+     <h2>Contact Us</h2>
+     <form id="contactForm">
+  <input type="text" name="name" placeholder="Your Name" required>
+  
+  <input type="email" name="email" placeholder="Your Email" required>
+  
+  <textarea name="message" placeholder="Message" required></textarea>
+  
+  <button type="submit">Send</button>
+    </form>
+   </section>
     </div>
-
-  </div>
 
   <!-- Bottom Bar -->
   <div class="footer-bottom">
     <p>© 2024 WouldYouJoinMeForOneHour.org</p>
     <p class="motto">Ad Majorem Dei Gloriam ✨</p>
 
-    <div class="language-select">
+    <div class="languageselect">
       🌐 
-      <select>
+     <select id="languageSelect">
         <option>English</option>
         <option>Español</option>
         <option>Français</option>
@@ -201,6 +233,7 @@
     </form>
   </div>
 </div>
+
 
 <!-- SCRIPTS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
