@@ -411,10 +411,6 @@ const physicalIcon = L.divIcon({
  async function checkStreamLive(url) {
   return true; // TEMP: treat all as live
 }
-//const isLive = url.includes("youtube");
-//icon = isLive ? goldIcon : grayIcon;
-// Add a marker to the map
-// Only add markers if YouTube is live
 async function addMarker(lat, lng, data, html) {
   let icon, group;
 
@@ -454,6 +450,8 @@ async function addMarker(lat, lng, data, html) {
 // Initialize the map and markers
 async function initMap() {
   state.map = L.map("map", { maxZoom: 18, minZoom: 2 }).setView([20, 0], 2);
+  state.map.scrollWheelZoom.disable();
+
 
   // LayerGroups
   state.virtualMarkersGroup = L.layerGroup().addTo(state.map);
@@ -528,9 +526,6 @@ async function initMap() {
 
   await initMap();
 })();
-/* ================= SAINT OF THE DAY ================= */
-
-/* ================= MAP ================= */
 
 
 
@@ -634,5 +629,9 @@ window.playChapel = function (stream) {
     modal.style.display = "none";
     frame.src = "";
   };
+function toggleMap() {
+  const map = document.getElementById("mapContainer");
+  map.style.display = map.style.display === "none" ? "block" : "none";
+}
 };
 	}); 
