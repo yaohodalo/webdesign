@@ -175,7 +175,6 @@
     "perpetual": true,
     "verified": true
   },
-
   {
     "name": "St. John the Evangelist Catholic Church",
     "address": "10103 Georgia Ave, Silver Spring, MD 20902, United States",
@@ -183,5 +182,25 @@
     "lng": -77.044427,
     "perpetual": true,
     "verified": true
+  },
+    {
+    "name": "The Marian Community - Oasis of Peace (CMOP)",
+    "address": "Kraljice Mira 96, Bijakovići, Bosnia and Herzegovina",
+    "lat": 43.177564048530584,
+    "lng": 17.68570169856667,
+    "perpetual": true,
+    "verified": true
+  },
+  {
+    "name": "Chapel of Perpetual Eucharistic Adoration",
+    "address": "Ul. od Puča 14, 20000, Dubrovnik, Croatia",
+    "lat": 42.64094018732813,
+    "lng": 18.108250522105735,
+    "perpetual": true,
+    "verified": true
   }
+ 
+ 
+  
+  
 ]
