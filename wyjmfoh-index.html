@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Would You Join Me for One Hour? — Eucharistic Adoration Worldwide</title>
+  <meta name="description" content="Find Eucharistic Adoration chapels near you, pledge an hour of prayer, and unite with adorers worldwide." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+
+  <!-- Video.js -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet"/>
+  <link rel="icon" href="/favicon.ico">
+
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- VERSE TICKER -->
+<div class="verse-ticker">
+  <div class="verse-track"></div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <img src="logo.png" class="site-logo" alt="Would You Join Me for One Hour?" />
+  </div>
+
+  <div class="header-center">
+    <h1 class="site-title">Would You Join Me<br><em>for One Hour?</em></h1>
+    <p class="site-subtitle">Eucharistic Adoration Worldwide</p>
+    <div class="search-wrapper" id="searchWrapper">
+      <span class="search-icon">⛪</span>
+      <input id="searchInput" placeholder="Search by city, country, or chapel name…" autocomplete="off"/>
+      <div id="suggestions" class="suggestions"></div>
+    </div>
+  </div>
+
+  <nav class="header-right">
+    <button id="startAdoration" class="btn-gold">▶ Start Adoration</button>
+    <button id="findChapel" class="btn-outline">📍 Nearby Chapel</button>
+    <button id="pledgeButton" class="btn-outline">🕯️ Pledge 1h</button>
+    <button id="addChapelBtn" class="btn-outline">＋ Add Chapel</button>
+    <button id="musicToggle" class="btn-music">🎵 Play Music</button>
+    <audio id="bgMusic" loop>
+      <source src="204-stay with me.mp3" type="audio/mpeg">
+    </audio>
+  </nav>
+</header>
+
+<!-- MAP -->
+<div id="map"></div>
+
+<!-- STATS BAR -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item">
+    <span class="stat-num" id="statChapels">—</span>
+    <span class="stat-label">Chapels Worldwide</span>
+  </div>
+  <div class="stat-divider">✦</div>
+  <div class="stat-item">
+    <span class="stat-num" id="statPledged">—</span>
+    <span class="stat-label">Hours Pledged</span>
+  </div>
+  <div class="stat-divider">✦</div>
+  <div class="stat-item">
+    <span class="stat-num" id="statCountries">—</span>
+    <span class="stat-label">Countries</span>
+  </div>
+  <div class="stat-divider">✦</div>
+  <div class="stat-item">
+    <span class="stat-num">24/7</span>
+    <span class="stat-label">Perpetual Prayer</span>
+  </div>
+</div>
+
+<!-- NEARBY PANEL -->
+<div id="nearbyPanel" class="nearby hidden">
+  <h3>📍 Adoration Near You</h3>
+  <div id="nearbyList"></div>
+</div>
+
+<!-- PLEDGE SECTION -->
+<section id="pledge" class="hidden pledge-section">
+  <div class="pledge-inner">
+    <div class="pledge-header">
+      <div class="pledge-cross">✦</div>
+      <h2>Pledge an Hour of Prayer</h2>
+      <p class="pledge-subhead">"Could you not watch with me one hour?" — Matthew 26:40</p>
+    </div>
+    <form id="pledgeForm">
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="email" name="email" placeholder="Email (optional — for reminder)" />
+      </div>
+      <input type="datetime-local" name="time" required />
+      <textarea name="intention" placeholder="Your prayer intention (optional)" rows="3"></textarea>
+      <button type="submit" class="btn-gold full-width">🕯️ Pledge My Hour</button>
+    </form>
+    <p id="thanks" class="thanks-msg hidden">
+      ✦ Thank you. Your hour has been pledged. Join adorers worldwide at your appointed time.
+    </p>
+  </div>
+</section>
+
+<!-- ABOUT / MISSION SECTION -->
+<section class="about-section">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-eyebrow">Our Mission</div>
+      <h2 class="about-title">One Hour.<br><em>United Worldwide.</em></h2>
+      <p id="missionstatement">Helping people worldwide commit to an hour of Eucharistic Adoration and unite in prayer.</p>
+      <p>Our Lord asked His disciples in the Garden of Gethsemane, <em>"Could you not watch with me one hour?"</em> This platform exists to make that one hour easier — to find a chapel, pledge your time, and join a global family of adorers praying before the Blessed Sacrament.</p>
+    </div>
+    <div class="about-saints">
+      <div class="saint-card">
+        <div class="saint-icon">☩</div>
+        <div class="saint-name">St. Peter Julian Eymard</div>
+        <div class="saint-quote">"The Eucharist is the heart of Jesus opened to us."</div>
+      </div>
+      <div class="saint-card">
+        <div class="saint-icon">✦</div>
+        <div class="saint-name">St. Tarcisius</div>
+        <div class="saint-quote">Martyr who died protecting the Blessed Sacrament, c. 257 AD.</div>
+      </div>
+      <div class="saint-card">
+        <div class="saint-icon">☩</div>
+        <div class="saint-name">Bl. Carlo Acutis</div>
+        <div class="saint-quote">"The Eucharist is my highway to Heaven."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW ADORATION WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="section-eyebrow">How It Works</div>
+    <h2>What is Eucharistic Adoration?</h2>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <h3>Find a Chapel</h3>
+        <p>Use the map to locate a chapel near you offering Eucharistic Adoration — in person or live-streamed worldwide.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <h3>Arrive & Be Still</h3>
+        <p>The Blessed Sacrament is exposed on the altar. Simply sit, kneel, or stand in the presence of Jesus. No experience required.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <h3>Pray Your Hour</h3>
+        <p>Spend time in silent prayer, read Scripture, pray the Rosary, or simply rest in His presence. One hour is the traditional commitment.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">04</div>
+        <h3>Unite Worldwide</h3>
+        <p>Pledge your hour and join thousands of adorers around the world praying before the Blessed Sacrament every hour of every day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <div class="section-eyebrow">From Adorers</div>
+    <h2>Stories of Grace</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-text">"I started one hour a week and it transformed my marriage. There is no explaining it — only experiencing it."</div>
+        <div class="testimonial-author">— Maria, Philippines</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">"During the hardest year of my life, that one hour each Thursday was the only thing that kept me sane and hopeful."</div>
+        <div class="testimonial-author">— James, Ireland</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-text">"I found this site while searching late at night. I watched the live stream from Tyburn Convent and wept. Something changed."</div>
+        <div class="testimonial-author">— Anonymous, USA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="resources-section">
+  <div class="resources-inner">
+    <div class="section-eyebrow">Go Deeper</div>
+    <h2>Resources on Eucharistic Adoration</h2>
+    <div class="resources-grid">
+      <a href="https://www.miracolieucaristici.org/en/liste/list.html" target="_blank" class="resource-card">
+        <div class="resource-icon">✦</div>
+        <div class="resource-title">Eucharistic Miracles</div>
+        <div class="resource-sub">St. Carlo Acutis — documented miracles worldwide</div>
+      </a>
+      <a href="https://www.vatican.va/content/paul-vi/en/encyclicals/documents/hf_p-vi_enc_03091965_mysterium.html" target="_blank" class="resource-card">
+        <div class="resource-icon">☩</div>
+        <div class="resource-title">Mysterium Fidei</div>
+        <div class="resource-sub">Pope Paul VI — on the mystery of faith</div>
+      </a>
+      <a href="https://www.vatican.va/content/benedict-xvi/en/apost_exhortations/documents/hf_ben-xvi_exh_20070222_sacramentum-caritatis.html" target="_blank" class="resource-card">
+        <div class="resource-icon">☩</div>
+        <div class="resource-title">Sacramentum Caritatis</div>
+        <div class="resource-sub">Pope Benedict XVI — sacrament of charity</div>
+      </a>
+      <a href="https://www.eucharisticrevival.org/" target="_blank" class="resource-card">
+        <div class="resource-icon">✦</div>
+        <div class="resource-title">National Eucharistic Revival</div>
+        <div class="resource-sub">USA — renewing belief in the Real Presence</div>
+      </a>
+      <a href="https://www.usccb.org/prayer-and-worship/prayers-and-devotions/eucharistic-devotion" target="_blank" class="resource-card">
+        <div class="resource-icon">☩</div>
+        <div class="resource-title">Eucharistic Devotion</div>
+        <div class="resource-sub">USCCB — guides and devotional resources</div>
+      </a>
+      <a href="https://www.therealpresence.org/" target="_blank" class="resource-card">
+        <div class="resource-icon">✦</div>
+        <div class="resource-title">Real Presence Association</div>
+        <div class="resource-sub">Dedicated to promoting Eucharistic Adoration</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contactSection" class="contact-section">
+  <div class="contact-inner">
+    <div class="section-eyebrow">Get In Touch</div>
+    <h2>Contact Us</h2>
+    <p>Questions, chapel submissions, or partnership inquiries — we'd love to hear from you.</p>
+    <form id="contactForm">
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+      </div>
+      <textarea name="message" placeholder="Your Message" required rows="5"></textarea>
+      <button type="submit" class="btn-gold" id="contactSubmitBtn">Send Message</button>
+      <p class="form-message" id="contactMsg"></p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-col">
+      <img src="logo.png" alt="Would You Join Me for One Hour?" class="footer-logo" onerror="this.style.display='none'"/>
+      <h3 id="mission">Our Mission</h3>
+      <p id="missionstatement-footer">Helping people worldwide commit to an hour of Eucharistic Adoration and unite in prayer.</p>
+      <p class="footer-motto">Ad Majorem Dei Gloriam ✨</p>
+    </div>
+
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#map">Find a Chapel</a></li>
+        <li><a href="#pledge">Pledge Your Hour</a></li>
+        <li><a href="#" id="footerAddChapel">Add a Chapel</a></li>
+        <li><a href="#contactSection" id="contactBtn">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="https://www.miracolieucaristici.org/en/liste/list.html" target="_blank">Eucharistic Miracles</a></li>
+        <li><a href="https://www.vatican.va/content/paul-vi/en/encyclicals/documents/hf_p-vi_enc_03091965_mysterium.html" target="_blank">Mysterium Fidei</a></li>
+        <li><a href="https://www.vatican.va/content/benedict-xvi/en/apost_exhortations/documents/hf_ben-xvi_exh_20070222_sacramentum-caritatis.html" target="_blank">Sacramentum Caritatis</a></li>
+        <li><a href="https://www.eucharisticrevival.org/" target="_blank">Eucharistic Revival (USA)</a></li>
+        <li><a href="https://www.usccb.org/prayer-and-worship/prayers-and-devotions/eucharistic-devotion" target="_blank">USCCB Eucharistic Devotion</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3>Language</h3>
+      <div class="language-select">
+        🌐
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
+      <div class="share-block">
+        <h3 style="margin-top:1.5rem">Share</h3>
+        <p style="font-size:13px;color:#aaa">Invite others to pledge their hour</p>
+        <button class="share-btn" onclick="shareApp()">🔗 Share This Site</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 WouldYouJoinMeForOneHour.org &nbsp;·&nbsp; <a href="#contactSection">Contact</a> &nbsp;·&nbsp; Built for the glory of God</p>
+  </div>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div id="videoModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModal">&times;</button>
+    <iframe id="adorationFrame" width="560" height="315" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <video id="adorationVideo" class="video-js vjs-default-skin" controls autoplay
+      style="display:none; width:100%;"></video>
+  </div>
+</div>
+
+<!-- ADD CHAPEL MODAL -->
+<div id="addChapelModal" class="modal">
+  <div class="modal-content modal-form">
+    <button class="modal-close" id="closeAddChapel">&times;</button>
+    <h2>Add a Chapel</h2>
+    <p class="modal-sub">Help grow the worldwide adoration community by adding your chapel.</p>
+    <form id="chapelForm">
+      <div class="form-row">
+        <input name="name" placeholder="Chapel Name" required />
+        <input name="city" placeholder="City" required />
+      </div>
+      <div class="form-row">
+        <input name="country" placeholder="Country" required />
+        <select name="type">
+          <option value="physical">⛪ Physical Chapel</option>
+          <option value="virtual">📡 Virtual / Live Stream</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <input name="lat" placeholder="Latitude (e.g. 51.5074)" required />
+        <input name="lng" placeholder="Longitude (e.g. -0.1278)" required />
+      </div>
+      <input name="stream" placeholder="YouTube or stream URL (if virtual)" />
+      <input name="address" placeholder="Address (optional)" />
+      <input name="schedule" placeholder="Adoration schedule (e.g. Mon–Fri 7am–7pm)" />
+      <label class="checkbox-row">
+        <input type="checkbox" name="perpetual" value="yes" />
+        <span>24/7 Perpetual Adoration</span>
+      </label>
+      <button type="submit" class="btn-gold full-width">Submit Chapel</button>
+      <p class="modal-note">Submissions are reviewed before appearing on the map.</p>
+    </form>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="main.js" defer></script>
+
+</body>
+</html>
