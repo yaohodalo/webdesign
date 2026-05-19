@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · WYJMFOH</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Cinzel:wght@400;700&family=Source+Serif+4&display=swap" />
+  <style>
+    :root {
+      --navy: #0B1F3A;
+      --navy-deep: #071427;
+      --gold: #D4AF37;
+      --gold-light: #e8c96a;
+      --cream: #FAF6F1;
+      --cream-dark: #f0e9de;
+      --text: #38312B;
+      --text-mid: #5a5040;
+      --text-light: #8a7a6a;
+      --green: #2d7d46;
+      --red: #c0392b;
+      --shadow: rgba(11,31,58,0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+
+    header.admin-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gold);
+    }
+    header.admin-head h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.8rem;
+      color: var(--navy);
+    }
+    header.admin-head h1 em { color: var(--gold); font-style: italic; }
+    .eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* LOGIN */
+    .login-card {
+      max-width: 420px; margin: 4rem auto;
+      background: white; padding: 2.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px var(--shadow);
+      border-top: 4px solid var(--gold);
+      text-align: center;
+    }
+    .login-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400; font-size: 1.6rem;
+      color: var(--navy); margin-bottom: 0.3rem;
+    }
+    .login-card p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem; font-style: italic; }
+    .login-card input {
+      width: 100%; padding: 0.75rem 1rem;
+      border: 1px solid var(--cream-dark);
+      border-radius: 8px; font-family: inherit; font-size: 1rem;
+      margin-bottom: 1rem; color: var(--text);
+    }
+    .login-card input:focus { outline: none; border-color: var(--gold); }
+
+    /* TABS */
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      padding: 0.5rem 1.1rem;
+      background: transparent;
+      border: 1px solid var(--cream-dark);
+      border-radius: 30px;
+      cursor: pointer;
+      color: var(--text-mid);
+      transition: all 0.2s;
+    }
+    .tab.active {
+      background: var(--navy);
+      color: var(--gold);
+      border-color: var(--navy);
+    }
+    .tab:hover:not(.active) { border-color: var(--gold); color: var(--navy); }
+    .count-pill {
+      display: inline-block;
+      min-width: 18px;
+      padding: 0 6px;
+      margin-left: 6px;
+      background: var(--gold);
+      color: var(--navy-deep);
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* CHAPEL CARDS */
+    .empty {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-light);
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+    }
+    .chapel-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 10px var(--shadow);
+      border-left: 4px solid var(--gold);
+    }
+    .chapel-card.approved { border-left-color: var(--green); }
+    .chapel-card.rejected { border-left-color: var(--red); opacity: 0.65; }
+
+    .chapel-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+    }
+    .chapel-loc {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      margin-bottom: 0.75rem;
+    }
+    .chapel-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.5rem 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      margin-bottom: 1rem;
+    }
+    .chapel-meta strong {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin-bottom: 0.2rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.08em;
+    }
+    .badge-perpetual { background: rgba(45,125,70,0.15); color: var(--green); }
+    .badge-pending { background: rgba(212,175,55,0.2); color: var(--navy); }
+    .badge-approved { background: rgba(45,125,70,0.15); color: var(--green); }
+    .badge-rejected { background: rgba(192,57,43,0.15); color: var(--red); }
+
+    .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    button.action {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-approve { background: var(--green); color: white; }
+    .btn-approve:hover { background: #266839; }
+    .btn-reject { background: white; border: 1px solid var(--red); color: var(--red); }
+    .btn-reject:hover { background: var(--red); color: white; }
+    .btn-delete { background: white; border: 1px solid var(--text-light); color: var(--text-light); }
+    .btn-delete:hover { background: var(--text-light); color: white; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--navy-deep);
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.7rem 1.2rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.75rem;
+      width: 100%;
+    }
+    .btn-primary:hover { box-shadow: 0 4px 14px rgba(212,175,55,0.4); }
+    .btn-logout {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      background: transparent;
+      border: 1px solid var(--cream-dark);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      cursor: pointer;
+      color: var(--text-mid);
+    }
+    .btn-logout:hover { border-color: var(--navy); color: var(--navy); }
+
+    .error { color: var(--red); font-size: 0.85rem; margin-top: 0.5rem; font-style: italic; }
+    .hidden { display: none !important; }
+    .submitter { font-size: 0.8rem; color: var(--text-light); font-style: italic; }
+    .map-link { color: var(--gold); text-decoration: none; font-size: 0.85rem; }
+    .map-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN VIEW -->
+<div id="loginView" class="wrap">
+  <div class="login-card">
+    <span class="eyebrow">Restricted</span>
+    <h2>Admin Sign In</h2>
+    <p>Enter the admin password to manage chapel submissions.</p>
+    <form id="loginForm">
+      <input id="passwordInput" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button type="submit" class="btn-primary">Sign In</button>
+      <p id="loginError" class="error hidden"></p>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div id="dashView" class="wrap hidden">
+  <header class="admin-head">
+    <div>
+      <span class="eyebrow">Admin</span>
+      <h1>Chapel <em>Moderation</em></h1>
+    </div>
+    <button class="btn-logout" id="logoutBtn">Sign Out</button>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-status="pending">
+      Pending <span class="count-pill" id="countPending">0</span>
+    </button>
+    <button class="tab" data-status="approved">
+      Approved <span class="count-pill" id="countApproved">0</span>
+    </button>
+    <button class="tab" data-status="rejected">
+      Rejected <span class="count-pill" id="countRejected">0</span>
+    </button>
+  </div>
+
+  <div id="chapelList"></div>
+</div>
+
+<script>
+  const TOKEN_KEY = 'wyjmfoh_admin_token';
+
+  const $ = id => document.getElementById(id);
+  const loginView = $('loginView');
+  const dashView  = $('dashView');
+
+  function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
+  function setToken(t) { sessionStorage.setItem(TOKEN_KEY, t); }
+  function clearToken() { sessionStorage.removeItem(TOKEN_KEY); }
+
+  async function api(path, opts = {}) {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(opts.headers || {}),
+    };
+    const token = getToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const res = await fetch(path, { ...opts, headers });
+    let data = null;
+    try { data = await res.json(); } catch {}
+    if (!res.ok) {
+      const err = new Error(data?.error || 'Request failed');
+      err.status = res.status;
+      throw err;
+    }
+    return data;
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[<>&"]/g, c =>
+      ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
+  }
+
+  function chapelCardHtml(c, status) {
+    const created = c.created_at ? new Date(c.created_at).toLocaleString() : '';
+    const mapsUrl = `https://www.google.com/maps?q=${c.lat},${c.lng}`;
+    const badge =
+      status === 'pending'  ? `<span class="badge badge-pending">PENDING</span>` :
+      status === 'approved' ? `<span class="badge badge-approved">APPROVED</span>` :
+                              `<span class="badge badge-rejected">REJECTED</span>`;
+
+    const actionsHtml =
+      status === 'pending'
+        ? `
+          <button class="action btn-approve" data-action="approve" data-id="${c.id}">✓ Approve</button>
+          <button class="action btn-reject"  data-action="reject"  data-id="${c.id}">✕ Reject</button>
+          <button class="action btn-delete"  data-action="delete"  data-id="${c.id}">Delete</button>
+        `
+        : status === 'approved'
+          ? `<button class="action btn-reject" data-action="reject" data-id="${c.id}">Un-approve</button>
+             <button class="action btn-delete" data-action="delete" data-id="${c.id}">Delete</button>`
+          : `<button class="action btn-approve" data-action="approve" data-id="${c.id}">✓ Approve</button>
+             <button class="action btn-delete"  data-action="delete"  data-id="${c.id}">Delete</button>`;
+
+    return `
+      <div class="chapel-card ${status}">
+        <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+          ${badge}
+          ${c.perpetual ? '<span class="badge badge-perpetual">24/7 PERPETUAL</span>' : ''}
+        </div>
+        <div class="chapel-name">⛪ ${escapeHtml(c.name)}</div>
+        <div class="chapel-loc">${escapeHtml(c.city)}, ${escapeHtml(c.country)}</div>
+
+        <div class="chapel-meta">
+          <div><strong>Coordinates</strong>
+            <a class="map-link" href="${mapsUrl}" target="_blank" rel="noopener">
+              ${(+c.lat).toFixed(4)}, ${(+c.lng).toFixed(4)} ↗
+            </a>
+          </div>
+          ${c.address ? `<div><strong>Address</strong>${escapeHtml(c.address)}</div>` : ''}
+          ${c.schedule ? `<div><strong>Schedule</strong>${escapeHtml(c.schedule)}</div>` : ''}
+          ${c.submitter_email ? `<div><strong>Submitter</strong><span class="submitter">${escapeHtml(c.submitter_email)}</span></div>` : ''}
+          ${created ? `<div><strong>Submitted</strong>${created}</div>` : ''}
+        </div>
+
+        <div class="actions">${actionsHtml}</div>
+      </div>
+    `;
+  }
+
+  let currentStatus = 'pending';
+
+  async function loadList(status) {
+    currentStatus = status;
+    const list = $('chapelList');
+    list.innerHTML = '<div class="empty">Loading…</div>';
+
+    try {
+      const data = await api(`/api/admin/chapels?status=${status}`);
+      const chapels = data.chapels || [];
+      list.innerHTML = chapels.length
+        ? chapels.map(c => chapelCardHtml(c, status)).join('')
+        : `<div class="empty">No ${status} chapels.</div>`;
+
+      attachActionHandlers();
+      await refreshCounts();
+    } catch (e) {
+      if (e.status === 401) {
+        clearToken();
+        showLogin('Session expired. Please sign in again.');
+      } else {
+        list.innerHTML = `<div class="empty">Error: ${escapeHtml(e.message)}</div>`;
+      }
+    }
+  }
+
+  async function refreshCounts() {
+    try {
+      const [p, a, r] = await Promise.all([
+        api('/api/admin/chapels?status=pending'),
+        api('/api/admin/chapels?status=approved'),
+        api('/api/admin/chapels?status=rejected'),
+      ]);
+      $('countPending').textContent  = (p.chapels || []).length;
+      $('countApproved').textContent = (a.chapels || []).length;
+      $('countRejected').textContent = (r.chapels || []).length;
+    } catch {}
+  }
+
+  function attachActionHandlers() {
+    document.querySelectorAll('.action').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = parseInt(btn.dataset.id, 10);
+        const action = btn.dataset.action;
+        if (action === 'delete' && !confirm('Permanently delete this chapel?')) return;
+        btn.disabled = true;
+        try {
+          await api('/api/admin/moderate', {
+            method: 'POST',
+            body: JSON.stringify({ id, action }),
+          });
+          loadList(currentStatus);
+        } catch (e) {
+          alert('Error: ' + e.message);
+          btn.disabled = false;
+        }
+      });
+    });
+  }
+
+  function showLogin(msg) {
+    dashView.classList.add('hidden');
+    loginView.classList.remove('hidden');
+    if (msg) {
+      const err = $('loginError');
+      err.textContent = msg;
+      err.classList.remove('hidden');
+    }
+  }
+
+  function showDash() {
+    loginView.classList.add('hidden');
+    dashView.classList.remove('hidden');
+    loadList('pending');
+  }
+
+  // LOGIN
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const password = $('passwordInput').value;
+    const err = $('loginError');
+    err.classList.add('hidden');
+    try {
+      await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      }).then(r => {
+        if (!r.ok) throw new Error('Invalid password');
+      });
+      setToken(password);
+      showDash();
+    } catch (ex) {
+      err.textContent = 'Invalid password. Try again.';
+      err.classList.remove('hidden');
+    }
+  });
+
+  // LOGOUT
+  $('logoutBtn').addEventListener('click', () => {
+    clearToken();
+    showLogin();
+  });
+
+  // TABS
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      loadList(tab.dataset.status);
+    });
+  });
+
+  // Auto-login if token present
+  if (getToken()) {
+    showDash();
+  } else {
+    showLogin();
+  }
+</script>
+
+</body>
+</html>
