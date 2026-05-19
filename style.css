@@ -327,6 +327,24 @@ button, .btn-gold, .btn-outline, .btn-music {
   margin-top: 4px;
   color: var(--text-mid);
 }
+.popup-directions {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy-deep);
+  text-decoration: none;
+  border-radius: 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: all 0.2s;
+}
+.popup-directions:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(212,175,55,0.4);
+}
 
 /* Cluster styling tweak — make it match gold theme */
 .marker-cluster-small      { background-color: rgba(212,175,55,0.4); }

@@ -57,6 +57,7 @@ const translations = {
     noResults:      'No results found',
     noNearby:       'No chapels found within 80 km.',
     perpetualLabel: 'Perpetual Adoration (24/7)',
+    directions: 'Get Directions',
   },
   es: {
     start: '▶ Comenzar Adoración',
@@ -85,6 +86,7 @@ const translations = {
     noResults:      'Sin resultados',
     noNearby:       'No hay capillas en un radio de 80 km.',
     perpetualLabel: 'Adoración Perpetua (24/7)',
+    directions: 'Cómo llegar',
   },
   fr: {
     start: "▶ Commencer l'Adoration",
@@ -113,6 +115,7 @@ const translations = {
     noResults:      'Aucun résultat',
     noNearby:       'Aucune chapelle dans un rayon de 80 km.',
     perpetualLabel: 'Adoration Perpétuelle (24/7)',
+    directions: 'Itinéraire',
   },
   it: {
     start: '▶ Inizia Adorazione',
@@ -141,6 +144,7 @@ const translations = {
     noResults:      'Nessun risultato',
     noNearby:       'Nessuna cappella entro 80 km.',
     perpetualLabel: 'Adorazione Perpetua (24/7)',
+    directions: 'Indicazioni',
   },
   pt: {
     start: '▶ Iniciar Adoração',
@@ -169,6 +173,7 @@ const translations = {
     noResults:      'Sem resultados',
     noNearby:       'Nenhuma capela num raio de 80 km.',
     perpetualLabel: 'Adoração Perpétua (24/7)',
+    directions: 'Como chegar',
   },
 };
 
@@ -242,12 +247,16 @@ const physicalIcon = () => L.divIcon({
 function chapelPopupHtml(c) {
   const tr = t();
   const loc = [c.city, c.country].filter(Boolean).join(', ');
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`;
   return `
     <div class="popup-card">
       <strong>⛪ ${escapeHtml(c.name)}</strong>
       <div class="popup-loc">📍 ${escapeHtml(c.address || loc)}</div>
       ${c.perpetual ? `<div class="popup-perpetual">🕯️ ${tr.perpetualLabel}</div>` : ''}
       ${c.schedule ? `<div class="popup-schedule">${escapeHtml(c.schedule)}</div>` : ''}
+      <a class="popup-directions" href="${directionsUrl}" target="_blank" rel="noopener">
+        🧭 ${tr.directions}
+      </a>
     </div>
   `;
 }
