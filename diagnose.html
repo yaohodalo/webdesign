@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diagnostics · WYJMFOH</title>
+  <style>
+    body { font-family: monospace; background: #0B1F3A; color: #e8c96a; padding: 2rem; max-width: 900px; margin: 0 auto; }
+    h1 { color: #D4AF37; }
+    .check { padding: 0.6rem 1rem; margin: 0.4rem 0; border-radius: 6px; background: rgba(255,255,255,0.05); border-left: 4px solid #888; }
+    .ok   { border-left-color: #2d7d46; }
+    .fail { border-left-color: #c0392b; }
+    .warn { border-left-color: #D4AF37; }
+    pre { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 6px; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+    .label { font-weight: bold; color: #fff; }
+    .fix { color: #e8c96a; font-style: italic; margin-top: 0.4rem; }
+  </style>
+</head>
+<body>
+  <h1>🔎 Site Diagnostics</h1>
+  <p>Run this from the deployed site (open <code>/diagnose.html</code>). Each check below will run automatically.</p>
+  <div id="results"></div>
+
+<script>
+const results = document.getElementById('results');
+
+function row(label, status, detail, fix) {
+  const div = document.createElement('div');
+  div.className = 'check ' + status;
+  div.innerHTML = `<span class="label">${status === 'ok' ? '✓' : status === 'fail' ? '✗' : '⚠'} ${label}</span>` +
+    (detail ? `<pre>${detail}</pre>` : '') +
+    (fix ? `<div class="fix">→ ${fix}</div>` : '');
+  results.appendChild(div);
+}
+
+(async function run() {
+  // 1. Does /api/chapels respond?
+  try {
+    const r = await fetch('/api/chapels');
+    const text = await r.text();
+    let data = null;
+    try { data = JSON.parse(text); } catch {}
+
+    if (!r.ok) {
+      row('API /api/chapels reachable', 'fail',
+        `Status ${r.status}\n${text.slice(0, 500)}`,
+        'API is failing. Most likely the database isn\'t set up. See fix below.');
+    } else if (!data || !Array.isArray(data.chapels)) {
+      row('API /api/chapels returns JSON', 'fail',
+        text.slice(0, 500),
+        'Response is not the expected { chapels: [...] } shape.');
+    } else if (data.chapels.length === 0) {
+      row('API /api/chapels returns chapels', 'fail',
+        'Got an empty array: []',
+        'API works, but the database is empty. You need to run db/schema.sql in Vercel Postgres → Query tab.');
+    } else {
+      row(`API /api/chapels returns ${data.chapels.length} chapels`, 'ok',
+        JSON.stringify(data.chapels.slice(0, 2), null, 2));
+
+      // 1b. Are lat/lng numeric?
+      const bad = data.chapels.filter(c => !Number.isFinite(+c.lat) || !Number.isFinite(+c.lng));
+      if (bad.length) {
+        row(`${bad.length} chapels have invalid lat/lng`, 'fail',
+          JSON.stringify(bad.slice(0, 3), null, 2),
+          'These won\'t render. Fix the DB rows.');
+      } else {
+        row('All chapel coordinates valid', 'ok');
+      }
+    }
+  } catch (e) {
+    row('API /api/chapels reachable', 'fail', String(e),
+      'Network error. Is /api/chapels deployed?');
+  }
+
+  // 2. Is /api/stats working?
+  try {
+    const r = await fetch('/api/stats');
+    const data = await r.json();
+    if (r.ok) {
+      row('API /api/stats reachable', 'ok', JSON.stringify(data, null, 2));
+    } else {
+      row('API /api/stats reachable', 'fail', JSON.stringify(data, null, 2));
+    }
+  } catch (e) {
+    row('API /api/stats reachable', 'fail', String(e));
+  }
+
+  // 3. Is Leaflet loaded?
+  if (typeof L !== 'undefined') {
+    row('Leaflet library loaded', 'ok', 'L is defined');
+  } else {
+    row('Leaflet library loaded', 'fail', 'L is undefined',
+      'Leaflet CDN not loading. Check the <script> tag in index.html.');
+  }
+
+  // 4. Is marker cluster loaded?
+  if (typeof L !== 'undefined' && L.markerClusterGroup) {
+    row('Leaflet.markercluster loaded', 'ok');
+  } else {
+    row('Leaflet.markercluster loaded', 'fail', '',
+      'Cluster plugin not loading. Check the cluster <script> tag.');
+  }
+
+  // 5. Is main.js loaded? (Check for the state global)
+  setTimeout(() => {
+    if (window.state && window.state.chapels) {
+      row(`main.js loaded; state.chapels has ${window.state.chapels.length} entries`, 'ok');
+    } else {
+      row('main.js state exported', 'warn',
+        'window.state not found',
+        'Not critical — but means main.js may not have run, or didn\'t expose state. This page is on /diagnose.html, not /index.html, so this is expected.');
+    }
+  }, 500);
+
+  // 6. Final summary
+  setTimeout(() => {
+    const fails = document.querySelectorAll('.check.fail').length;
+    if (fails === 0) {
+      row('All critical checks passed', 'ok',
+        '', 'Markers should be visible on the main page. If they\'re still not, take a screenshot of the main page and check the browser console for errors.');
+    } else {
+      row(`${fails} critical issue(s) found`, 'fail',
+        '', 'Fix the issues marked ✗ above. The most common one is running schema.sql.');
+    }
+  }, 800);
+})();
+</script>
+</body>
+</html>
