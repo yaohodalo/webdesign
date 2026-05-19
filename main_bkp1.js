@@ -424,103 +424,49 @@ function focusMarker(marker) {
   setTimeout(() => marker.openPopup(), 200);
 }
 
-// Add or move a "You are here" marker
-let userLocationMarker = null;
-function showUserLocation(lat, lng) {
-  if (userLocationMarker) state.map.removeLayer(userLocationMarker);
-  const icon = L.divIcon({
-    className: 'user-location-marker',
-    html: '<div class="user-pulse"></div><div class="user-dot"></div>',
-    iconSize: [22, 22],
-    iconAnchor: [11, 11],
-  });
-  userLocationMarker = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(state.map);
-}
-
-function formatDistance(meters) {
-  if (meters < 1000) return `${Math.round(meters)} m`;
-  if (meters < 100000) return `${(meters / 1000).toFixed(1)} km`;
-  return `${Math.round(meters / 1000).toLocaleString()} km`;
-}
-
 function initNearby() {
   $('findChapel')?.addEventListener('click', () => {
-    const panel = $('nearbyPanel');
-    const list = $('nearbyList');
-
     if (!navigator.geolocation) {
-      panel.classList.remove('hidden');
-      list.innerHTML = `<div class="nearby-empty">Geolocation is not supported by your browser.</div>`;
-      panel.scrollIntoView({ behavior: 'smooth' });
+      alert('Geolocation not supported by your browser.');
       return;
     }
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude: lat, longitude: lng } = pos.coords;
+      state.map.setView([lat, lng], 11);
 
-    // Show loading state immediately
-    panel.classList.remove('hidden');
-    list.innerHTML = `<div class="nearby-empty">📍 Finding your location…</div>`;
-    panel.scrollIntoView({ behavior: 'smooth' });
+      const nearby = state.allMarkers
+        .map(m => {
+          const ll = m.getLatLng();
+          const dist = state.map.distance([lat, lng], [ll.lat, ll.lng]);
+          return { m, dist, data: m.chapelData || {} };
+        })
+        .filter(x => x.dist < 80000)
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 8);
 
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const { latitude: lat, longitude: lng } = pos.coords;
-        showUserLocation(lat, lng);
+      const panel = $('nearbyPanel');
+      const list = $('nearbyList');
+      panel.classList.remove('hidden');
 
-        if (!state.allMarkers.length) {
-          list.innerHTML = `<div class="nearby-empty">No chapels are on the map yet.</div>`;
-          return;
-        }
-
-        // Compute distance to every chapel, sort, take top 5 — no distance cap
-        const sorted = state.allMarkers
-          .map(m => {
-            const ll = m.getLatLng();
-            const dist = state.map.distance([lat, lng], [ll.lat, ll.lng]);
-            return { m, dist, data: m.chapelData || {} };
-          })
-          .sort((a, b) => a.dist - b.dist)
-          .slice(0, 5);
-
-        const nearest = sorted[0];
-        const isClose = nearest.dist < 80000; // 80 km
-
-        // Frame the map: if nearest is close, fit both; otherwise just center on user
-        if (isClose) {
-          const userLL = L.latLng(lat, lng);
-          const nearestLL = nearest.m.getLatLng();
-          state.map.fitBounds(L.latLngBounds(userLL, nearestLL).pad(0.4), { maxZoom: 12 });
-        } else {
-          state.map.setView([lat, lng], 4);
-        }
-
-        // Build the list — header explains the result
-        const header = isClose
-          ? `<div class="nearby-header">📍 Showing the ${sorted.length} closest chapels to you</div>`
-          : `<div class="nearby-header">📍 The nearest chapel is ${formatDistance(nearest.dist)} away. Showing the ${sorted.length} closest:</div>`;
-
-        list.innerHTML = header;
-        sorted.forEach(({ m, dist, data }) => {
+      if (!nearby.length) {
+        list.innerHTML = `<div class="nearby-empty">${t().noNearby}</div>`;
+      } else {
+        list.innerHTML = '';
+        nearby.forEach(({ m, dist, data }) => {
           const item = document.createElement('div');
           item.className = 'nearby-item';
-          const loc = [data.city, data.country].filter(Boolean).join(', ');
           item.innerHTML = `
-            <div class="nearby-name">⛪ <strong>${escapeHtml(data.name || 'Chapel')}</strong></div>
-            ${loc ? `<div class="nearby-loc">${escapeHtml(loc)}</div>` : ''}
-            <div class="nearby-dist">${formatDistance(dist)} away${data.perpetual ? ' · 24/7' : ''}</div>
+            ⛪ <strong>${escapeHtml(data.name || 'Chapel')}</strong>
+            <span class="nearby-dist"> — ${(dist / 1000).toFixed(1)} km away</span>
           `;
           item.addEventListener('click', () => focusMarker(m));
           list.appendChild(item);
         });
-      },
-      err => {
-        const messages = {
-          1: 'Location access was denied. Please enable location in your browser settings and try again.',
-          2: 'Your location could not be determined. Please check your internet connection.',
-          3: 'Location request timed out. Please try again.',
-        };
-        list.innerHTML = `<div class="nearby-empty">${messages[err.code] || 'Could not get your location.'}</div>`;
-      },
-      { timeout: 10000, maximumAge: 60000 }
-    );
+      }
+      panel.scrollIntoView({ behavior: 'smooth' });
+    }, () => {
+      alert('Could not get your location. Please allow location access.');
+    });
   });
 }
 

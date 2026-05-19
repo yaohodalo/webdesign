@@ -395,7 +395,7 @@ button, .btn-gold, .btn-outline, .btn-music {
 }
 
 .nearby-item {
-  padding: 0.75rem 0;
+  padding: 0.6rem 0;
   border-bottom: 1px solid var(--cream-dark);
   font-size: 0.95rem;
   cursor: pointer;
@@ -403,74 +403,8 @@ button, .btn-gold, .btn-outline, .btn-music {
 }
 
 .nearby-item:hover { padding-left: 6px; }
-
-.nearby-header {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--text-mid);
-  padding-bottom: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--cream-dark);
-}
-
-.nearby-name {
-  color: var(--navy);
-  margin-bottom: 0.15rem;
-}
-
-.nearby-loc {
-  font-size: 0.85rem;
-  color: var(--text-mid);
-  margin-bottom: 0.15rem;
-}
-
-.nearby-dist {
-  font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--gold);
-}
-
-.nearby-empty {
-  padding: 1.25rem;
-  color: var(--text-light);
-  font-style: italic;
-  font-family: 'Cormorant Garamond', serif;
-  text-align: center;
-}
-
-/* "You are here" marker */
-.user-location-marker {
-  position: relative;
-}
-.user-dot {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 14px;
-  height: 14px;
-  background: #1a73e8;
-  border: 2px solid white;
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(0,0,0,0.4);
-  z-index: 2;
-}
-.user-pulse {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 22px;
-  height: 22px;
-  background: rgba(26,115,232,0.4);
-  border-radius: 50%;
-  animation: userPulse 2s ease-out infinite;
-  z-index: 1;
-}
-@keyframes userPulse {
-  0%   { transform: scale(1);   opacity: 0.8; }
-  100% { transform: scale(2.5); opacity: 0; }
-}
+.nearby-dist { color: #999; font-size: 0.85em; }
+.nearby-empty { padding: 1rem; color: #999; font-style: italic; }
 
 /* ---------- PLEDGE SECTION ---------- */
 .pledge-section {
