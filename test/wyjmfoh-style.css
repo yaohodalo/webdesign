@@ -1,5 +1,5 @@
 /* =====================================================
-   Would You Join Me for One Hour? — style.css (v3)
+   Would You Join Me for One Hour? — style.css (v2)
    Aesthetic: Sacred · Refined · Candlelit
 ===================================================== */
 
@@ -30,15 +30,6 @@ body {
   color: var(--text);
   background: var(--cream);
   text-align: center;
-}
-
-/* Accessibility helper */
-.visually-hidden {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0);
-  white-space: nowrap; border: 0;
 }
 
 /* ---------- VERSE TICKER ---------- */
@@ -217,13 +208,6 @@ button, .btn-gold, .btn-outline, .btn-music {
   box-shadow: 0 4px 16px rgba(212,175,55,0.4);
 }
 
-.btn-gold:disabled {
-  opacity: 0.6;
-  cursor: wait;
-  transform: none;
-  box-shadow: none;
-}
-
 .btn-outline {
   background: transparent;
   border: 1px solid rgba(212,175,55,0.5);
@@ -267,74 +251,20 @@ button, .btn-gold, .btn-outline, .btn-music {
   height: 20px;
   border-radius: 50%;
   border: 2px solid white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
-.physical-circle { background: #2d7d46; }
+.gold-circle   { background: var(--gold) !important; box-shadow: 0 0 10px rgba(212,175,55,0.7); }
+.physical-circle { background: #2d7d46 !important; }
+.virtual-circle  { background: #c0392b !important; }
 
-/* LEGEND */
-.map-legend {
-  background: white;
-  padding: 10px 14px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  font-family: 'Source Serif 4', serif;
-  font-size: 12px;
-  line-height: 1.8;
-}
-.legend-title {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--navy);
-  margin-bottom: 6px;
-}
-.legend-row { color: var(--text); }
-.legend-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-.legend-physical { background: #2d7d46; }
-
-/* POPUP */
-.popup-card {
-  font-family: 'Source Serif 4', serif;
-  min-width: 200px;
-  color: var(--text);
-}
-.popup-card strong {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.05rem;
-  color: var(--navy);
-}
-.popup-loc {
-  color: var(--text-mid);
-  font-size: 0.85rem;
-  margin: 4px 0;
-}
-.popup-perpetual {
-  color: #2d7d46;
-  font-size: 0.78rem;
-  margin-top: 4px;
-  font-style: italic;
-}
-.popup-schedule {
-  font-size: 0.8rem;
-  margin-top: 4px;
-  color: var(--text-mid);
+.marker-flash {
+  animation: flash 1.2s ease-in-out infinite alternate;
 }
 
-/* Cluster styling tweak — make it match gold theme */
-.marker-cluster-small      { background-color: rgba(212,175,55,0.4); }
-.marker-cluster-small div  { background-color: rgba(212,175,55,0.7); color: var(--navy-deep); font-family: 'Cinzel', serif; font-weight: 700; }
-.marker-cluster-medium     { background-color: rgba(212,175,55,0.5); }
-.marker-cluster-medium div { background-color: rgba(212,175,55,0.8); color: var(--navy-deep); font-family: 'Cinzel', serif; font-weight: 700; }
-.marker-cluster-large      { background-color: rgba(212,175,55,0.6); }
-.marker-cluster-large div  { background-color: rgba(212,175,55,0.9); color: var(--navy-deep); font-family: 'Cinzel', serif; font-weight: 700; }
+@keyframes flash {
+  from { opacity: 1; }
+  to   { opacity: 0.35; }
+}
 
 /* ---------- STATS BAR ---------- */
 .stats-bar {
@@ -398,13 +328,7 @@ button, .btn-gold, .btn-outline, .btn-music {
   padding: 0.6rem 0;
   border-bottom: 1px solid var(--cream-dark);
   font-size: 0.95rem;
-  cursor: pointer;
-  transition: padding-left 0.15s;
 }
-
-.nearby-item:hover { padding-left: 6px; }
-.nearby-dist { color: #999; font-size: 0.85em; }
-.nearby-empty { padding: 1rem; color: #999; font-style: italic; }
 
 /* ---------- PLEDGE SECTION ---------- */
 .pledge-section {
@@ -473,13 +397,6 @@ button, .btn-gold, .btn-outline, .btn-music {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-}
-
-.form-error {
-  font-size: 0.85rem;
-  color: #f08080;
-  margin-top: 0.5rem;
-  font-style: italic;
 }
 
 .thanks-msg {
@@ -960,24 +877,15 @@ button, .btn-gold, .btn-outline, .btn-music {
   margin-top: 0.75rem;
 }
 
-/* Override the dark form styles inside modals so text is readable */
 .modal-form input,
 .modal-form textarea,
 .modal-form select {
-  background: var(--cream) !important;
-  color: var(--text) !important;
-  border-color: var(--cream-dark) !important;
+  background: var(--cream);
+  color: var(--text);
 }
 
 .modal-form input::placeholder,
-.modal-form textarea::placeholder { color: var(--text-light) !important; }
-
-.modal-form input:focus,
-.modal-form textarea:focus,
-.modal-form select:focus {
-  outline: none;
-  border-color: var(--gold) !important;
-}
+.modal-form textarea::placeholder { color: var(--text-light); }
 
 .modal-close {
   position: absolute;
@@ -1001,11 +909,11 @@ button, .btn-gold, .btn-outline, .btn-music {
 
 .modal-close:hover { background: rgba(0,0,0,0.15); }
 
-#adorationFrame {
+#adorationFrame,
+#adorationVideo {
   width: 100%;
   height: 60vh;
   border-radius: 8px;
-  border: 0;
 }
 
 /* Checkbox row */
@@ -1018,8 +926,6 @@ button, .btn-gold, .btn-outline, .btn-music {
   cursor: pointer;
   margin-bottom: 0.75rem;
 }
-
-.checkbox-row input { width: auto !important; margin: 0 !important; }
 
 /* ---------- UTILITIES ---------- */
 .hidden { display: none !important; }

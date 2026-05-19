@@ -1,0 +1,14 @@
+{
+  "name": "wouldyoujoinmeforonehour",
+  "version": "1.0.0",
+  "description": "Eucharistic Adoration Worldwide — find chapels, pledge an hour of prayer.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@vercel/postgres": "^0.10.0"
+  }
+}
