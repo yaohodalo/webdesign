@@ -50,7 +50,7 @@
     <button id="addChapelBtn" class="btn-outline">＋ Add Chapel</button>
     <button id="musicToggle" class="btn-music" aria-label="Toggle background music">🎵 Play Music</button>
     <audio id="bgMusic" loop preload="none">
-      <source src="204-stay with me.mp3" type="audio/mpeg">
+      <source src="204-stay%20with%20me.mp3" type="audio/mpeg">
     </audio>
   </nav>
 </header>
@@ -80,6 +80,25 @@
     <span class="stat-label">Perpetual Prayer</span>
   </div>
 </div>
+
+<!-- LIVE ADORATION SECTION -->
+<section id="liveAdoration" class="live-section">
+  <div class="live-inner">
+    <div class="section-eyebrow">Live · 24/7</div>
+    <h2>Adoration <em>in Progress</em></h2>
+    <p class="live-subhead">"Could you not watch with me one hour?" — Matthew 26:40</p>
+    <div class="live-video-wrap">
+      <div class="live-video-frame" id="liveVideoFrame">
+        <!-- iframe injected via JS when in view -->
+        <div class="live-placeholder">
+          <div class="live-cross" aria-hidden="true">✦</div>
+          <p>Scroll to begin Adoration</p>
+        </div>
+      </div>
+    </div>
+    <p class="live-credit">Stream courtesy of EWTN · <a href="https://www.ewtn.com" target="_blank" rel="noopener">ewtn.com</a></p>
+  </div>
+</section>
 
 <!-- NEARBY PANEL -->
 <div id="nearbyPanel" class="nearby hidden">
