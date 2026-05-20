@@ -57,6 +57,7 @@ const translations = {
     noResults:      'No results found',
     noNearby:       'No chapels found within 80 km.',
     perpetualLabel: 'Perpetual Adoration (24/7)',
+    directions: 'Get Directions',
   },
   es: {
     start: '▶ Comenzar Adoración',
@@ -85,6 +86,7 @@ const translations = {
     noResults:      'Sin resultados',
     noNearby:       'No hay capillas en un radio de 80 km.',
     perpetualLabel: 'Adoración Perpetua (24/7)',
+    directions: 'Cómo llegar',
   },
   fr: {
     start: "▶ Commencer l'Adoration",
@@ -113,6 +115,7 @@ const translations = {
     noResults:      'Aucun résultat',
     noNearby:       'Aucune chapelle dans un rayon de 80 km.',
     perpetualLabel: 'Adoration Perpétuelle (24/7)',
+    directions: 'Itinéraire',
   },
   it: {
     start: '▶ Inizia Adorazione',
@@ -141,6 +144,7 @@ const translations = {
     noResults:      'Nessun risultato',
     noNearby:       'Nessuna cappella entro 80 km.',
     perpetualLabel: 'Adorazione Perpetua (24/7)',
+    directions: 'Indicazioni',
   },
   pt: {
     start: '▶ Iniciar Adoração',
@@ -169,6 +173,7 @@ const translations = {
     noResults:      'Sem resultados',
     noNearby:       'Nenhuma capela num raio de 80 km.',
     perpetualLabel: 'Adoração Perpétua (24/7)',
+    directions: 'Como chegar',
   },
 };
 
@@ -242,12 +247,16 @@ const physicalIcon = () => L.divIcon({
 function chapelPopupHtml(c) {
   const tr = t();
   const loc = [c.city, c.country].filter(Boolean).join(', ');
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`;
   return `
     <div class="popup-card">
       <strong>⛪ ${escapeHtml(c.name)}</strong>
       <div class="popup-loc">📍 ${escapeHtml(c.address || loc)}</div>
       ${c.perpetual ? `<div class="popup-perpetual">🕯️ ${tr.perpetualLabel}</div>` : ''}
       ${c.schedule ? `<div class="popup-schedule">${escapeHtml(c.schedule)}</div>` : ''}
+      <a class="popup-directions" href="${directionsUrl}" target="_blank" rel="noopener">
+        🧭 ${tr.directions}
+      </a>
     </div>
   `;
 }
@@ -402,18 +411,62 @@ function initSearch() {
 
 /* ============ PLAYER ============ */
 function openLiveAdoration() {
-  stopMusic();
-  const modal = $('videoModal');
-  const frame = $('adorationFrame');
-  frame.src = CONFIG.liveAdorationUrl;
-  modal.style.display = 'flex';
+  // Smooth-scroll to the embedded section instead of opening modal
+  const section = $('liveAdoration');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Lazy-load the YouTube embed only when the user scrolls near it
+function initLiveAdorationEmbed() {
+  const frame = $('liveVideoFrame');
+  if (!frame) return;
+
+  let loaded = false;
+  const load = () => {
+    if (loaded) return;
+    loaded = true;
+    // muted=1 is required for autoplay; user can unmute via player controls
+    // Note: we strip ?autoplay=1 from the config URL and rebuild with mute=1
+    const url = new URL(CONFIG.liveAdorationUrl);
+    url.searchParams.set('autoplay', '1');
+    url.searchParams.set('mute', '1');
+    url.searchParams.set('rel', '0');
+    frame.innerHTML = `
+      <iframe
+        src="${url.toString()}"
+        title="Live Eucharistic Adoration — EWTN"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen
+        loading="lazy"></iframe>
+    `;
+    stopMusic();
+  };
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          load();
+          io.disconnect();
+        }
+      }
+    }, { rootMargin: '200px' });
+    io.observe(frame);
+  } else {
+    // Fallback: load after a short delay
+    setTimeout(load, 1500);
+  }
 }
 
 function closeLiveAdoration() {
+  // Kept for backward compatibility — the modal still exists
   const modal = $('videoModal');
-  const frame = $('adorationFrame');
-  modal.style.display = 'none';
-  frame.src = '';
+  const f = $('adorationFrame');
+  if (modal) modal.style.display = 'none';
+  if (f) f.src = '';
 }
 
 /* ============ NEARBY ============ */
@@ -424,49 +477,103 @@ function focusMarker(marker) {
   setTimeout(() => marker.openPopup(), 200);
 }
 
+// Add or move a "You are here" marker
+let userLocationMarker = null;
+function showUserLocation(lat, lng) {
+  if (userLocationMarker) state.map.removeLayer(userLocationMarker);
+  const icon = L.divIcon({
+    className: 'user-location-marker',
+    html: '<div class="user-pulse"></div><div class="user-dot"></div>',
+    iconSize: [22, 22],
+    iconAnchor: [11, 11],
+  });
+  userLocationMarker = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(state.map);
+}
+
+function formatDistance(meters) {
+  if (meters < 1000) return `${Math.round(meters)} m`;
+  if (meters < 100000) return `${(meters / 1000).toFixed(1)} km`;
+  return `${Math.round(meters / 1000).toLocaleString()} km`;
+}
+
 function initNearby() {
   $('findChapel')?.addEventListener('click', () => {
+    const panel = $('nearbyPanel');
+    const list = $('nearbyList');
+
     if (!navigator.geolocation) {
-      alert('Geolocation not supported by your browser.');
+      panel.classList.remove('hidden');
+      list.innerHTML = `<div class="nearby-empty">Geolocation is not supported by your browser.</div>`;
+      panel.scrollIntoView({ behavior: 'smooth' });
       return;
     }
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude: lat, longitude: lng } = pos.coords;
-      state.map.setView([lat, lng], 11);
 
-      const nearby = state.allMarkers
-        .map(m => {
-          const ll = m.getLatLng();
-          const dist = state.map.distance([lat, lng], [ll.lat, ll.lng]);
-          return { m, dist, data: m.chapelData || {} };
-        })
-        .filter(x => x.dist < 80000)
-        .sort((a, b) => a.dist - b.dist)
-        .slice(0, 8);
+    // Show loading state immediately
+    panel.classList.remove('hidden');
+    list.innerHTML = `<div class="nearby-empty">📍 Finding your location…</div>`;
+    panel.scrollIntoView({ behavior: 'smooth' });
 
-      const panel = $('nearbyPanel');
-      const list = $('nearbyList');
-      panel.classList.remove('hidden');
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        showUserLocation(lat, lng);
 
-      if (!nearby.length) {
-        list.innerHTML = `<div class="nearby-empty">${t().noNearby}</div>`;
-      } else {
-        list.innerHTML = '';
-        nearby.forEach(({ m, dist, data }) => {
+        if (!state.allMarkers.length) {
+          list.innerHTML = `<div class="nearby-empty">No chapels are on the map yet.</div>`;
+          return;
+        }
+
+        // Compute distance to every chapel, sort, take top 5 — no distance cap
+        const sorted = state.allMarkers
+          .map(m => {
+            const ll = m.getLatLng();
+            const dist = state.map.distance([lat, lng], [ll.lat, ll.lng]);
+            return { m, dist, data: m.chapelData || {} };
+          })
+          .sort((a, b) => a.dist - b.dist)
+          .slice(0, 5);
+
+        const nearest = sorted[0];
+        const isClose = nearest.dist < 80000; // 80 km
+
+        // Frame the map: if nearest is close, fit both; otherwise just center on user
+        if (isClose) {
+          const userLL = L.latLng(lat, lng);
+          const nearestLL = nearest.m.getLatLng();
+          state.map.fitBounds(L.latLngBounds(userLL, nearestLL).pad(0.4), { maxZoom: 12 });
+        } else {
+          state.map.setView([lat, lng], 4);
+        }
+
+        // Build the list — header explains the result
+        const header = isClose
+          ? `<div class="nearby-header">📍 Showing the ${sorted.length} closest chapels to you</div>`
+          : `<div class="nearby-header">📍 The nearest chapel is ${formatDistance(nearest.dist)} away. Showing the ${sorted.length} closest:</div>`;
+
+        list.innerHTML = header;
+        sorted.forEach(({ m, dist, data }) => {
           const item = document.createElement('div');
           item.className = 'nearby-item';
+          const loc = [data.city, data.country].filter(Boolean).join(', ');
           item.innerHTML = `
-            ⛪ <strong>${escapeHtml(data.name || 'Chapel')}</strong>
-            <span class="nearby-dist"> — ${(dist / 1000).toFixed(1)} km away</span>
+            <div class="nearby-name">⛪ <strong>${escapeHtml(data.name || 'Chapel')}</strong></div>
+            ${loc ? `<div class="nearby-loc">${escapeHtml(loc)}</div>` : ''}
+            <div class="nearby-dist">${formatDistance(dist)} away${data.perpetual ? ' · 24/7' : ''}</div>
           `;
           item.addEventListener('click', () => focusMarker(m));
           list.appendChild(item);
         });
-      }
-      panel.scrollIntoView({ behavior: 'smooth' });
-    }, () => {
-      alert('Could not get your location. Please allow location access.');
-    });
+      },
+      err => {
+        const messages = {
+          1: 'Location access was denied. Please enable location in your browser settings and try again.',
+          2: 'Your location could not be determined. Please check your internet connection.',
+          3: 'Location request timed out. Please try again.',
+        };
+        list.innerHTML = `<div class="nearby-empty">${messages[err.code] || 'Could not get your location.'}</div>`;
+      },
+      { timeout: 10000, maximumAge: 60000 }
+    );
   });
 }
 
@@ -610,11 +717,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Music
   state.music = $('bgMusic');
   state.musicBtn = $('musicToggle');
+
+  if (state.music) {
+    state.music.volume = 0.35;
+    state.music.addEventListener('error', () => {
+      console.warn('[music] Audio file failed to load. Check that "204-stay with me.mp3" exists at the site root.');
+    });
+  }
+
   state.musicBtn?.addEventListener('click', e => {
     e.stopPropagation();
-    if (state.music.paused) state.music.play().catch(() => {});
-    else state.music.pause();
-    updateMusicButton();
+    if (!state.music) return;
+    if (state.music.paused) {
+      state.music.play()
+        .then(() => updateMusicButton())
+        .catch(err => {
+          console.error('[music] play failed:', err);
+          alert('Could not start music. The audio file may be missing — check that "204-stay with me.mp3" is uploaded.');
+        });
+    } else {
+      state.music.pause();
+      updateMusicButton();
+    }
   });
 
   // Language
@@ -633,6 +757,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initContactForm();
   initAddChapelForm();
   initShare();
+
+  // Live Adoration embed (lazy-loaded when scrolled into view)
+  initLiveAdorationEmbed();
 
   // Load data, then build map and stats in parallel
   await loadChapels();

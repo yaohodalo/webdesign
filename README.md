@@ -3,9 +3,9 @@
 Eucharistic Adoration Worldwide — find chapels, pledge an hour of prayer.
 
 ## Stack
-- **Frontend**: vanilla HTML/CSS/JS + Leaflet (with marker clustering)
+- **Frontend**: vanilla HTTP/CSS/JS + Leaflet (with marker clustering)
 - **Backend**: Vercel Serverless Functions (`/api/*`)
-- **DB**: Vercel Postgres
+- **DB**: Neon Postgres (via the Vercel Marketplace integration — Vercel's own Postgres was retired in 2024)
 - **Email**: Resend (for notifications)
 
 ## Project structure
@@ -54,11 +54,16 @@ Push this folder to your existing `webdesign` repo (`apostolate` branch is fine)
 - Project root = repo root
 - No build command needed (static + serverless auto-detected)
 
-### 3. Add Vercel Postgres
-- Vercel dashboard → your project → **Storage** → **Create Database** → **Postgres**
-- Vercel auto-injects all `POSTGRES_*` env vars
-- Open the database's **Query** tab and paste the contents of `db/schema.sql`, run it once.
-  This creates the 3 tables and seeds the 10 original chapels.
+### 3. Add Neon Postgres (Vercel Marketplace)
+Vercel's own Postgres product was retired in 2024 — it's now Neon, installed through the Marketplace. It's still one-click and credentials are still auto-injected.
+
+- Vercel dashboard → your project → **Storage** tab → **Create Database**
+- Pick **Neon** (look for "Neon Serverless Postgres" — it's first in the list)
+- Choose the free plan, give it a name, click **Create**
+- It auto-connects to your project. Env vars `DATABASE_URL`, `POSTGRES_URL`, etc. are injected automatically
+- Click the database name → click **Open in Neon** (or use the **Query** tab if visible)
+- Open `db/schema.sql` from the project, copy the entire contents, paste into the SQL editor, click **Run**
+- You should see "INSERT 0 10" — that's the 10 seed chapels
 
 ### 4. Set environment variables
 In Vercel → Project → Settings → Environment Variables, add:
