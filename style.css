@@ -394,6 +394,135 @@ button, .btn-gold, .btn-outline, .btn-music {
   font-size: 0.8rem;
 }
 
+/* ---------- LIVE ADORATION SECTION ---------- */
+.live-section {
+  background: var(--navy);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%,    rgba(212,175,55,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 100%,  rgba(212,175,55,0.06) 0%, transparent 70%);
+  padding: 4rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(212,175,55,0.15);
+}
+
+.live-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.live-section .section-eyebrow {
+  color: var(--gold);
+  display: inline-block;
+  position: relative;
+  padding: 0 1.25rem;
+}
+
+.live-section .section-eyebrow::before,
+.live-section .section-eyebrow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 1px;
+  background: rgba(212,175,55,0.4);
+}
+.live-section .section-eyebrow::before { right: 100%; }
+.live-section .section-eyebrow::after  { left: 100%; }
+
+.live-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  color: white;
+  margin: 0.5rem 0 0.6rem;
+}
+
+.live-section h2 em {
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.live-subhead {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 2rem;
+}
+
+.live-video-wrap {
+  position: relative;
+  margin: 0 auto;
+  max-width: 800px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3);
+  background: var(--navy-deep);
+}
+
+.live-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--navy-deep);
+}
+
+.live-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Placeholder shown before iframe loads */
+.live-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.live-cross {
+  font-size: 2.5rem;
+  color: var(--gold);
+  opacity: 0.5;
+  animation: liveCrossPulse 3s ease-in-out infinite;
+}
+
+@keyframes liveCrossPulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.7; }
+}
+
+.live-credit {
+  margin-top: 1.25rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.1em;
+}
+
+.live-credit a {
+  color: rgba(212,175,55,0.6);
+  text-decoration: none;
+}
+
+.live-credit a:hover { color: var(--gold-light); }
+
+@media (max-width: 768px) {
+  .live-section { padding: 3rem 1rem; }
+  .live-section .section-eyebrow::before,
+  .live-section .section-eyebrow::after { width: 15px; }
+}
+
 /* ---------- NEARBY PANEL ---------- */
 .nearby {
   padding: 1.5rem 2rem;

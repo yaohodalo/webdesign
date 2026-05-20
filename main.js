@@ -411,18 +411,62 @@ function initSearch() {
 
 /* ============ PLAYER ============ */
 function openLiveAdoration() {
-  stopMusic();
-  const modal = $('videoModal');
-  const frame = $('adorationFrame');
-  frame.src = CONFIG.liveAdorationUrl;
-  modal.style.display = 'flex';
+  // Smooth-scroll to the embedded section instead of opening modal
+  const section = $('liveAdoration');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Lazy-load the YouTube embed only when the user scrolls near it
+function initLiveAdorationEmbed() {
+  const frame = $('liveVideoFrame');
+  if (!frame) return;
+
+  let loaded = false;
+  const load = () => {
+    if (loaded) return;
+    loaded = true;
+    // muted=1 is required for autoplay; user can unmute via player controls
+    // Note: we strip ?autoplay=1 from the config URL and rebuild with mute=1
+    const url = new URL(CONFIG.liveAdorationUrl);
+    url.searchParams.set('autoplay', '1');
+    url.searchParams.set('mute', '1');
+    url.searchParams.set('rel', '0');
+    frame.innerHTML = `
+      <iframe
+        src="${url.toString()}"
+        title="Live Eucharistic Adoration — EWTN"
+        frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen
+        loading="lazy"></iframe>
+    `;
+    stopMusic();
+  };
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          load();
+          io.disconnect();
+        }
+      }
+    }, { rootMargin: '200px' });
+    io.observe(frame);
+  } else {
+    // Fallback: load after a short delay
+    setTimeout(load, 1500);
+  }
 }
 
 function closeLiveAdoration() {
+  // Kept for backward compatibility — the modal still exists
   const modal = $('videoModal');
-  const frame = $('adorationFrame');
-  modal.style.display = 'none';
-  frame.src = '';
+  const f = $('adorationFrame');
+  if (modal) modal.style.display = 'none';
+  if (f) f.src = '';
 }
 
 /* ============ NEARBY ============ */
@@ -713,6 +757,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initContactForm();
   initAddChapelForm();
   initShare();
+
+  // Live Adoration embed (lazy-loaded when scrolled into view)
+  initLiveAdorationEmbed();
 
   // Load data, then build map and stats in parallel
   await loadChapels();
