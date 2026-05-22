@@ -66,7 +66,7 @@ const translations = {
     'saint3.name':     'St. Carlo Acutis',
     'saint3.quote':    '"The Eucharist is my highway to Heaven."',
     'how.eyebrow':     'How It Works',
-    'how.title':       'What is Eucharistic Adoration?',
+    'how.title':       "Four Steps to Begin",
     'how.step1.title': 'Find a Chapel',
     'how.step1.body':  'Use the map to locate a chapel near you offering Eucharistic Adoration.',
     'how.step2.title': 'Arrive & Be Still',
@@ -150,9 +150,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Eucharistic Adoration Worldwide',
     'hero.verse': '"Could you not watch with me one hour?" — Matthew 26:40',
-    'featured.eyebrow': 'Adoration Across Cultures',
-    'featured.title': 'From Krakow to the Ends of the Earth',
-    'featured.body': 'From the ornate gold of European basilicas to the modern sculptural beauty of the Divine Mercy Shrine in Krakow — Eucharistic Adoration takes countless visible forms, but its heart is everywhere the same: Christ truly present, waiting for us.',
+    'featured.statement': "Jesus Christ is truly present, waiting for us.",
     'featured.caption': '— Divine Mercy Shrine, Krakow, Poland',
     'hero.attribution': "Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI · St. John Paul II Monstrance on loan from ARISE MKE",
     verses: [
@@ -211,7 +209,7 @@ const translations = {
     'saint3.name':     'San Carlo Acutis',
     'saint3.quote':    '"La Eucaristía es mi autopista al Cielo."',
     'how.eyebrow':     'Cómo Funciona',
-    'how.title':       '¿Qué es la Adoración Eucarística?',
+    'how.title':       "Cuatro pasos para comenzar",
     'how.step1.title': 'Encuentra una capilla',
     'how.step1.body':  'Usa el mapa para localizar una capilla cerca de ti que ofrezca Adoración Eucarística.',
     'how.step2.title': 'Llega y guarda silencio',
@@ -295,9 +293,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adoración Eucarística en Todo el Mundo',
     'hero.verse': '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
-    'featured.eyebrow': 'Adoración a Través de las Culturas',
-    'featured.title': 'De Cracovia a los Confines de la Tierra',
-    'featured.body': 'Desde el oro ornado de las basílicas europeas hasta la belleza escultural moderna del Santuario de la Divina Misericordia en Cracovia — la Adoración Eucarística toma innumerables formas visibles, pero su corazón es en todas partes el mismo: Cristo realmente presente, esperándonos.',
+    'featured.statement': "Jesucristo está verdaderamente presente, esperándonos.",
     'featured.caption': '— Santuario de la Divina Misericordia, Cracovia, Polonia',
     'hero.attribution': "Foto cortesía de las parroquias St. Anthony y St. Mary, Menomonee Falls, WI · Custodia de San Juan Pablo II en préstamo de ARISE MKE",
     verses: [
@@ -356,7 +352,7 @@ const translations = {
     'saint3.name':     'Bx Carlo Acutis',
     'saint3.quote':    "\"L'Eucharistie est mon autoroute vers le Ciel.\"",
     'how.eyebrow':     'Comment ça marche',
-    'how.title':       "Qu'est-ce que l'Adoration Eucharistique ?",
+    'how.title':       "Quatre étapes pour commencer",
     'how.step1.title': 'Trouver une chapelle',
     'how.step1.body':  "Utilisez la carte pour repérer une chapelle près de chez vous offrant l'Adoration Eucharistique.",
     'how.step2.title': 'Arrivez et soyez en silence',
@@ -440,9 +436,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adoration Eucharistique dans le Monde',
     'hero.verse': '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
-    'featured.eyebrow': 'Adoration à Travers les Cultures',
-    'featured.title': 'De Cracovie aux Confins de la Terre',
-    'featured.body': "De l'or ornementé des basiliques européennes à la beauté sculpturale moderne du Sanctuaire de la Divine Miséricorde à Cracovie — l'Adoration Eucharistique prend d'innombrables formes visibles, mais son cœur est partout le même : le Christ vraiment présent, qui nous attend.",
+    'featured.statement': "Jésus-Christ est vraiment présent, qui nous attend.",
     'featured.caption': '— Sanctuaire de la Divine Miséricorde, Cracovie, Pologne',
     'hero.attribution': "Photo offerte par les paroisses St. Anthony &amp; St. Mary, Menomonee Falls, WI · Ostensoir St. Jean-Paul II prêté par ARISE MKE",
     verses: [
@@ -501,7 +495,7 @@ const translations = {
     'saint3.name':     'Beato Carlo Acutis',
     'saint3.quote':    "\"L'Eucaristia è la mia autostrada per il Cielo.\"",
     'how.eyebrow':     'Come Funziona',
-    'how.title':       "Cos'è l'Adorazione Eucaristica?",
+    'how.title':       "Quattro passi per iniziare",
     'how.step1.title': 'Trova una cappella',
     'how.step1.body':  "Usa la mappa per trovare una cappella vicino a te che offre l'Adorazione Eucaristica.",
     'how.step2.title': 'Arriva e fai silenzio',
@@ -585,9 +579,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adorazione Eucaristica nel Mondo',
     'hero.verse': '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
-    'featured.eyebrow': 'Adorazione tra le Culture',
-    'featured.title': 'Da Cracovia ai Confini della Terra',
-    'featured.body': "Dall'oro ornato delle basiliche europee alla bellezza scultorea moderna del Santuario della Divina Misericordia a Cracovia — l'Adorazione Eucaristica assume innumerevoli forme visibili, ma il suo cuore è ovunque lo stesso: Cristo veramente presente, che ci aspetta.",
+    'featured.statement': "Gesù Cristo è veramente presente, ci aspetta.",
     'featured.caption': '— Santuario della Divina Misericordia, Cracovia, Polonia',
     'hero.attribution': "Foto per gentile concessione delle parrocchie St. Anthony e St. Mary, Menomonee Falls, WI · Ostensorio San Giovanni Paolo II in prestito da ARISE MKE",
     verses: [
@@ -646,7 +638,7 @@ const translations = {
     'saint3.name':     'Beato Carlo Acutis',
     'saint3.quote':    '"A Eucaristia é a minha autoestrada para o Céu."',
     'how.eyebrow':     'Como Funciona',
-    'how.title':       'O que é a Adoração Eucarística?',
+    'how.title':       "Quatro passos para começar",
     'how.step1.title': 'Encontre uma capela',
     'how.step1.body':  'Use o mapa para localizar uma capela perto de si que oferece Adoração Eucarística.',
     'how.step2.title': 'Chegue e fique em silêncio',
@@ -730,9 +722,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adoração Eucarística no Mundo',
     'hero.verse': '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
-    'featured.eyebrow': 'Adoração Entre as Culturas',
-    'featured.title': 'De Cracóvia até os Confins da Terra',
-    'featured.body': 'Do ouro ornado das basílicas europeias à beleza escultural moderna do Santuário da Divina Misericórdia em Cracóvia — a Adoração Eucarística assume incontáveis formas visíveis, mas o seu coração é em toda parte o mesmo: Cristo realmente presente, esperando por nós.',
+    'featured.statement': "Jesus Cristo está verdadeiramente presente, esperando por nós.",
     'featured.caption': '— Santuário da Divina Misericórdia, Cracóvia, Polónia',
     'hero.attribution': "Foto cortesia das paróquias St. Anthony e St. Mary, Menomonee Falls, WI · Custódia São João Paulo II por empréstimo da ARISE MKE",
     verses: [
@@ -977,10 +967,11 @@ function initSearch() {
   const box = $('suggestions');
   if (!input || !box) return;
 
+  const hideBox = () => { box.innerHTML = ''; box.classList.remove('visible'); };
+
   input.addEventListener('input', () => {
     const q = input.value.toLowerCase().trim();
-    box.innerHTML = '';
-    if (!q) return;
+    if (!q) { hideBox(); return; }
 
     const results = state.allMarkers
       .map(m => {
@@ -996,7 +987,8 @@ function initSearch() {
       .slice(0, 10);
 
     if (!results.length) {
-      box.innerHTML = `<div class="suggestion-item" style="color:#999;">${t()['msg.noResults']}</div>`;
+      box.innerHTML = `<div class="suggestion-item" style="color:var(--ink-faint);">${t()['msg.noResults']}</div>`;
+      box.classList.add('visible');
       return;
     }
 
@@ -1006,13 +998,14 @@ function initSearch() {
         ${r.sub ? `<span style="color:var(--ink-faint);font-size:0.85em;font-style:italic;"> — ${escapeHtml(r.sub)}</span>` : ''}
       </div>
     `).join('');
+    box.classList.add('visible');
 
     box.querySelectorAll('.suggestion-item').forEach((el, i) => {
       el.addEventListener('click', () => {
         const match = results[i]?.marker;
         if (!match) return;
         input.value = results[i].name;
-        box.innerHTML = '';
+        hideBox();
         const { lat, lng } = match.getLatLng();
         state.map.setView([lat, lng], 13);
         match.openPopup();
@@ -1020,8 +1013,9 @@ function initSearch() {
     });
   });
 
+  // Click outside the search wrapper to dismiss
   document.addEventListener('click', e => {
-    if (!e.target.closest('#searchWrapper')) box.innerHTML = '';
+    if (!e.target.closest('.header-search')) hideBox();
   });
 }
 
@@ -1113,8 +1107,31 @@ function formatDistance(meters) {
 }
 
 function initNearby() {
+  const panel = $('nearbyPanel');
+  if (!panel) return;
+
+  const closePanel = () => panel.classList.add('hidden');
+
+  // Close button
+  $('nearbyClose')?.addEventListener('click', e => {
+    e.stopPropagation();
+    closePanel();
+  });
+
+  // Click outside the panel closes it (but not when clicking the trigger button itself)
+  document.addEventListener('click', e => {
+    if (panel.classList.contains('hidden')) return;
+    if (e.target.closest('#nearbyPanel')) return;
+    if (e.target.closest('#findChapel')) return;
+    closePanel();
+  });
+
+  // Escape key closes it
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !panel.classList.contains('hidden')) closePanel();
+  });
+
   $('findChapel')?.addEventListener('click', () => {
-    const panel = $('nearbyPanel');
     const list = $('nearbyList');
 
     if (!navigator.geolocation) {
@@ -1126,7 +1143,7 @@ function initNearby() {
 
     // Show loading state immediately
     panel.classList.remove('hidden');
-    list.innerHTML = `<div class="nearby-empty">📍 Finding your location…</div>`;
+    list.innerHTML = `<div class="nearby-empty">Finding your location…</div>`;
     panel.scrollIntoView({ behavior: 'smooth' });
 
     navigator.geolocation.getCurrentPosition(

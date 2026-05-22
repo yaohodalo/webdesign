@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google" content="notranslate" />
   <title>Would You Join Me for One Hour? — Eucharistic Adoration Worldwide</title>
   <meta name="description" content="Find Eucharistic Adoration chapels near you, pledge an hour of prayer, and unite with adorers worldwide." />
 
@@ -17,7 +18,7 @@
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="style.css"/>
 </head>
-<body>
+<body translate="no" class="notranslate">
 
 <!-- ═══ SVG SPRITE: Reusable ornaments ═══ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -187,6 +188,7 @@
 
 <!-- ═══ NEARBY PANEL ═══ -->
 <div id="nearbyPanel" class="nearby hidden">
+  <button class="nearby-close" id="nearbyClose" aria-label="Close nearby panel">&times;</button>
   <h3>
     <svg width="18" height="18" class="inline-icon"><use href="#orn-pin"/></svg>
     <span data-i18n="nearby.heading">Adoration Near You</span>
@@ -224,14 +226,10 @@
 <section class="featured-section">
   <div class="featured-grid">
     <div class="featured-image-wrap">
-      <img src="images/divine-mercy-krakow.png" alt="The Divine Mercy Shrine in Krakow, Poland — a bronze sculptural monstrance against stained glass" class="featured-image"/>
+      <img src="images/divine-mercy-krakow.png" alt="The Divine Mercy Shrine in Krakow, Poland" class="featured-image"/>
     </div>
     <div class="featured-text">
-      <p class="section-eyebrow" data-i18n="featured.eyebrow">Adoration Across Cultures</p>
-      <h2 class="display-heading" data-i18n="featured.title">From Krakow to the Ends of the Earth</h2>
-      <p data-i18n="featured.body">
-        From the ornate gold of European basilicas to the modern sculptural beauty of the Divine Mercy Shrine in Krakow — Eucharistic Adoration takes countless visible forms, but its heart is everywhere the same: Christ truly present, waiting for us.
-      </p>
+      <p class="featured-statement" data-i18n="featured.statement">Jesus Christ is truly present, waiting for us.</p>
       <p class="featured-caption" data-i18n="featured.caption">— Divine Mercy Shrine, Krakow, Poland</p>
     </div>
   </div>
@@ -241,7 +239,7 @@
 <section class="how-section">
   <header class="how-header">
     <p class="section-eyebrow" data-i18n="how.eyebrow">A Reader's Guide</p>
-    <h2 class="display-heading" data-i18n="how.title">What is Eucharistic Adoration?</h2>
+    <h2 class="display-heading" data-i18n="how.title">Four Steps to Begin</h2>
   </header>
   <ol class="how-chapters">
     <li class="how-chapter">
