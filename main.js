@@ -142,7 +142,7 @@ const translations = {
     'mission.aside': '"The Eucharist is the heart of Jesus opened to us."',
     'mission.asideAuthor': '— St. Peter Julian Eymard',
     'mission.coda': 'We are not building a movement. We are joining one — older than us, larger than us, and still answering the question Jesus first asked in the garden.',
-    'rsc1.author': 'Bl. Carlo Acutis · International Exhibition',
+    'rsc1.author': 'St. Carlo Acutis · International Exhibition',
     'rsc2.author': 'Pope Paul VI · 1965',
     'rsc3.author': 'Pope Benedict XVI · 2007',
     'rsc4.author': 'USA · Ongoing',
@@ -153,6 +153,16 @@ const translations = {
     'featured.statement': "Jesus Christ is truly present, waiting for us.",
     'featured.caption': '— Divine Mercy Shrine, Krakow, Poland',
     'hero.attribution': "Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI · St. John Paul II Monstrance on loan from ARISE MKE",
+    'nearby.loading': 'Finding your location…',
+    'nearby.noGeo': 'Geolocation is not supported by your browser.',
+    'nearby.empty': 'No chapels are on the map yet.',
+    'nearby.headerClose': 'Showing the {n} closest chapels to you',
+    'nearby.headerFar': 'The nearest chapel is {d} away. Showing the {n} closest:',
+    'nearby.geoDenied': 'Location access was denied. Please enable location in your browser settings and try again.',
+    'nearby.geoUnavailable': 'Your location could not be determined. Please check your internet connection.',
+    'nearby.geoTimeout': 'Location request timed out. Please try again.',
+    'nearby.geoError': 'Could not get your location.',
+    'nearby.away': '{d} away',
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -285,7 +295,7 @@ const translations = {
     'mission.aside': '"La Eucaristía es el corazón de Jesús abierto a nosotros."',
     'mission.asideAuthor': '— San Pedro Julián Eymard',
     'mission.coda': 'No estamos construyendo un movimiento. Nos estamos uniendo a uno — más antiguo que nosotros, más grande que nosotros, y que aún responde a la pregunta que Jesús hizo por primera vez en el huerto.',
-    'rsc1.author': 'Bto. Carlo Acutis · Exposición Internacional',
+    'rsc1.author': 'San Carlo Acutis · Exposición Internacional',
     'rsc2.author': 'Papa Pablo VI · 1965',
     'rsc3.author': 'Papa Benedicto XVI · 2007',
     'rsc4.author': 'EE. UU. · En curso',
@@ -296,6 +306,16 @@ const translations = {
     'featured.statement': "Jesucristo está verdaderamente presente, esperándonos.",
     'featured.caption': '— Santuario de la Divina Misericordia, Cracovia, Polonia',
     'hero.attribution': "Foto cortesía de las parroquias St. Anthony y St. Mary, Menomonee Falls, WI · Custodia de San Juan Pablo II en préstamo de ARISE MKE",
+    'nearby.loading': 'Buscando tu ubicación…',
+    'nearby.noGeo': 'Tu navegador no admite geolocalización.',
+    'nearby.empty': 'Aún no hay capillas en el mapa.',
+    'nearby.headerClose': 'Mostrando las {n} capillas más cercanas a ti',
+    'nearby.headerFar': 'La capilla más cercana está a {d}. Mostrando las {n} más cercanas:',
+    'nearby.geoDenied': 'Se denegó el acceso a la ubicación. Habilita la ubicación en tu navegador e inténtalo de nuevo.',
+    'nearby.geoUnavailable': 'No se pudo determinar tu ubicación. Comprueba tu conexión a internet.',
+    'nearby.geoTimeout': 'La solicitud de ubicación tardó demasiado. Inténtalo de nuevo.',
+    'nearby.geoError': 'No se pudo obtener tu ubicación.',
+    'nearby.away': 'a {d}',
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -349,7 +369,7 @@ const translations = {
     'saint1.quote':    "\"L'Eucharistie est le cœur de Jésus ouvert à nous.\"",
     'saint2.name':     'St Tarcisius',
     'saint2.quote':    'Martyr mort en protégeant le Saint-Sacrement, vers 257 ap. J.-C.',
-    'saint3.name':     'Bx Carlo Acutis',
+    'saint3.name':     'St Carlo Acutis',
     'saint3.quote':    "\"L'Eucharistie est mon autoroute vers le Ciel.\"",
     'how.eyebrow':     'Comment ça marche',
     'how.title':       "Quatre étapes pour commencer",
@@ -428,7 +448,7 @@ const translations = {
     'mission.aside': '"L\'Eucharistie est le cœur de Jésus ouvert à nous."',
     'mission.asideAuthor': '— St Pierre-Julien Eymard',
     'mission.coda': 'Nous ne construisons pas un mouvement. Nous en rejoignons un — plus ancien que nous, plus grand que nous, et qui répond encore à la question que Jésus a posée pour la première fois au jardin.',
-    'rsc1.author': 'Bx Carlo Acutis · Exposition Internationale',
+    'rsc1.author': 'St Carlo Acutis · Exposition Internationale',
     'rsc2.author': 'Pape Paul VI · 1965',
     'rsc3.author': 'Pape Benoît XVI · 2007',
     'rsc4.author': 'États-Unis · En cours',
@@ -439,6 +459,16 @@ const translations = {
     'featured.statement': "Jésus-Christ est vraiment présent, qui nous attend.",
     'featured.caption': '— Sanctuaire de la Divine Miséricorde, Cracovie, Pologne',
     'hero.attribution': "Photo offerte par les paroisses St. Anthony &amp; St. Mary, Menomonee Falls, WI · Ostensoir St. Jean-Paul II prêté par ARISE MKE",
+    'nearby.loading': 'Recherche de votre position…',
+    'nearby.noGeo': "La géolocalisation n'est pas prise en charge par votre navigateur.",
+    'nearby.empty': "Aucune chapelle n'est encore sur la carte.",
+    'nearby.headerClose': 'Affichage des {n} chapelles les plus proches',
+    'nearby.headerFar': 'La chapelle la plus proche est à {d}. Affichage des {n} plus proches :',
+    'nearby.geoDenied': "L'accès à la localisation a été refusé. Activez la localisation dans votre navigateur et réessayez.",
+    'nearby.geoUnavailable': "Votre position n'a pas pu être déterminée. Vérifiez votre connexion internet.",
+    'nearby.geoTimeout': 'La demande de localisation a expiré. Réessayez.',
+    'nearby.geoError': 'Impossible d\u0027obtenir votre position.',
+    'nearby.away': 'à {d}',
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -492,7 +522,7 @@ const translations = {
     'saint1.quote':    "\"L'Eucaristia è il cuore di Gesù aperto a noi.\"",
     'saint2.name':     'San Tarcisio',
     'saint2.quote':    'Martire morto proteggendo il Santissimo Sacramento, c. 257 d.C.',
-    'saint3.name':     'Beato Carlo Acutis',
+    'saint3.name':     'San Carlo Acutis',
     'saint3.quote':    "\"L'Eucaristia è la mia autostrada per il Cielo.\"",
     'how.eyebrow':     'Come Funziona',
     'how.title':       "Quattro passi per iniziare",
@@ -515,7 +545,7 @@ const translations = {
     'rsc.eyebrow':     'Approfondisci',
     'rsc.title':       "Risorse sull'Adorazione Eucaristica",
     'rsc1.title':      'Miracoli eucaristici',
-    'rsc1.sub':        'Beato Carlo Acutis — miracoli documentati nel mondo',
+    'rsc1.sub':        'San Carlo Acutis — miracoli documentati nel mondo',
     'rsc2.title':      'Mysterium Fidei',
     'rsc2.sub':        'Papa Paolo VI — sul mistero della fede',
     'rsc3.title':      'Sacramentum Caritatis',
@@ -571,7 +601,7 @@ const translations = {
     'mission.aside': '"L\'Eucaristia è il cuore di Gesù aperto a noi."',
     'mission.asideAuthor': '— San Pier Giuliano Eymard',
     'mission.coda': 'Non stiamo costruendo un movimento. Ci stiamo unendo a uno — più antico di noi, più grande di noi, e che ancora risponde alla domanda che Gesù pose per la prima volta nel giardino.',
-    'rsc1.author': 'Beato Carlo Acutis · Mostra Internazionale',
+    'rsc1.author': 'San Carlo Acutis · Mostra Internazionale',
     'rsc2.author': 'Papa Paolo VI · 1965',
     'rsc3.author': 'Papa Benedetto XVI · 2007',
     'rsc4.author': 'USA · In corso',
@@ -582,6 +612,16 @@ const translations = {
     'featured.statement': "Gesù Cristo è veramente presente, ci aspetta.",
     'featured.caption': '— Santuario della Divina Misericordia, Cracovia, Polonia',
     'hero.attribution': "Foto per gentile concessione delle parrocchie St. Anthony e St. Mary, Menomonee Falls, WI · Ostensorio San Giovanni Paolo II in prestito da ARISE MKE",
+    'nearby.loading': 'Ricerca della tua posizione…',
+    'nearby.noGeo': 'La geolocalizzazione non è supportata dal tuo browser.',
+    'nearby.empty': 'Nessuna cappella ancora sulla mappa.',
+    'nearby.headerClose': 'Mostrando le {n} cappelle più vicine a te',
+    'nearby.headerFar': 'La cappella più vicina è a {d}. Mostrando le {n} più vicine:',
+    'nearby.geoDenied': 'Accesso alla posizione negato. Abilita la posizione nel browser e riprova.',
+    'nearby.geoUnavailable': 'Impossibile determinare la tua posizione. Controlla la connessione internet.',
+    'nearby.geoTimeout': 'Richiesta di posizione scaduta. Riprova.',
+    'nearby.geoError': 'Impossibile ottenere la tua posizione.',
+    'nearby.away': 'a {d}',
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -635,7 +675,7 @@ const translations = {
     'saint1.quote':    '"A Eucaristia é o coração de Jesus aberto a nós."',
     'saint2.name':     'São Tarcísio',
     'saint2.quote':    'Mártir que morreu protegendo o Santíssimo Sacramento, c. 257 d.C.',
-    'saint3.name':     'Beato Carlo Acutis',
+    'saint3.name':     'São Carlo Acutis',
     'saint3.quote':    '"A Eucaristia é a minha autoestrada para o Céu."',
     'how.eyebrow':     'Como Funciona',
     'how.title':       "Quatro passos para começar",
@@ -658,7 +698,7 @@ const translations = {
     'rsc.eyebrow':     'Aprofundar',
     'rsc.title':       'Recursos sobre a Adoração Eucarística',
     'rsc1.title':      'Milagres eucarísticos',
-    'rsc1.sub':        'Beato Carlo Acutis — milagres documentados no mundo',
+    'rsc1.sub':        'São Carlo Acutis — milagres documentados no mundo',
     'rsc2.title':      'Mysterium Fidei',
     'rsc2.sub':        'Papa Paulo VI — sobre o mistério da fé',
     'rsc3.title':      'Sacramentum Caritatis',
@@ -714,7 +754,7 @@ const translations = {
     'mission.aside': '"A Eucaristia é o coração de Jesus aberto a nós."',
     'mission.asideAuthor': '— São Pedro Juliano Eymard',
     'mission.coda': 'Não estamos a construir um movimento. Estamos a juntar-nos a um — mais antigo do que nós, maior do que nós, e que ainda responde à pergunta que Jesus fez pela primeira vez no jardim.',
-    'rsc1.author': 'Beato Carlo Acutis · Exposição Internacional',
+    'rsc1.author': 'São Carlo Acutis · Exposição Internacional',
     'rsc2.author': 'Papa Paulo VI · 1965',
     'rsc3.author': 'Papa Bento XVI · 2007',
     'rsc4.author': 'EUA · Em curso',
@@ -725,6 +765,16 @@ const translations = {
     'featured.statement': "Jesus Cristo está verdadeiramente presente, esperando por nós.",
     'featured.caption': '— Santuário da Divina Misericórdia, Cracóvia, Polónia',
     'hero.attribution': "Foto cortesia das paróquias St. Anthony e St. Mary, Menomonee Falls, WI · Custódia São João Paulo II por empréstimo da ARISE MKE",
+    'nearby.loading': 'A localizar a sua posição…',
+    'nearby.noGeo': 'O seu navegador não suporta geolocalização.',
+    'nearby.empty': 'Ainda não há capelas no mapa.',
+    'nearby.headerClose': 'A mostrar as {n} capelas mais próximas',
+    'nearby.headerFar': 'A capela mais próxima fica a {d}. A mostrar as {n} mais próximas:',
+    'nearby.geoDenied': 'Acesso à localização negado. Ative a localização no navegador e tente novamente.',
+    'nearby.geoUnavailable': 'Não foi possível determinar a sua localização. Verifique a sua ligação à internet.',
+    'nearby.geoTimeout': 'O pedido de localização expirou. Tente novamente.',
+    'nearby.geoError': 'Não foi possível obter a sua localização.',
+    'nearby.away': 'a {d}',
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
@@ -904,6 +954,7 @@ async function initMap() {
   state.markersGroup = L.markerClusterGroup({
     showCoverageOnHover: false,
     spiderfyOnMaxZoom: true,
+    disableClusteringAtZoom: 14,  // Stop clustering past city-level zoom — show individual markers
     maxClusterRadius: 50,
   });
   state.map.addLayer(state.markersGroup);
@@ -1133,26 +1184,28 @@ function initNearby() {
 
   $('findChapel')?.addEventListener('click', () => {
     const list = $('nearbyList');
+    const tr = t();
 
     if (!navigator.geolocation) {
       panel.classList.remove('hidden');
-      list.innerHTML = `<div class="nearby-empty">Geolocation is not supported by your browser.</div>`;
+      list.innerHTML = `<div class="nearby-empty">${escapeHtml(tr['nearby.noGeo'])}</div>`;
       panel.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
     // Show loading state immediately
     panel.classList.remove('hidden');
-    list.innerHTML = `<div class="nearby-empty">Finding your location…</div>`;
+    list.innerHTML = `<div class="nearby-empty">${escapeHtml(tr['nearby.loading'])}</div>`;
     panel.scrollIntoView({ behavior: 'smooth' });
 
     navigator.geolocation.getCurrentPosition(
       pos => {
+        const tr = t();
         const { latitude: lat, longitude: lng } = pos.coords;
         showUserLocation(lat, lng);
 
         if (!state.allMarkers.length) {
-          list.innerHTML = `<div class="nearby-empty">No chapels are on the map yet.</div>`;
+          list.innerHTML = `<div class="nearby-empty">${escapeHtml(tr['nearby.empty'])}</div>`;
           return;
         }
 
@@ -1169,7 +1222,6 @@ function initNearby() {
         const nearest = sorted[0];
         const isClose = nearest.dist < 80000; // 80 km
 
-        // Frame the map: if nearest is close, fit both; otherwise just center on user
         if (isClose) {
           const userLL = L.latLng(lat, lng);
           const nearestLL = nearest.m.getLatLng();
@@ -1178,31 +1230,39 @@ function initNearby() {
           state.map.setView([lat, lng], 4);
         }
 
-        // Build the list — header explains the result
-        const header = isClose
-          ? `<div class="nearby-header">Showing the ${sorted.length} closest chapels to you</div>`
-          : `<div class="nearby-header">The nearest chapel is ${formatDistance(nearest.dist)} away. Showing the ${sorted.length} closest:</div>`;
+        // Build the list header from the translated template
+        const headerText = isClose
+          ? tr['nearby.headerClose'].replace('{n}', sorted.length)
+          : tr['nearby.headerFar']
+              .replace('{d}', formatDistance(nearest.dist))
+              .replace('{n}', sorted.length);
 
-        list.innerHTML = header;
+        list.innerHTML = `<div class="nearby-header">${escapeHtml(headerText)}</div>`;
         sorted.forEach(({ m, dist, data }) => {
           const item = document.createElement('div');
           item.className = 'nearby-item';
           const loc = [data.city, data.country].filter(Boolean).join(', ');
+          const distStr = formatDistance(dist);
+          const awayStr = tr['nearby.away'].replace('{d}', distStr);
+          const perpetualSuffix = data.perpetual ? ' · 24/7' : '';
           item.innerHTML = `
             <div class="nearby-name">${escapeHtml(data.name || 'Chapel')}</div>
-            ${loc ? `<div class="nearby-meta">${escapeHtml(loc)} · ${formatDistance(dist)}${data.perpetual ? ' · 24/7' : ''}</div>` : `<div class="nearby-meta">${formatDistance(dist)} away${data.perpetual ? ' · 24/7' : ''}</div>`}
+            ${loc
+              ? `<div class="nearby-meta">${escapeHtml(loc)} · ${escapeHtml(distStr)}${perpetualSuffix}</div>`
+              : `<div class="nearby-meta">${escapeHtml(awayStr)}${perpetualSuffix}</div>`}
           `;
           item.addEventListener('click', () => focusMarker(m));
           list.appendChild(item);
         });
       },
       err => {
+        const tr = t();
         const messages = {
-          1: 'Location access was denied. Please enable location in your browser settings and try again.',
-          2: 'Your location could not be determined. Please check your internet connection.',
-          3: 'Location request timed out. Please try again.',
+          1: tr['nearby.geoDenied'],
+          2: tr['nearby.geoUnavailable'],
+          3: tr['nearby.geoTimeout'],
         };
-        list.innerHTML = `<div class="nearby-empty">${messages[err.code] || 'Could not get your location.'}</div>`;
+        list.innerHTML = `<div class="nearby-empty">${escapeHtml(messages[err.code] || tr['nearby.geoError'])}</div>`;
       },
       { timeout: 10000, maximumAge: 60000 }
     );
