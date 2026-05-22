@@ -245,20 +245,14 @@
   </header>
 
   <div class="tabs">
-    <button class="tab active" data-view="chapels" data-status="pending">
+    <button class="tab active" data-status="pending">
       Pending <span class="count-pill" id="countPending">0</span>
     </button>
-    <button class="tab" data-view="chapels" data-status="approved">
+    <button class="tab" data-status="approved">
       Approved <span class="count-pill" id="countApproved">0</span>
     </button>
-    <button class="tab" data-view="chapels" data-status="rejected">
+    <button class="tab" data-status="rejected">
       Rejected <span class="count-pill" id="countRejected">0</span>
-    </button>
-    <button class="tab" data-view="pledges">
-      Pledges <span class="count-pill" id="countPledges">0</span>
-    </button>
-    <button class="tab" data-view="messages">
-      Messages <span class="count-pill" id="countMessages">0</span>
     </button>
   </div>
 
@@ -444,128 +438,24 @@
     }
   });
 
-  // ════════════════════════════════════════
-  // PLEDGES VIEW
-  // ════════════════════════════════════════
-  function pledgeCardHtml(p) {
-    const t = new Date(p.pledge_time);
-    const niceTime = t.toLocaleString('en-US', {
-      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
-      hour: 'numeric', minute: '2-digit', hour12: true,
-    });
-    const created = new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    return `
-      <div class="chapel-card">
-        <div style="display:flex;justify-content:space-between;align-items:start;gap:1rem;flex-wrap:wrap;">
-          <div>
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#0B1F3A;margin-bottom:0.3rem;">${escapeHtml(p.name)}</h3>
-            <div style="font-size:0.85rem;color:#8a7a6a;font-style:italic;">${escapeHtml(p.email || 'No email provided')}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;color:#7a5f1f;text-transform:uppercase;">Pledged for</div>
-            <div style="font-size:1.05rem;color:#0B1F3A;margin-top:2px;">${escapeHtml(niceTime)}</div>
-          </div>
-        </div>
-        ${p.intention ? `
-          <div style="margin-top:1rem;padding:0.85rem 1rem;background:#fbf6e9;border-left:3px solid #b8923a;font-style:italic;color:#38312B;">
-            ${escapeHtml(p.intention)}
-          </div>
-        ` : ''}
-        <div style="margin-top:0.8rem;font-size:0.78rem;color:#8a7a6a;">Submitted ${escapeHtml(created)}</div>
-      </div>
-    `;
-  }
-
-  async function loadPledges() {
-    const list = $('chapelList');
-    list.innerHTML = '<div class="empty">Loading pledges…</div>';
-    try {
-      const data = await api('/api/admin/pledges');
-      const pledges = data.pledges || [];
-      $('countPledges').textContent = pledges.length;
-      list.innerHTML = pledges.length
-        ? pledges.map(pledgeCardHtml).join('')
-        : '<div class="empty">No pledges yet.</div>';
-    } catch (e) {
-      if (e.status === 401) { clearToken(); showLogin('Session expired. Please sign in again.'); }
-      else list.innerHTML = `<div class="empty">Error: ${escapeHtml(e.message)}</div>`;
-    }
-  }
-
-  // ════════════════════════════════════════
-  // MESSAGES VIEW
-  // ════════════════════════════════════════
-  function messageCardHtml(m) {
-    const created = new Date(m.created_at).toLocaleString('en-US', {
-      year: 'numeric', month: 'short', day: 'numeric',
-      hour: 'numeric', minute: '2-digit', hour12: true,
-    });
-    return `
-      <div class="chapel-card">
-        <div style="display:flex;justify-content:space-between;align-items:start;gap:1rem;flex-wrap:wrap;">
-          <div>
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#0B1F3A;margin-bottom:0.3rem;">${escapeHtml(m.name)}</h3>
-            <a href="mailto:${escapeHtml(m.email)}" style="font-size:0.9rem;color:#7a5f1f;">${escapeHtml(m.email)}</a>
-          </div>
-          <div style="font-size:0.78rem;color:#8a7a6a;text-align:right;">${escapeHtml(created)}</div>
-        </div>
-        <div style="margin-top:1rem;padding:0.85rem 1rem;background:#fbf6e9;border-left:3px solid #b8923a;color:#38312B;white-space:pre-wrap;">
-          ${escapeHtml(m.message)}
-        </div>
-      </div>
-    `;
-  }
-
-  async function loadMessages() {
-    const list = $('chapelList');
-    list.innerHTML = '<div class="empty">Loading messages…</div>';
-    try {
-      const data = await api('/api/admin/messages');
-      const messages = data.messages || [];
-      $('countMessages').textContent = messages.length;
-      list.innerHTML = messages.length
-        ? messages.map(messageCardHtml).join('')
-        : '<div class="empty">No messages yet.</div>';
-    } catch (e) {
-      if (e.status === 401) { clearToken(); showLogin('Session expired. Please sign in again.'); }
-      else list.innerHTML = `<div class="empty">Error: ${escapeHtml(e.message)}</div>`;
-    }
-  }
-
-  // Refresh side counts for pledges + messages even when on chapels view
-  async function refreshSideCounts() {
-    try {
-      const [p, m] = await Promise.all([
-        api('/api/admin/pledges').catch(() => ({ pledges: [] })),
-        api('/api/admin/messages').catch(() => ({ messages: [] })),
-      ]);
-      $('countPledges').textContent = (p.pledges || []).length;
-      $('countMessages').textContent = (m.messages || []).length;
-    } catch {}
-  }
-
   // LOGOUT
   $('logoutBtn').addEventListener('click', () => {
     clearToken();
     showLogin();
   });
 
-  // TABS — route to chapels / pledges / messages
+  // TABS
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      const view = tab.dataset.view;
-      if (view === 'pledges') loadPledges();
-      else if (view === 'messages') loadMessages();
-      else loadList(tab.dataset.status);
+      loadList(tab.dataset.status);
     });
   });
 
   // Auto-login if token present
   if (getToken()) {
     showDash();
-    refreshSideCounts(); // populate pledge/message counts on dashboard load
   } else {
     showLogin();
   }

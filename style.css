@@ -377,14 +377,25 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   position: absolute;
   inset: 0;
   z-index: 0;
+  /* Behind the photo, in case object-fit:contain shows bars or photo fails to load */
+  background: linear-gradient(180deg, #1a1208 0%, #3a2a14 30%, #6a4f1f 60%, #8a6824 100%);
 }
 
 .hero-image {
   width: 100%;
   height: 100%;
+  /* On all sizes, keep the entire monstrance visible by using contain on wider screens */
   object-fit: cover;
-  object-position: center 40%;
-  filter: brightness(0.92);
+  object-position: center 30%;
+  filter: brightness(0.95);
+}
+
+/* Wide screens: switch to contain so the full portrait photo is visible with gold gradient bars */
+@media (min-width: 1100px) {
+  .hero-image {
+    object-fit: contain;
+    object-position: center;
+  }
 }
 
 .hero-overlay {
@@ -697,39 +708,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 
 
 /* ─────────────────────────────────────────────────────────────────────────
-  10. LIVING COUNT
-   ───────────────────────────────────────────────────────────────────────── */
-
-.living-count {
-  background: var(--page-bg-soft);
-  border-top: var(--line-fine);
-  border-bottom: var(--line-fine);
-  padding: var(--space-4) var(--space-3);
-}
-.living-count-inner {
-  max-width: 880px;
-  margin: 0 auto;
-  text-align: center;
-}
-.count-line {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1.1rem, 2.4vw, 1.55rem);
-  line-height: 1.6;
-  color: var(--ink-soft);
-  margin: 0;
-}
-.count-num {
-  font-family: var(--font-sans);
-  font-style: normal;
-  font-weight: 600;
-  color: var(--gold-deep);
-  margin: 0 0.15em;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────────
-  11. LIVE ADORATION
+  10. LIVE ADORATION
    ───────────────────────────────────────────────────────────────────────── */
 
 .live-section {
@@ -859,15 +838,17 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   to   { transform: translateY(0); opacity: 1; }
 }
 
-/* When floating, the live-section keeps a placeholder block so the layout doesn't jump */
+/* Placeholder is hidden by default, only shown when video is detached/floating */
+.tabernacle-placeholder {
+  display: none !important;
+}
 .live-section.video-detached .tabernacle-placeholder {
-  display: block;
+  display: flex !important;
   margin: var(--space-4) auto;
   max-width: 1100px;
   aspect-ratio: 16 / 9;
   background: rgba(21, 17, 13, 0.06);
   border: 1px dashed rgba(122, 95, 31, 0.25);
-  display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
@@ -876,9 +857,6 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   text-transform: uppercase;
   color: rgba(122, 95, 31, 0.5);
   font-weight: 500;
-}
-.tabernacle-placeholder {
-  display: none;
 }
 
 /* Mobile: smaller floating player, bottom-center */
@@ -1627,11 +1605,16 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
     height: 13px;
   }
   .header-actions .btn span { display: inline !important; }
-  /* Allow buttons to wrap onto multiple lines */
+
+  /* Mobile: action buttons sit BELOW the search bar, centered */
   .header-actions {
     flex-wrap: wrap;
-    justify-content: flex-end;
+    justify-content: center;  /* centered as requested */
+    gap: 0.4rem;
+    width: 100%;
   }
+  /* Hide music button on mobile to make room for the four primary buttons */
+  #musicToggle { display: none; }
 
   .hero { min-height: 480px; }
   .hero-content { padding: var(--space-3) var(--space-2); }
@@ -1649,9 +1632,6 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
     border: none;
     border-top: var(--line-fine);
   }
-
-  .living-count { padding: var(--space-3) var(--space-2); }
-  .count-line { font-size: 1.05rem; line-height: 1.7; }
 
   .mission-section, .how-section, .pledge-section,
   .reading-section, .contact-section, .live-section {
