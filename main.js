@@ -150,9 +150,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Eucharistic Adoration Worldwide',
     'hero.verse': '"Could you not watch with me one hour?" — Matthew 26:40',
-    'featured.statement': "Jesus Christ is truly present, waiting for us.",
-    'featured.caption': '— Divine Mercy Shrine, Krakow, Poland',
-    'hero.attribution': "Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI · St. John Paul II Monstrance on loan from ARISE MKE",
+    'hero.attribution': "Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI",
     'nearby.loading': 'Finding your location…',
     'nearby.noGeo': 'Geolocation is not supported by your browser.',
     'nearby.empty': 'No chapels are on the map yet.',
@@ -303,9 +301,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adoración Eucarística en Todo el Mundo',
     'hero.verse': '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
-    'featured.statement': "Jesucristo está verdaderamente presente, esperándonos.",
-    'featured.caption': '— Santuario de la Divina Misericordia, Cracovia, Polonia',
-    'hero.attribution': "Foto cortesía de las parroquias St. Anthony y St. Mary, Menomonee Falls, WI · Custodia de San Juan Pablo II en préstamo de ARISE MKE",
+    'hero.attribution': "Foto cortesía de las parroquias St. Anthony y St. Mary, Menomonee Falls, WI",
     'nearby.loading': 'Buscando tu ubicación…',
     'nearby.noGeo': 'Tu navegador no admite geolocalización.',
     'nearby.empty': 'Aún no hay capillas en el mapa.',
@@ -456,9 +452,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adoration Eucharistique dans le Monde',
     'hero.verse': '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
-    'featured.statement': "Jésus-Christ est vraiment présent, qui nous attend.",
-    'featured.caption': '— Sanctuaire de la Divine Miséricorde, Cracovie, Pologne',
-    'hero.attribution': "Photo offerte par les paroisses St. Anthony &amp; St. Mary, Menomonee Falls, WI · Ostensoir St. Jean-Paul II prêté par ARISE MKE",
+    'hero.attribution': "Photo offerte par les paroisses St. Anthony &amp; St. Mary, Menomonee Falls, WI",
     'nearby.loading': 'Recherche de votre position…',
     'nearby.noGeo': "La géolocalisation n'est pas prise en charge par votre navigateur.",
     'nearby.empty': "Aucune chapelle n'est encore sur la carte.",
@@ -609,9 +603,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adorazione Eucaristica nel Mondo',
     'hero.verse': '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
-    'featured.statement': "Gesù Cristo è veramente presente, ci aspetta.",
-    'featured.caption': '— Santuario della Divina Misericordia, Cracovia, Polonia',
-    'hero.attribution': "Foto per gentile concessione delle parrocchie St. Anthony e St. Mary, Menomonee Falls, WI · Ostensorio San Giovanni Paolo II in prestito da ARISE MKE",
+    'hero.attribution': "Foto per gentile concessione delle parrocchie St. Anthony e St. Mary, Menomonee Falls, WI",
     'nearby.loading': 'Ricerca della tua posizione…',
     'nearby.noGeo': 'La geolocalizzazione non è supportata dal tuo browser.',
     'nearby.empty': 'Nessuna cappella ancora sulla mappa.',
@@ -762,9 +754,7 @@ const translations = {
     'rsc6.author': 'EWTN',
     'hero.eyebrow': 'Adoração Eucarística no Mundo',
     'hero.verse': '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
-    'featured.statement': "Jesus Cristo está verdadeiramente presente, esperando por nós.",
-    'featured.caption': '— Santuário da Divina Misericórdia, Cracóvia, Polónia',
-    'hero.attribution': "Foto cortesia das paróquias St. Anthony e St. Mary, Menomonee Falls, WI · Custódia São João Paulo II por empréstimo da ARISE MKE",
+    'hero.attribution': "Foto cortesia das paróquias St. Anthony e St. Mary, Menomonee Falls, WI",
     'nearby.loading': 'A localizar a sua posição…',
     'nearby.noGeo': 'O seu navegador não suporta geolocalização.',
     'nearby.empty': 'Ainda não há capelas no mapa.',
@@ -895,9 +885,29 @@ async function api(path, opts = {}) {
 /* ============ MAP ============ */
 const physicalIcon = () => L.divIcon({
   className: 'custom-marker physical',
-  html: '<div class="marker-circle physical-circle"></div>',
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
+  html: `
+    <svg viewBox="0 0 24 32" width="24" height="32" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="goldX" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stop-color="#e6c065"/>
+          <stop offset="50%"  stop-color="#c89640"/>
+          <stop offset="100%" stop-color="#7a5f1f"/>
+        </linearGradient>
+      </defs>
+      <!-- Drop shadow -->
+      <ellipse cx="12" cy="30" rx="5" ry="1.2" fill="rgba(0,0,0,0.25)"/>
+      <!-- Cross shape with serifed tips like classic Catholic map marker -->
+      <g fill="url(#goldX)" stroke="#7a5f1f" stroke-width="0.6" stroke-linejoin="round">
+        <path d="M10.5 2 L13.5 2 L13.5 10 L21 10 L21 13 L13.5 13 L13.5 28 L10.5 28 L10.5 13 L3 13 L3 10 L10.5 10 Z"/>
+      </g>
+      <!-- Inner highlight to give a gilt sheen -->
+      <path d="M11 3 L13 3 L13 11 L20 11 L20 11.6 L13 11.6 L13 27.4 L11 27.4 L11 11.6 L4 11.6 L4 11 L11 11 Z"
+            fill="rgba(255, 248, 225, 0.4)"/>
+    </svg>
+  `,
+  iconSize: [24, 32],
+  iconAnchor: [12, 28],
+  popupAnchor: [0, -28],
 });
 
 function chapelPopupHtml(c) {
@@ -1122,6 +1132,143 @@ function initLiveAdorationEmbed() {
   }
 }
 
+/* ============ FLOATING MINI-PLAYER ============ */
+function initFloatingVideo() {
+  const frame    = $('tabernacleFrame');
+  const liveSec  = $('liveAdoration');
+  const closeBtn = $('floatingClose');
+  const restoreBtn = $('floatingRestore');
+  const chrome   = frame?.querySelector('.floating-chrome');
+  if (!frame || !liveSec || !closeBtn || !restoreBtn || !chrome) return;
+
+  let isFloating = false;
+  let dismissed = false; // user closed it manually — don't re-float until they re-engage
+  let dragOffset = { x: 0, y: 0 };
+  let isDragging = false;
+  let customPosition = null; // {left, top} once user has dragged
+
+  function activate() {
+    if (isFloating || dismissed) return;
+    // Only float if there's actually a video loaded (lazy IO has fired)
+    if (!frame.querySelector('iframe')) return;
+    isFloating = true;
+    frame.classList.add('floating');
+    liveSec.classList.add('video-detached');
+    // Apply user position if previously dragged
+    if (customPosition) {
+      frame.style.left = customPosition.left + 'px';
+      frame.style.top  = customPosition.top + 'px';
+      frame.style.right = 'auto';
+      frame.style.bottom = 'auto';
+    }
+  }
+
+  function deactivate() {
+    if (!isFloating) return;
+    isFloating = false;
+    frame.classList.remove('floating');
+    liveSec.classList.remove('video-detached');
+    // Reset inline positioning so the corner default applies next time
+    frame.style.left = '';
+    frame.style.top = '';
+    frame.style.right = '';
+    frame.style.bottom = '';
+  }
+
+  // Manually close — also pauses video and dismisses until live section is re-visited
+  closeBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    dismissed = true;
+    deactivate();
+    // Pause/clear the video
+    const iframe = frame.querySelector('iframe');
+    if (iframe) {
+      const src = iframe.src;
+      iframe.src = ''; // Stops video
+      iframe.dataset.lastSrc = src; // Save for re-load if needed
+    }
+  });
+
+  // Restore button — manually return video to its place without dismissing
+  restoreBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    deactivate();
+    // Scroll back to live section so the user sees it
+    liveSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // IntersectionObserver: when live section scrolls out of view → float; when it comes back → dock
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        // When less than 10% of the live section is visible → float the video
+        if (entry.intersectionRatio < 0.1) {
+          activate();
+        } else if (entry.intersectionRatio > 0.5) {
+          // When live section is mostly back in view → dock it back
+          deactivate();
+          dismissed = false; // re-arm so it floats again next time
+        }
+      }
+    }, { threshold: [0.1, 0.5] });
+    io.observe(liveSec);
+  }
+
+  // Drag support — mouse + touch
+  function startDrag(clientX, clientY, e) {
+    if (!isFloating) return;
+    const target = e.target;
+    // Only drag if user grabbed the chrome bar (not the buttons inside it or the video)
+    if (target.closest('.floating-btn')) return;
+    if (!target.closest('.floating-chrome')) return;
+    isDragging = true;
+    frame.classList.add('dragging');
+    const rect = frame.getBoundingClientRect();
+    dragOffset.x = clientX - rect.left;
+    dragOffset.y = clientY - rect.top;
+    e.preventDefault();
+  }
+
+  function doDrag(clientX, clientY) {
+    if (!isDragging) return;
+    let left = clientX - dragOffset.x;
+    let top  = clientY - dragOffset.y;
+    // Clamp within viewport
+    const w = frame.offsetWidth;
+    const h = frame.offsetHeight;
+    left = Math.max(4, Math.min(left, window.innerWidth  - w - 4));
+    top  = Math.max(4, Math.min(top,  window.innerHeight - h - 4));
+    frame.style.left = left + 'px';
+    frame.style.top  = top + 'px';
+    frame.style.right = 'auto';
+    frame.style.bottom = 'auto';
+    customPosition = { left, top };
+  }
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    frame.classList.remove('dragging');
+  }
+
+  chrome.addEventListener('mousedown', e => startDrag(e.clientX, e.clientY, e));
+  document.addEventListener('mousemove', e => doDrag(e.clientX, e.clientY));
+  document.addEventListener('mouseup', endDrag);
+
+  chrome.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    if (t) startDrag(t.clientX, t.clientY, e);
+  }, { passive: false });
+  document.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    if (t && isDragging) {
+      doDrag(t.clientX, t.clientY);
+      e.preventDefault();
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', endDrag);
+}
+
 function closeLiveAdoration() {
   // Kept for backward compatibility — the modal still exists
   const modal = $('videoModal');
@@ -1132,10 +1279,24 @@ function closeLiveAdoration() {
 
 /* ============ NEARBY ============ */
 function focusMarker(marker) {
+  // Close the nearby panel so the popup is visible (especially important on mobile)
+  const panel = $('nearbyPanel');
+  if (panel) panel.classList.add('hidden');
+
+  // Scroll map into view first
+  const mapEl = $('map');
+  if (mapEl) {
+    mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Then center the marker, zoom in, and open its popup once scroll + zoom settle
   const { lat, lng } = marker.getLatLng();
-  state.map.setView([lat, lng], 13);
-  // Wait a tick for cluster spiderfy
-  setTimeout(() => marker.openPopup(), 200);
+  state.map.setView([lat, lng], 14);
+  setTimeout(() => {
+    marker.openPopup();
+    // After cluster spiderfy + popup open, make sure popup is visible above the marker
+    state.map.invalidateSize();
+  }, 350);
 }
 
 // Add or move a "You are here" marker
@@ -1492,6 +1653,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Live Adoration embed (lazy-loaded when scrolled into view)
   initLiveAdorationEmbed();
+
+  // Floating mini-player when scrolling away from live section
+  initFloatingVideo();
 
   // Load data, then build map and stats in parallel
   await loadChapels();
