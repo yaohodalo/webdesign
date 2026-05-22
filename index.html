@@ -128,7 +128,7 @@
     </h1>
     <p class="hero-verse" data-i18n="hero.verse">"Could you not watch with me one hour?" — Matthew 26:40</p>
   </div>
-  <p class="hero-attribution" data-i18n-html="hero.attribution">Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI · St. John Paul II Monstrance on loan from ARISE MKE</p>
+  <p class="hero-attribution" data-i18n-html="hero.attribution">Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI</p>
 </section>
 
 <!-- ═══ MAP ═══ -->
@@ -171,7 +171,19 @@
     </div>
     <h2 class="display-heading" data-i18n-html="live.title">Adoration <em>in Progress</em></h2>
     <p class="display-sub" data-i18n="live.subhead">"Could you not watch with me one hour?" — Matthew 26:40</p>
-    <div class="tabernacle-frame">
+    <div class="tabernacle-placeholder" aria-hidden="true">
+      <span>Playing in mini-player</span>
+    </div>
+    <div class="tabernacle-frame" id="tabernacleFrame">
+      <div class="floating-chrome" aria-hidden="true">
+        <span class="floating-title">Live Adoration</span>
+        <button class="floating-btn" id="floatingRestore" aria-label="Return video to its place" title="Return to place">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 19M4 19H9M4 19V14M15 10L20 5M20 5H15M20 5V10"/></svg>
+        </button>
+        <button class="floating-btn" id="floatingClose" aria-label="Close floating video" title="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6L18 18M6 18L18 6"/></svg>
+        </button>
+      </div>
       <div class="live-video-frame" id="liveVideoFrame">
         <div class="live-placeholder">
           <svg width="80" height="120" class="placeholder-monstrance"><use href="#orn-monstrance"/></svg>
@@ -219,19 +231,6 @@
         We are not building a movement. We are joining one — older than us, larger than us, and still answering the question Jesus first asked in the garden.
       </p>
     </article>
-  </div>
-</section>
-
-<!-- ═══ FEATURED CHAPEL: Divine Mercy, Krakow ═══ -->
-<section class="featured-section">
-  <div class="featured-grid">
-    <div class="featured-image-wrap">
-      <img src="images/divine-mercy-krakow.png" alt="The Divine Mercy Shrine in Krakow, Poland" class="featured-image"/>
-    </div>
-    <div class="featured-text">
-      <p class="featured-statement" data-i18n="featured.statement">Jesus Christ is truly present, waiting for us.</p>
-      <p class="featured-caption" data-i18n="featured.caption">— Divine Mercy Shrine, Krakow, Poland</p>
-    </div>
   </div>
 </section>
 

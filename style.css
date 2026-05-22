@@ -546,40 +546,29 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   9b. MAP MARKERS
+   9b. MAP MARKERS — classic gold cross
    ───────────────────────────────────────────────────────────────────────── */
 
-/* Custom chapel marker — gold pin against light/dark map */
 .custom-marker {
   background: transparent;
   border: none;
 }
-.marker-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9),
-              0 2px 8px rgba(37, 38, 42, 0.4);
-  transition: transform 0.2s ease;
-  cursor: pointer;
+.custom-marker svg {
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(122, 95, 31, 0.35));
+  transition: transform 0.18s ease, filter 0.18s ease;
+  transform-origin: 50% 90%;  /* anchor at the bottom of the cross */
 }
-.marker-circle::before {
-  /* Inner highlight, like a gem catching light */
-  content: "";
-  position: absolute;
-  top: 3px; left: 3px;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
+.custom-marker:hover svg {
+  transform: scale(1.18);
+  filter: drop-shadow(0 4px 10px rgba(184, 146, 58, 0.6));
 }
-.physical-circle {
-  background: radial-gradient(circle at 30% 30%, #e6c065, #b8923a 60%, #7a5f1f);
-}
-.marker-circle:hover {
-  transform: scale(1.25);
-  box-shadow: 0 0 0 4px rgba(255, 248, 225, 0.95),
-              0 4px 16px rgba(184, 146, 58, 0.6);
+
+/* Update legend dot to match new marker style */
+.legend-physical {
+  background: linear-gradient(180deg, #e6c065 0%, #c89640 50%, #7a5f1f 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(122, 95, 31, 0.4);
 }
 
 /* User location marker — soft blue pulsing dot */
@@ -763,7 +752,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 }
 .live-section > * { position: relative; z-index: 1; }
 
-.live-inner { max-width: 920px; margin: 0 auto; }
+.live-inner { max-width: 1180px; margin: 0 auto; }
 
 .section-marker {
   color: var(--gold);
@@ -794,9 +783,112 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   margin: var(--space-4) auto;
   padding: 8px;
   background: linear-gradient(135deg, #2a221a, #15110d, #2a221a);
-  max-width: 800px;
+  max-width: 1100px;
   position: relative;
   box-shadow: 0 16px 48px rgba(122, 95, 31, 0.5), 0 0 0 1px rgba(255, 248, 225, 0.3) inset;
+  transition: padding 0.3s ease;
+}
+
+/* ─── Floating mini-player chrome (hidden by default) ─── */
+.floating-chrome {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 6px 4px 8px;
+  cursor: move;
+  user-select: none;
+}
+.floating-title {
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  padding-left: 0.4rem;
+  white-space: nowrap;
+}
+.floating-btn {
+  background: transparent;
+  border: 1px solid rgba(212, 168, 58, 0.4);
+  color: var(--gold-bright);
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0;
+  padding: 0;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.floating-btn:hover {
+  background: var(--gold);
+  color: var(--tabernacle);
+  border-color: var(--gold);
+}
+
+/* ─── FLOATING STATE ─── */
+.tabernacle-frame.floating {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  margin: 0;
+  z-index: 4000;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  padding: 4px;
+  box-shadow: 0 20px 56px rgba(21, 17, 13, 0.6), 0 0 0 1px rgba(255, 248, 225, 0.3) inset;
+  animation: floating-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tabernacle-frame.floating::after {
+  inset: 2px;
+}
+.tabernacle-frame.floating .floating-chrome { display: flex; }
+.tabernacle-frame.floating.dragging {
+  animation: none;
+  transition: none;
+  cursor: grabbing;
+}
+
+@keyframes floating-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* When floating, the live-section keeps a placeholder block so the layout doesn't jump */
+.live-section.video-detached .tabernacle-placeholder {
+  display: block;
+  margin: var(--space-4) auto;
+  max-width: 1100px;
+  aspect-ratio: 16 / 9;
+  background: rgba(21, 17, 13, 0.06);
+  border: 1px dashed rgba(122, 95, 31, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(122, 95, 31, 0.5);
+  font-weight: 500;
+}
+.tabernacle-placeholder {
+  display: none;
+}
+
+/* Mobile: smaller floating player, bottom-center */
+@media (max-width: 640px) {
+  .tabernacle-frame.floating {
+    width: calc(100vw - 16px);
+    max-width: 320px;
+    bottom: 12px;
+    right: 8px;
+  }
 }
 .tabernacle-frame::after {
   content: "";
@@ -1044,70 +1136,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 
 
 /* ─────────────────────────────────────────────────────────────────────────
-  14. FEATURED SECTION (NEW — Photo 2)
-   ───────────────────────────────────────────────────────────────────────── */
-
-.featured-section {
-  padding: var(--space-6) var(--space-3);
-  background: var(--page-bg-deep);
-  border-top: var(--line-fine);
-  border-bottom: var(--line-fine);
-}
-
-.featured-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 5fr 6fr;
-  gap: var(--space-5);
-  align-items: center;
-}
-
-.featured-image-wrap {
-  position: relative;
-  border: var(--line-fine);
-  background: var(--tabernacle);
-  box-shadow: var(--shadow-frame);
-  overflow: hidden;
-}
-.featured-image-wrap::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 6px solid var(--white);
-  pointer-events: none;
-  z-index: 1;
-}
-.featured-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.featured-text { padding: var(--space-2); }
-.featured-statement {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(1.4rem, 2.6vw, 2rem);
-  line-height: 1.4;
-  color: var(--ink);
-  margin: 0 0 var(--space-3);
-  letter-spacing: -0.005em;
-  font-weight: 500;
-}
-.featured-caption {
-  font-family: var(--font-sans) !important;
-  font-size: 0.75rem !important;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-deep) !important;
-  font-weight: 600;
-  margin: 0 !important;
-}
-
-
-/* ─────────────────────────────────────────────────────────────────────────
-  15. HOW IT WORKS
+  14. HOW IT WORKS
    ───────────────────────────────────────────────────────────────────────── */
 
 .how-section {
@@ -1574,10 +1603,6 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
     border-bottom: var(--line-fine);
     padding-bottom: var(--space-4);
   }
-  .featured-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
   .nearby { width: 280px; }
 }
 
@@ -1629,11 +1654,11 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   .count-line { font-size: 1.05rem; line-height: 1.7; }
 
   .mission-section, .how-section, .pledge-section,
-  .reading-section, .contact-section, .live-section, .featured-section {
+  .reading-section, .contact-section, .live-section {
     padding-left: var(--space-2);
     padding-right: var(--space-2);
   }
-  .mission-section, .how-section, .reading-section, .featured-section {
+  .mission-section, .how-section, .reading-section {
     padding-top: var(--space-5);
     padding-bottom: var(--space-5);
   }
