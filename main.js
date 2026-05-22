@@ -1439,11 +1439,9 @@ function showStatus(el, kind, msg) {
 }
 
 function initPledgeForm() {
+  // Pledge button — scroll to the pledge section (which is always visible now)
   $('pledgeButton')?.addEventListener('click', () => {
-    const section = $('pledge');
-    section.classList.remove('hidden');
-    section.style.display = 'block';
-    section.scrollIntoView({ behavior: 'smooth' });
+    $('pledge')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   $('pledgeForm')?.addEventListener('submit', async e => {
@@ -1455,8 +1453,6 @@ function initPledgeForm() {
       await api('/api/pledge', { method: 'POST', body: JSON.stringify(data) });
       e.target.style.display = 'none';
       $('thanks').classList.remove('hidden');
-      // Refresh stats so the pledge count ticks up
-      loadStats();
     } catch (ex) {
       showStatus(err, 'err', t()['msg.pledgeErr']);
     }
