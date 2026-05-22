@@ -1433,9 +1433,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Live Adoration embed (lazy-loaded when scrolled into view)
   initLiveAdorationEmbed();
 
-  // Testimony rotator
-  initTestimony();
-
   // Load data, then build map and stats in parallel
   await loadChapels();
   await initMap();
