@@ -12,6 +12,7 @@
       --navy-deep: #071427;
       --gold: #D4AF37;
       --gold-light: #e8c96a;
+      --gold-deep: #7a5f1f;
       --cream: #FAF6F1;
       --cream-dark: #f0e9de;
       --text: #38312B;
@@ -184,6 +185,69 @@
     .btn-reject:hover { background: var(--red); color: white; }
     .btn-delete { background: white; border: 1px solid var(--text-light); color: var(--text-light); }
     .btn-delete:hover { background: var(--text-light); color: white; }
+    .btn-edit { background: white; border: 1px solid var(--gold); color: var(--gold-deep); }
+    .btn-edit:hover { background: var(--gold); color: white; }
+    .btn-save { background: var(--gold); color: white; border: 1px solid var(--gold); }
+    .btn-save:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+    .btn-cancel { background: white; border: 1px solid var(--text-light); color: var(--text-light); }
+    .btn-cancel:hover { background: var(--text-light); color: white; }
+
+    /* Edit form */
+    .edit-form {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #fbf6e9;
+      border-left: 3px solid var(--gold);
+    }
+    .edit-form label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      margin-top: 0.7rem;
+      font-weight: 600;
+    }
+    .edit-form label:first-child { margin-top: 0; }
+    .edit-form input,
+    .edit-form textarea {
+      width: 100%;
+      padding: 0.55rem 0.7rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.95rem;
+      background: white;
+      border: 1px solid #d4d6da;
+      color: #25262a;
+      border-radius: 0;
+    }
+    .edit-form input:focus, .edit-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(184, 146, 58, 0.18);
+    }
+    .edit-form .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    .edit-form .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.8rem;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.9rem;
+      color: #25262a;
+    }
+    .edit-form .checkbox-row input { width: auto; }
+    .edit-error {
+      margin-top: 0.6rem;
+      color: var(--red);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
     .btn-primary {
       background: linear-gradient(135deg, var(--gold), var(--gold-light));
       color: var(--navy-deep);
@@ -311,38 +375,96 @@
       status === 'pending'
         ? `
           <button class="action btn-approve" data-action="approve" data-id="${c.id}">✓ Approve</button>
+          <button class="action btn-edit"    data-action="edit"    data-id="${c.id}">✎ Edit</button>
           <button class="action btn-reject"  data-action="reject"  data-id="${c.id}">✕ Reject</button>
           <button class="action btn-delete"  data-action="delete"  data-id="${c.id}">Delete</button>
         `
         : status === 'approved'
-          ? `<button class="action btn-reject" data-action="reject" data-id="${c.id}">Un-approve</button>
+          ? `<button class="action btn-edit"   data-action="edit"   data-id="${c.id}">✎ Edit</button>
+             <button class="action btn-reject" data-action="reject" data-id="${c.id}">Un-approve</button>
              <button class="action btn-delete" data-action="delete" data-id="${c.id}">Delete</button>`
           : `<button class="action btn-approve" data-action="approve" data-id="${c.id}">✓ Approve</button>
+             <button class="action btn-edit"    data-action="edit"    data-id="${c.id}">✎ Edit</button>
              <button class="action btn-delete"  data-action="delete"  data-id="${c.id}">Delete</button>`;
 
     return `
-      <div class="chapel-card ${status}">
+      <div class="chapel-card ${status}" data-card-id="${c.id}">
         <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem;">
           ${badge}
           ${c.perpetual ? '<span class="badge badge-perpetual">24/7 PERPETUAL</span>' : ''}
         </div>
-        <div class="chapel-name">⛪ ${escapeHtml(c.name)}</div>
-        <div class="chapel-loc">${escapeHtml(c.city)}, ${escapeHtml(c.country)}</div>
 
-        <div class="chapel-meta">
-          <div><strong>Coordinates</strong>
-            <a class="map-link" href="${mapsUrl}" target="_blank" rel="noopener">
-              ${(+c.lat).toFixed(4)}, ${(+c.lng).toFixed(4)} ↗
-            </a>
+        <div class="card-readonly">
+          <div class="chapel-name">⛪ ${escapeHtml(c.name)}</div>
+          <div class="chapel-loc">${escapeHtml(c.city)}, ${escapeHtml(c.country)}</div>
+
+          <div class="chapel-meta">
+            <div><strong>Coordinates</strong>
+              <a class="map-link" href="${mapsUrl}" target="_blank" rel="noopener">
+                ${(+c.lat).toFixed(4)}, ${(+c.lng).toFixed(4)} ↗
+              </a>
+            </div>
+            ${c.address ? `<div><strong>Address</strong>${escapeHtml(c.address)}</div>` : ''}
+            ${c.schedule ? `<div><strong>Schedule</strong>${escapeHtml(c.schedule)}</div>` : ''}
+            ${c.submitter_email ? `<div><strong>Submitter</strong><span class="submitter">${escapeHtml(c.submitter_email)}</span></div>` : ''}
+            ${created ? `<div><strong>Submitted</strong>${created}</div>` : ''}
           </div>
-          ${c.address ? `<div><strong>Address</strong>${escapeHtml(c.address)}</div>` : ''}
-          ${c.schedule ? `<div><strong>Schedule</strong>${escapeHtml(c.schedule)}</div>` : ''}
-          ${c.submitter_email ? `<div><strong>Submitter</strong><span class="submitter">${escapeHtml(c.submitter_email)}</span></div>` : ''}
-          ${created ? `<div><strong>Submitted</strong>${created}</div>` : ''}
         </div>
 
-        <div class="actions">${actionsHtml}</div>
+        <div class="card-editing hidden">
+          <div class="edit-form">
+            <label>Chapel Name</label>
+            <input type="text" name="name" value="${escapeAttr(c.name)}" maxlength="200" />
+
+            <div class="field-row">
+              <div>
+                <label>City</label>
+                <input type="text" name="city" value="${escapeAttr(c.city)}" maxlength="120" />
+              </div>
+              <div>
+                <label>Country</label>
+                <input type="text" name="country" value="${escapeAttr(c.country)}" maxlength="120" />
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div>
+                <label>Latitude</label>
+                <input type="text" name="lat" value="${c.lat}" inputmode="decimal" />
+              </div>
+              <div>
+                <label>Longitude</label>
+                <input type="text" name="lng" value="${c.lng}" inputmode="decimal" />
+              </div>
+            </div>
+
+            <label>Address (optional)</label>
+            <input type="text" name="address" value="${escapeAttr(c.address || '')}" maxlength="300" />
+
+            <label>Schedule (optional)</label>
+            <input type="text" name="schedule" value="${escapeAttr(c.schedule || '')}" maxlength="200" />
+
+            <label class="checkbox-row">
+              <input type="checkbox" name="perpetual" ${c.perpetual ? 'checked' : ''} />
+              <span>24/7 Perpetual Adoration</span>
+            </label>
+
+            <p class="edit-error hidden"></p>
+          </div>
+        </div>
+
+        <div class="actions card-readonly">${actionsHtml}</div>
+        <div class="actions card-editing hidden">
+          <button class="action btn-save"   data-action="save"   data-id="${c.id}">💾 Save Changes</button>
+          <button class="action btn-cancel" data-action="cancel" data-id="${c.id}">Cancel</button>
+        </div>
       </div>
+    `;
+  }
+
+  function escapeAttr(s) {
+    return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
     `;
   }
 
@@ -390,6 +512,66 @@
       btn.addEventListener('click', async () => {
         const id = parseInt(btn.dataset.id, 10);
         const action = btn.dataset.action;
+        const card = btn.closest('.chapel-card');
+        if (!card) return;
+
+        // Toggle the card into edit mode
+        if (action === 'edit') {
+          card.querySelectorAll('.card-readonly').forEach(el => el.classList.add('hidden'));
+          card.querySelectorAll('.card-editing').forEach(el => el.classList.remove('hidden'));
+          return;
+        }
+
+        // Toggle back to read mode without saving
+        if (action === 'cancel') {
+          card.querySelectorAll('.card-editing').forEach(el => el.classList.add('hidden'));
+          card.querySelectorAll('.card-readonly').forEach(el => el.classList.remove('hidden'));
+          const err = card.querySelector('.edit-error');
+          if (err) { err.classList.add('hidden'); err.textContent = ''; }
+          return;
+        }
+
+        // Save edits to the database
+        if (action === 'save') {
+          const form = card.querySelector('.edit-form');
+          const errEl = card.querySelector('.edit-error');
+          errEl.classList.add('hidden');
+
+          const data = {
+            id,
+            name:      form.querySelector('[name="name"]').value.trim(),
+            city:      form.querySelector('[name="city"]').value.trim(),
+            country:   form.querySelector('[name="country"]').value.trim(),
+            lat:       form.querySelector('[name="lat"]').value.trim(),
+            lng:       form.querySelector('[name="lng"]').value.trim(),
+            address:   form.querySelector('[name="address"]').value.trim(),
+            schedule:  form.querySelector('[name="schedule"]').value.trim(),
+            perpetual: form.querySelector('[name="perpetual"]').checked,
+          };
+
+          // Quick client-side check
+          if (!data.name || !data.city || !data.country || !data.lat || !data.lng) {
+            errEl.textContent = 'Name, city, country, latitude and longitude are required.';
+            errEl.classList.remove('hidden');
+            return;
+          }
+
+          btn.disabled = true;
+          try {
+            await api('/api/admin/update', {
+              method: 'POST',
+              body: JSON.stringify(data),
+            });
+            loadList(currentStatus);
+          } catch (e) {
+            errEl.textContent = 'Error: ' + e.message;
+            errEl.classList.remove('hidden');
+            btn.disabled = false;
+          }
+          return;
+        }
+
+        // approve / reject / delete (existing flow)
         if (action === 'delete' && !confirm('Permanently delete this chapel?')) return;
         btn.disabled = true;
         try {
