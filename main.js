@@ -184,6 +184,24 @@ const translations = {
     'saint1.context': "Founder of the Congregation of the Blessed Sacrament. Spent his life promoting devotion to the Real Presence.",
     'saint2.context': "A young acolyte who chose death rather than surrender the consecrated Host. Patron of first communicants.",
     'saint3.context': "A teenage Italian computer programmer canonized in 2025. Catalogued Eucharistic miracles around the world.",
+    'footer.benedictQuote': "\"God is waiting for us in Jesus Christ in the Blessed Sacrament. Let us not keep Him waiting in vain!\"",
+    'footer.benedictAuthor': "— Pope Benedict XVI",
+    'nav.streams': "Live Streams",
+    'streams.eyebrow': "Live Adoration",
+    'streams.title': "Adoration <em>Streamed Worldwide</em>",
+    'streams.subhead': "A curated list of live Eucharistic Adoration broadcasts you can join from anywhere, at any hour.",
+    'streams.featuredEyebrow': "Featured · Now Live",
+    'streams.featuredTitle': "EWTN · 24/7 Live Adoration",
+    'streams.featuredSub': "From the EWTN Chapel in Irondale, Alabama (9 am – 5 pm ET) and St. Maximilian Kolbe Chapel in Niepokalanów, Poland.",
+    'streams.featuredCredit': "Stream courtesy of EWTN",
+    'streams.moreEyebrow': "More Live Streams",
+    'streams.moreTitle': "Other Broadcasters",
+    'streams.shalomSource': "Shalom Media · Global · 24/7",
+    'streams.shalomDesc': "A dedicated prayer channel from Shalom World offering Eucharistic Adoration, Holy Mass, the Rosary, and the Divine Mercy Chaplet around the clock.",
+    'streams.watchOnYoutube': "Watch on YouTube",
+    'streams.suggestTitle': "Know a stream we should add?",
+    'streams.suggestDesc': "If you know of a legitimate Catholic live Adoration stream we should include, please write to us. We review each submission carefully before adding it.",
+    'streams.suggestCta': "Suggest a Stream →",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -358,6 +376,24 @@ const translations = {
     'saint1.context': "Fundador de la Congregación del Santísimo Sacramento. Dedicó su vida a promover la devoción a la Presencia Real.",
     'saint2.context': "Un joven acólito que prefirió la muerte antes que entregar la Hostia consagrada. Patrón de los primeros comulgantes.",
     'saint3.context': "Un programador italiano adolescente canonizado en 2025. Catalogó milagros eucarísticos en todo el mundo.",
+    'footer.benedictQuote': "\"Dios nos espera en Jesucristo en el Santísimo Sacramento. ¡No le hagamos esperar en vano!\"",
+    'footer.benedictAuthor': "— Papa Benedicto XVI",
+    'nav.streams': "Transmisiones",
+    'streams.eyebrow': "Adoración en Vivo",
+    'streams.title': "Adoración <em>Transmitida al Mundo</em>",
+    'streams.subhead': "Una lista curada de transmisiones en vivo de Adoración Eucarística a las que puedes unirte desde cualquier lugar, a cualquier hora.",
+    'streams.featuredEyebrow': "Destacado · En vivo",
+    'streams.featuredTitle': "EWTN · Adoración en vivo 24/7",
+    'streams.featuredSub': "Desde la Capilla EWTN en Irondale, Alabama (9 am – 5 pm ET) y la Capilla de San Maximiliano Kolbe en Niepokalanów, Polonia.",
+    'streams.featuredCredit': "Transmisión cortesía de EWTN",
+    'streams.moreEyebrow': "Más transmisiones en vivo",
+    'streams.moreTitle': "Otros canales",
+    'streams.shalomSource': "Shalom Media · Mundial · 24/7",
+    'streams.shalomDesc': "Un canal de oración dedicado de Shalom World que ofrece Adoración Eucarística, Santa Misa, el Rosario y la Coronilla de la Divina Misericordia las 24 horas.",
+    'streams.watchOnYoutube': "Ver en YouTube",
+    'streams.suggestTitle': "¿Conoces una transmisión que deberíamos añadir?",
+    'streams.suggestDesc': "Si conoces una transmisión católica legítima de Adoración en vivo que deberíamos incluir, escríbenos. Revisamos cada propuesta cuidadosamente antes de añadirla.",
+    'streams.suggestCta': "Sugerir una transmisión →",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -532,6 +568,24 @@ const translations = {
     'saint1.context': "Fondateur de la Congrégation du Saint-Sacrement. A consacré sa vie à promouvoir la dévotion à la Présence Réelle.",
     'saint2.context': "Un jeune acolyte qui a préféré la mort plutôt que de livrer l'Hostie consacrée. Patron des premiers communiants.",
     'saint3.context': "Un programmeur italien adolescent canonisé en 2025. A catalogué les miracles eucharistiques dans le monde entier.",
+    'footer.benedictQuote': "\"Dieu nous attend en Jésus-Christ dans le Saint-Sacrement. Ne Le faisons pas attendre en vain !\"",
+    'footer.benedictAuthor': "— Pape Benoît XVI",
+    'nav.streams': "Diffusions en direct",
+    'streams.eyebrow': "Adoration en direct",
+    'streams.title': "Adoration <em>diffusée dans le monde</em>",
+    'streams.subhead': "Une sélection de diffusions en direct de l'Adoration eucharistique que vous pouvez rejoindre depuis n'importe où, à toute heure.",
+    'streams.featuredEyebrow': "À la une · En direct",
+    'streams.featuredTitle': "EWTN · Adoration en direct 24h/24",
+    'streams.featuredSub': "Depuis la chapelle EWTN d'Irondale, Alabama (9h – 17h HE) et la chapelle Saint-Maximilien Kolbe de Niepokalanów, Pologne.",
+    'streams.featuredCredit': "Diffusion offerte par EWTN",
+    'streams.moreEyebrow': "Autres diffusions en direct",
+    'streams.moreTitle': "Autres diffuseurs",
+    'streams.shalomSource': "Shalom Media · Mondial · 24h/24",
+    'streams.shalomDesc': "Une chaîne de prière dédiée de Shalom World offrant l'Adoration eucharistique, la Sainte Messe, le Rosaire et le Chapelet de la Divine Miséricorde 24 heures sur 24.",
+    'streams.watchOnYoutube': "Regarder sur YouTube",
+    'streams.suggestTitle': "Vous connaissez une diffusion à ajouter ?",
+    'streams.suggestDesc': "Si vous connaissez une diffusion catholique légitime d'Adoration en direct que nous devrions inclure, écrivez-nous. Nous examinons chaque proposition avec soin avant de l'ajouter.",
+    'streams.suggestCta': "Suggérer une diffusion →",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -706,6 +760,24 @@ const translations = {
     'saint1.context': "Fondatore della Congregazione del Santissimo Sacramento. Dedicò la vita alla promozione della devozione alla Presenza Reale.",
     'saint2.context': "Un giovane accolito che scelse la morte piuttosto che consegnare l'Ostia consacrata. Patrono dei primi comunicandi.",
     'saint3.context': "Un programmatore informatico italiano adolescente canonizzato nel 2025. Catalogò miracoli eucaristici in tutto il mondo.",
+    'footer.benedictQuote': "\"Dio ci aspetta in Gesù Cristo nel Santissimo Sacramento. Non lasciamoLo aspettare invano!\"",
+    'footer.benedictAuthor': "— Papa Benedetto XVI",
+    'nav.streams': "Dirette",
+    'streams.eyebrow': "Adorazione in diretta",
+    'streams.title': "Adorazione <em>trasmessa nel mondo</em>",
+    'streams.subhead': "Un elenco curato di dirette di Adorazione Eucaristica a cui puoi unirti da qualsiasi luogo, in qualsiasi ora.",
+    'streams.featuredEyebrow': "In primo piano · In diretta",
+    'streams.featuredTitle': "EWTN · Adorazione in diretta 24/7",
+    'streams.featuredSub': "Dalla Cappella EWTN di Irondale, Alabama (9 – 17 ET) e dalla Cappella di San Massimiliano Kolbe di Niepokalanów, Polonia.",
+    'streams.featuredCredit': "Diretta per gentile concessione di EWTN",
+    'streams.moreEyebrow': "Altre dirette",
+    'streams.moreTitle': "Altri canali",
+    'streams.shalomSource': "Shalom Media · Mondiale · 24/7",
+    'streams.shalomDesc': "Un canale di preghiera dedicato di Shalom World che offre Adorazione Eucaristica, Santa Messa, il Rosario e la Coroncina della Divina Misericordia 24 ore su 24.",
+    'streams.watchOnYoutube': "Guarda su YouTube",
+    'streams.suggestTitle': "Conosci una diretta da aggiungere?",
+    'streams.suggestDesc': "Se conosci una diretta cattolica legittima di Adorazione che dovremmo includere, scrivici. Esaminiamo ogni proposta con cura prima di aggiungerla.",
+    'streams.suggestCta': "Suggerisci una diretta →",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -880,6 +952,24 @@ const translations = {
     'saint1.context': "Fundador da Congregação do Santíssimo Sacramento. Dedicou a vida a promover a devoção à Presença Real.",
     'saint2.context': "Um jovem acólito que preferiu a morte a entregar a Hóstia consagrada. Patrono dos primeiros comungantes.",
     'saint3.context': "Um programador italiano adolescente canonizado em 2025. Catalogou milagres eucarísticos pelo mundo.",
+    'footer.benedictQuote': "\"Deus nos espera em Jesus Cristo no Santíssimo Sacramento. Não O deixemos esperar em vão!\"",
+    'footer.benedictAuthor': "— Papa Bento XVI",
+    'nav.streams': "Transmissões",
+    'streams.eyebrow': "Adoração ao Vivo",
+    'streams.title': "Adoração <em>transmitida ao mundo</em>",
+    'streams.subhead': "Uma lista curada de transmissões ao vivo de Adoração Eucarística às quais te podes juntar de qualquer lugar, a qualquer hora.",
+    'streams.featuredEyebrow': "Em destaque · Ao vivo",
+    'streams.featuredTitle': "EWTN · Adoração ao vivo 24/7",
+    'streams.featuredSub': "Da Capela EWTN em Irondale, Alabama (9h – 17h ET) e da Capela de São Maximiliano Kolbe em Niepokalanów, Polónia.",
+    'streams.featuredCredit': "Transmissão por cortesia da EWTN",
+    'streams.moreEyebrow': "Mais transmissões ao vivo",
+    'streams.moreTitle': "Outros canais",
+    'streams.shalomSource': "Shalom Media · Mundial · 24/7",
+    'streams.shalomDesc': "Um canal de oração dedicado da Shalom World que oferece Adoração Eucarística, Santa Missa, o Rosário e a Coroa da Divina Misericórdia 24 horas por dia.",
+    'streams.watchOnYoutube': "Ver no YouTube",
+    'streams.suggestTitle': "Conheces uma transmissão que devamos adicionar?",
+    'streams.suggestDesc': "Se conheces uma transmissão católica legítima de Adoração ao vivo que devamos incluir, escreve-nos. Analisamos cada sugestão com cuidado antes de a adicionar.",
+    'streams.suggestCta': "Sugerir uma transmissão →",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
@@ -1001,28 +1091,65 @@ async function api(path, opts = {}) {
 const physicalIcon = () => L.divIcon({
   className: 'custom-marker physical',
   html: `
-    <svg viewBox="0 0 24 32" width="24" height="32" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 28 38" width="28" height="38" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="goldX" x1="0%" y1="0%" x2="0%" y2="100%">
+        <linearGradient id="goldM" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%"   stop-color="#e6c065"/>
           <stop offset="50%"  stop-color="#c89640"/>
           <stop offset="100%" stop-color="#7a5f1f"/>
         </linearGradient>
+        <radialGradient id="hostM" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fff8e1"/>
+          <stop offset="100%" stop-color="#f0d68a"/>
+        </radialGradient>
       </defs>
-      <!-- Drop shadow -->
-      <ellipse cx="12" cy="30" rx="5" ry="1.2" fill="rgba(0,0,0,0.25)"/>
-      <!-- Cross shape with serifed tips like classic Catholic map marker -->
-      <g fill="url(#goldX)" stroke="#7a5f1f" stroke-width="0.6" stroke-linejoin="round">
-        <path d="M10.5 2 L13.5 2 L13.5 10 L21 10 L21 13 L13.5 13 L13.5 28 L10.5 28 L10.5 13 L3 13 L3 10 L10.5 10 Z"/>
+
+      <!-- Ground shadow -->
+      <ellipse cx="14" cy="36" rx="6" ry="1.2" fill="rgba(0,0,0,0.3)"/>
+
+      <!-- Sunburst rays (8 simplified, alternating long/short) -->
+      <g fill="url(#goldM)" stroke="#7a5f1f" stroke-width="0.4" stroke-linejoin="round">
+        <!-- Top -->
+        <path d="M14 1 L14.8 6 L13.2 6 Z"/>
+        <!-- Top-right -->
+        <path d="M21 4 L20.3 7.5 L19 6.8 Z"/>
+        <!-- Right -->
+        <path d="M25 11 L20 11.5 L20 10 Z"/>
+        <!-- Bottom-right -->
+        <path d="M22 18 L19.5 15.5 L20.5 14.5 Z"/>
+        <!-- Bottom-left -->
+        <path d="M6 18 L8.5 15.5 L7.5 14.5 Z"/>
+        <!-- Left -->
+        <path d="M3 11 L8 11.5 L8 10 Z"/>
+        <!-- Top-left -->
+        <path d="M7 4 L7.7 7.5 L9 6.8 Z"/>
       </g>
-      <!-- Inner highlight to give a gilt sheen -->
-      <path d="M11 3 L13 3 L13 11 L20 11 L20 11.6 L13 11.6 L13 27.4 L11 27.4 L11 11.6 L4 11.6 L4 11 L11 11 Z"
-            fill="rgba(255, 248, 225, 0.4)"/>
+
+      <!-- Outer ornate ring of the monstrance -->
+      <circle cx="14" cy="11" r="6.5" fill="url(#goldM)" stroke="#7a5f1f" stroke-width="0.5"/>
+
+      <!-- White host in the center -->
+      <circle cx="14" cy="11" r="4.2" fill="url(#hostM)" stroke="#b8923a" stroke-width="0.4"/>
+
+      <!-- Tiny cross etched on host (very subtle, doesn't need to read clearly at this size) -->
+      <g fill="#7a5f1f" opacity="0.55">
+        <rect x="13.6" y="8.5" width="0.8" height="5"/>
+        <rect x="11.8" y="10.6" width="4.4" height="0.8"/>
+      </g>
+
+      <!-- Stem -->
+      <rect x="13" y="17" width="2" height="10" fill="url(#goldM)" stroke="#7a5f1f" stroke-width="0.3"/>
+      <!-- Node on stem -->
+      <ellipse cx="14" cy="22" rx="3" ry="1.4" fill="url(#goldM)" stroke="#7a5f1f" stroke-width="0.3"/>
+
+      <!-- Base -->
+      <path d="M8.5 33 L19.5 33 L17.5 27 L10.5 27 Z" fill="url(#goldM)" stroke="#7a5f1f" stroke-width="0.4" stroke-linejoin="round"/>
+      <ellipse cx="14" cy="33" rx="5.5" ry="1.3" fill="url(#goldM)" stroke="#7a5f1f" stroke-width="0.4"/>
     </svg>
   `,
-  iconSize: [24, 32],
-  iconAnchor: [12, 28],
-  popupAnchor: [0, -28],
+  iconSize: [28, 38],
+  iconAnchor: [14, 34],
+  popupAnchor: [0, -34],
 });
 
 function chapelPopupHtml(c) {

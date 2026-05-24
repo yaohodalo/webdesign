@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google" content="notranslate" />
+  <title>Live Adoration Streams — Would You Join Me for One Hour?</title>
+  <meta name="description" content="Watch live Eucharistic Adoration streams from around the world — EWTN, Shalom World, and other Catholic broadcasters." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
+
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body translate="no" class="notranslate">
+
+<!-- Inline SVG sprite reused across pages -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="orn-fleuron" viewBox="0 0 100 24">
+      <path fill="currentColor" d="M50 4 C 48 8, 44 10, 40 10 C 44 10, 48 12, 50 16 C 52 12, 56 10, 60 10 C 56 10, 52 8, 50 4 Z"/>
+      <path fill="currentColor" opacity="0.5" d="M25 12 L 38 12 M62 12 L 75 12" stroke="currentColor" stroke-width="0.5"/>
+      <circle cx="22" cy="12" r="1" fill="currentColor" opacity="0.6"/>
+      <circle cx="78" cy="12" r="1" fill="currentColor" opacity="0.6"/>
+      <circle cx="50" cy="12" r="0.8" fill="currentColor"/>
+    </symbol>
+    <symbol id="orn-cross" viewBox="0 0 24 32">
+      <path fill="currentColor" d="M10 4 L14 4 L14 12 L22 12 L22 16 L14 16 L14 28 L10 28 L10 16 L2 16 L2 12 L10 12 Z"/>
+    </symbol>
+    <symbol id="orn-play" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M8 5 L8 19 L19 12 Z"/>
+    </symbol>
+    <symbol id="orn-external" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4 L20 4 L20 10 M20 4 L11 13 M16 14 V19 H5 V8 H10"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="header-brand" aria-label="Home">
+      <img src="images/logo.svg" class="site-logo" alt="Would You Join Me for One Hour?" />
+    </a>
+    <nav class="page-nav" aria-label="Page navigation">
+      <a href="/" data-i18n="nav.home">Home</a>
+      <a href="/about" data-i18n="nav.about">About</a>
+      <a href="/streams" class="active" data-i18n="nav.streams">Live Streams</a>
+      <a href="/#pledge" data-i18n="nav.pledge">Pledge an Hour</a>
+      <a href="/#contactSection" data-i18n="nav.contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ STREAMS HERO ═══ -->
+<section class="about-hero">
+  <div class="about-hero-inner">
+    <p class="section-eyebrow" data-i18n="streams.eyebrow">Live Adoration</p>
+    <h1 class="display-heading" data-i18n-html="streams.title">Adoration <em>Streamed Worldwide</em></h1>
+    <p class="display-sub" data-i18n="streams.subhead">
+      A curated list of live Eucharistic Adoration broadcasts you can join from anywhere, at any hour.
+    </p>
+  </div>
+</section>
+
+<!-- ═══ FEATURED STREAM (embedded) — EWTN ═══ -->
+<section class="streams-featured">
+  <div class="streams-featured-inner">
+    <div class="section-marker" aria-hidden="true">
+      <svg width="28" height="36" style="color: var(--gold);"><use href="#orn-cross"/></svg>
+    </div>
+    <p class="section-eyebrow" data-i18n="streams.featuredEyebrow">Featured · Now Live</p>
+    <h2 class="display-heading" data-i18n="streams.featuredTitle">EWTN · 24/7 Live Adoration</h2>
+    <p class="display-sub" data-i18n="streams.featuredSub">
+      From the EWTN Chapel in Irondale, Alabama (9 am – 5 pm ET) and St. Maximilian Kolbe Chapel in Niepokalanów, Poland.
+    </p>
+
+    <div class="tabernacle-frame" style="margin: var(--space-4) auto;">
+      <div class="live-video-frame">
+        <iframe
+          src="https://www.youtube.com/embed/SDRgXmiWkM0?autoplay=0&modestbranding=1&rel=0"
+          title="EWTN Live Eucharistic Adoration"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+
+    <p class="live-credit" style="color: var(--ink-soft);">
+      <span data-i18n="streams.featuredCredit">Stream courtesy of EWTN</span>
+      · <a href="https://www.ewtn.com/live/adoration" target="_blank" rel="noopener">ewtn.com</a>
+    </p>
+  </div>
+</section>
+
+<!-- ═══ OTHER STREAMS — cards ═══ -->
+<section class="streams-list-section">
+  <header class="reading-header">
+    <p class="section-eyebrow" data-i18n="streams.moreEyebrow">More Live Streams</p>
+    <h2 class="display-heading" data-i18n="streams.moreTitle">Other Broadcasters</h2>
+  </header>
+
+  <div class="streams-grid">
+
+    <!-- Shalom World Prayer -->
+    <a class="stream-card" href="https://www.youtube.com/channel/UCIFjeNtkyUCoxoPOxXkarTA" target="_blank" rel="noopener">
+      <div class="stream-card-thumb">
+        <div class="stream-thumb-overlay">
+          <span class="stream-live-pill">LIVE</span>
+        </div>
+        <div class="stream-thumb-svg" aria-hidden="true">
+          <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="streamGold" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#e6c065"/>
+                <stop offset="100%" stop-color="#7a5f1f"/>
+              </linearGradient>
+            </defs>
+            <g fill="url(#streamGold)">
+              <!-- Rays -->
+              <path d="M40 5 L42 18 L38 18 Z"/>
+              <path d="M55 8 L52 19 L48 17 Z"/>
+              <path d="M68 18 L58 23 L57 19 Z"/>
+              <path d="M73 33 L60 31 L60 27 Z"/>
+              <path d="M68 48 L58 41 L57 45 Z"/>
+              <path d="M25 8 L28 19 L32 17 Z"/>
+              <path d="M12 18 L22 23 L23 19 Z"/>
+              <path d="M7 33 L20 31 L20 27 Z"/>
+              <path d="M12 48 L22 41 L23 45 Z"/>
+              <!-- Outer ring -->
+              <circle cx="40" cy="32" r="15"/>
+              <!-- Host (white) -->
+              <circle cx="40" cy="32" r="9" fill="#fff8e1"/>
+              <!-- Stem -->
+              <rect x="38" y="47" width="4" height="22"/>
+              <!-- Node -->
+              <ellipse cx="40" cy="58" rx="5" ry="2"/>
+              <!-- Base -->
+              <path d="M28 85 L52 85 L48 70 L32 70 Z"/>
+              <ellipse cx="40" cy="85" rx="12" ry="2"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="stream-card-body">
+        <h3 class="stream-card-name">Shalom World Prayer</h3>
+        <p class="stream-card-source" data-i18n="streams.shalomSource">Shalom Media · Global · 24/7</p>
+        <p class="stream-card-desc" data-i18n="streams.shalomDesc">A dedicated prayer channel from Shalom World offering Eucharistic Adoration, Holy Mass, the Rosary, and the Divine Mercy Chaplet around the clock.</p>
+        <span class="stream-card-link">
+          <span data-i18n="streams.watchOnYoutube">Watch on YouTube</span>
+          <svg width="14" height="14"><use href="#orn-external"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- Placeholder card for future streams — visually quieter -->
+    <div class="stream-card stream-card-placeholder">
+      <div class="stream-card-thumb stream-card-thumb-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 4 V20 M4 12 H20"/>
+        </svg>
+      </div>
+      <div class="stream-card-body">
+        <h3 class="stream-card-name" data-i18n="streams.suggestTitle">Know a stream we should add?</h3>
+        <p class="stream-card-desc" data-i18n="streams.suggestDesc">If you know of a legitimate Catholic live Adoration stream we should include, please write to us. We review each submission carefully before adding it.</p>
+        <a href="/#contactSection" class="stream-card-link" data-i18n="streams.suggestCta">Suggest a Stream →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-ornament">
+    <svg width="100" height="24"><use href="#orn-fleuron"/></svg>
+  </div>
+  <div class="footer-container">
+    <div class="footer-col footer-col-mission">
+      <p class="footer-motto">Ad Majorem Dei Gloriam</p>
+      <p class="footer-mission-text" data-i18n="mission.statement">Helping people worldwide commit to an hour of Eucharistic Adoration and unite in prayer.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.quickLinks">Navigation</h4>
+      <ul>
+        <li><a href="/" data-i18n="nav.home">Home</a></li>
+        <li><a href="/about" data-i18n="nav.about">About</a></li>
+        <li><a href="/streams" data-i18n="nav.streams">Live Streams</a></li>
+        <li><a href="/#pledge" data-i18n="footer.pledgeLink">Pledge an Hour</a></li>
+        <li><a href="/#contactSection" data-i18n="footer.contactLink">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.resourcesH">Reading</h4>
+      <ul>
+        <li><a href="https://www.vatican.va/content/paul-vi/en/encyclicals/documents/hf_p-vi_enc_03091965_mysterium.html" target="_blank" rel="noopener" data-i18n="rsc2.title">Mysterium Fidei</a></li>
+        <li><a href="https://www.vatican.va/content/benedict-xvi/en/apost_exhortations/documents/hf_ben-xvi_exh_20070222_sacramentum-caritatis.html" target="_blank" rel="noopener" data-i18n="rsc3.title">Sacramentum Caritatis</a></li>
+        <li><a href="https://www.eucharisticrevival.org/" target="_blank" rel="noopener" data-i18n="rsc4.title">Eucharistic Revival</a></li>
+        <li><a href="https://www.usccb.org/prayer-and-worship/prayers-and-devotions/eucharistic-devotion" target="_blank" rel="noopener" data-i18n="rsc5.title">USCCB</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer.languageH">Language</h4>
+      <div class="language-select">
+        <label class="visually-hidden" for="languageSelect">Language</label>
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="footer-quote">
+    <p class="footer-quote-text" data-i18n="footer.benedictQuote">
+      "God is waiting for us in Jesus Christ in the Blessed Sacrament. Let us not keep Him waiting in vain!"
+    </p>
+    <p class="footer-quote-author" data-i18n="footer.benedictAuthor">— Pope Benedict XVI</p>
+  </div>
+  <div class="footer-colophon">
+    <p>
+      <span data-i18n="footer.bottom">© 2026 WouldYouJoinMeForOneHour.org · Built for the Glory of God</span>
+      &nbsp;·&nbsp;
+      <a href="/admin.html">Admin</a>
+    </p>
+  </div>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

@@ -577,8 +577,8 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 
 /* Update legend dot to match new marker style */
 .legend-physical {
-  background: linear-gradient(180deg, #e6c065 0%, #c89640 50%, #7a5f1f 100%);
-  border-radius: 2px;
+  background: radial-gradient(circle at 50% 35%, #e6c065 0%, #c89640 40%, #7a5f1f 100%);
+  border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(122, 95, 31, 0.4);
 }
 
@@ -1453,6 +1453,31 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   border-color: var(--gold);
 }
 
+/* Pope Benedict XVI quote — sits between the four-column footer and the dark colophon */
+.footer-quote {
+  max-width: 720px;
+  margin: var(--space-4) auto 0;
+  text-align: center;
+  padding: 0 var(--space-3);
+}
+.footer-quote-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+}
+.footer-quote-author {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 600;
+  margin: 0 0 var(--space-3);
+}
+
 /* Colophon strip — only this stays dark, matching the verse ticker at the top */
 .footer-colophon {
   background: var(--tabernacle);
@@ -1903,4 +1928,214 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
     width: 100%;
   }
   .page-nav a { font-size: 0.7rem; letter-spacing: 0.08em; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIVE STREAMS PAGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.streams-featured {
+  padding: var(--space-5) var(--space-3) var(--space-5);
+  background: var(--page-bg);
+  text-align: center;
+  border-bottom: var(--line-fine);
+}
+.streams-featured-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.streams-featured .section-marker {
+  margin-bottom: var(--space-2);
+}
+.streams-featured .live-credit {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: var(--space-2) 0 0;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.streams-featured .live-credit a {
+  color: var(--gold-deep);
+  border-color: var(--gold);
+}
+
+/* List section */
+.streams-list-section {
+  padding: var(--space-6) var(--space-3);
+  background: var(--page-bg);
+}
+.streams-list-section .reading-header {
+  margin-bottom: var(--space-4);
+}
+
+.streams-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-3);
+}
+
+/* Stream card */
+.stream-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: var(--line-fine);
+  text-decoration: none;
+  border-bottom: var(--line-fine);
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+}
+a.stream-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(122, 95, 31, 0.18);
+  border-color: var(--gold);
+}
+
+.stream-card-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #15110d 0%, #2a221a 50%, #3a2a14 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.stream-thumb-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+.stream-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #ffffff;
+  background: #c0392b;
+  padding: 0.25rem 0.55rem;
+  border-radius: 0;
+}
+.stream-live-pill::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: live-blink 1.6s ease-in-out infinite;
+}
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.stream-thumb-svg {
+  width: 60%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 16px rgba(212, 168, 58, 0.4));
+}
+.stream-thumb-svg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.stream-card-thumb-empty {
+  background: var(--page-bg-soft);
+  color: var(--gold-deep);
+  opacity: 0.5;
+}
+
+.stream-card-body {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+.stream-card-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+.stream-card-source {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 0;
+  font-weight: 600;
+}
+.stream-card-desc {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+  flex-grow: 1;
+}
+.stream-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 600;
+  margin-top: var(--space-2);
+  border-bottom: none;
+  text-decoration: none;
+}
+.stream-card:hover .stream-card-link {
+  color: var(--ink);
+}
+
+/* Placeholder "suggest a stream" card */
+.stream-card-placeholder {
+  background: var(--page-bg-soft);
+  border: 1px dashed rgba(184, 146, 58, 0.4);
+}
+.stream-card-placeholder .stream-card-name {
+  color: var(--ink-soft);
+  font-size: 1.15rem;
+}
+.stream-card-placeholder .stream-card-link {
+  color: var(--gold-deep);
+  cursor: pointer;
+}
+.stream-card-placeholder .stream-card-link:hover {
+  color: var(--ink);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .streams-featured {
+    padding: var(--space-4) var(--space-2);
+  }
+  .streams-list-section {
+    padding: var(--space-5) var(--space-2);
+  }
+  .streams-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .stream-card-name { font-size: 1.25rem; }
 }
