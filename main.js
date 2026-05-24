@@ -1499,17 +1499,23 @@ function initFloatingVideo() {
     liveSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
+  // Track whether the user has actually scrolled the live section into view at least once.
+  // Without this, the video would float over the hero on initial page load (since the live
+  // section is below the viewport at start, intersection ratio = 0 = "out of view").
+  let hasBeenSeen = false;
+
   // IntersectionObserver: when live section scrolls out of view → float; when it comes back → dock
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(entries => {
       for (const entry of entries) {
-        // When less than 10% of the live section is visible → float the video
-        if (entry.intersectionRatio < 0.1) {
-          activate();
-        } else if (entry.intersectionRatio > 0.5) {
-          // When live section is mostly back in view → dock it back
+        if (entry.intersectionRatio > 0.5) {
+          // Live section is in view: mark as seen, and if it was floating, dock it back
+          hasBeenSeen = true;
           deactivate();
           dismissed = false; // re-arm so it floats again next time
+        } else if (entry.intersectionRatio < 0.1 && hasBeenSeen) {
+          // Only float if the user has already scrolled to and past the live section
+          activate();
         }
       }
     }, { threshold: [0.1, 0.5] });
