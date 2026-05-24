@@ -636,6 +636,15 @@
       hour: 'numeric', minute: '2-digit', hour12: true,
     });
     const created = new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const destLine = p.destination_name ? `
+        <div style="margin-top:0.6rem;padding:0.6rem 0.85rem;background:#fdfbf5;border-left:2px solid #b8923a;font-size:0.88rem;">
+          <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;color:#7a5f1f;text-transform:uppercase;">
+            ${p.destination_type === 'chapel' ? 'Chapel' : 'Live Stream'}:
+          </span>
+          ${escapeHtml(p.destination_name)}
+          ${p.destination_url ? `&nbsp;·&nbsp;<a href="${escapeHtml(p.destination_url)}" target="_blank" rel="noopener" style="color:#7a5f1f;">open ↗</a>` : ''}
+        </div>
+      ` : '';
     return `
       <div class="chapel-card">
         <div style="display:flex;justify-content:space-between;align-items:start;gap:1rem;flex-wrap:wrap;">
@@ -653,6 +662,7 @@
             ${escapeHtml(p.intention)}
           </div>
         ` : ''}
+        ${destLine}
         <div style="margin-top:0.8rem;font-size:0.78rem;color:#8a7a6a;">Submitted ${escapeHtml(created)}</div>
       </div>
     `;
