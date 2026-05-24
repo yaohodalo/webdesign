@@ -202,6 +202,15 @@ const translations = {
     'streams.suggestTitle': "Know a stream we should add?",
     'streams.suggestDesc': "If you know of a legitimate Catholic live Adoration stream we should include, please write to us. We review each submission carefully before adding it.",
     'streams.suggestCta': "Suggest a Stream →",
+    'companion.label': "Where will you pray?",
+    'companion.optional': "(optional)",
+    'companion.tabNone': "No destination yet",
+    'companion.tabChapel': "A chapel",
+    'companion.tabStream': "A live stream",
+    'companion.chapelSearchPh': "Search by city, country, or chapel name",
+    'map.openNowLabel': "Open right now",
+    'map.openNow': "Open now",
+    'map.checkSchedule': "Check schedule",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -394,6 +403,15 @@ const translations = {
     'streams.suggestTitle': "¿Conoces una transmisión que deberíamos añadir?",
     'streams.suggestDesc': "Si conoces una transmisión católica legítima de Adoración en vivo que deberíamos incluir, escríbenos. Revisamos cada propuesta cuidadosamente antes de añadirla.",
     'streams.suggestCta': "Sugerir una transmisión →",
+    'companion.label': "¿Dónde rezarás?",
+    'companion.optional': "(opcional)",
+    'companion.tabNone': "Sin destino aún",
+    'companion.tabChapel': "Una capilla",
+    'companion.tabStream': "Una transmisión en vivo",
+    'companion.chapelSearchPh': "Buscar por ciudad, país o nombre de capilla",
+    'map.openNowLabel': "Abierto ahora",
+    'map.openNow': "Abierto ahora",
+    'map.checkSchedule': "Consultar horario",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -586,6 +604,15 @@ const translations = {
     'streams.suggestTitle': "Vous connaissez une diffusion à ajouter ?",
     'streams.suggestDesc': "Si vous connaissez une diffusion catholique légitime d'Adoration en direct que nous devrions inclure, écrivez-nous. Nous examinons chaque proposition avec soin avant de l'ajouter.",
     'streams.suggestCta': "Suggérer une diffusion →",
+    'companion.label': "Où prierez-vous ?",
+    'companion.optional': "(facultatif)",
+    'companion.tabNone': "Pas encore de destination",
+    'companion.tabChapel': "Une chapelle",
+    'companion.tabStream': "Une diffusion en direct",
+    'companion.chapelSearchPh': "Rechercher par ville, pays ou nom de chapelle",
+    'map.openNowLabel': "Ouvert maintenant",
+    'map.openNow': "Ouvert maintenant",
+    'map.checkSchedule': "Consulter l'horaire",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -778,6 +805,15 @@ const translations = {
     'streams.suggestTitle': "Conosci una diretta da aggiungere?",
     'streams.suggestDesc': "Se conosci una diretta cattolica legittima di Adorazione che dovremmo includere, scrivici. Esaminiamo ogni proposta con cura prima di aggiungerla.",
     'streams.suggestCta': "Suggerisci una diretta →",
+    'companion.label': "Dove pregherai?",
+    'companion.optional': "(facoltativo)",
+    'companion.tabNone': "Nessuna destinazione",
+    'companion.tabChapel': "Una cappella",
+    'companion.tabStream': "Una diretta",
+    'companion.chapelSearchPh': "Cerca per città, paese o nome di cappella",
+    'map.openNowLabel': "Aperto ora",
+    'map.openNow': "Aperto ora",
+    'map.checkSchedule': "Verifica l'orario",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -970,6 +1006,15 @@ const translations = {
     'streams.suggestTitle': "Conheces uma transmissão que devamos adicionar?",
     'streams.suggestDesc': "Se conheces uma transmissão católica legítima de Adoração ao vivo que devamos incluir, escreve-nos. Analisamos cada sugestão com cuidado antes de a adicionar.",
     'streams.suggestCta': "Sugerir uma transmissão →",
+    'companion.label': "Onde rezarás?",
+    'companion.optional': "(opcional)",
+    'companion.tabNone': "Sem destino ainda",
+    'companion.tabChapel': "Uma capela",
+    'companion.tabStream': "Uma transmissão ao vivo",
+    'companion.chapelSearchPh': "Pesquisar por cidade, país ou nome da capela",
+    'map.openNowLabel': "Aberto agora",
+    'map.openNow': "Aberto agora",
+    'map.checkSchedule': "Ver horário",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
@@ -1156,11 +1201,26 @@ function chapelPopupHtml(c) {
   const tr = t();
   const loc = [c.city, c.country].filter(Boolean).join(', ');
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`;
+
+  // Open-now badge — checked lazily so we get fresh time on each popup open
+  let badge = '';
+  if (window.__isOpenNow) {
+    const status = window.__isOpenNow(c.schedule, +c.lng, !!c.perpetual);
+    if (status === true) {
+      badge = `<span class="popup-open-now">${tr['map.openNow'] || 'Open now'}</span>`;
+    } else if (status === null && c.schedule) {
+      badge = `<span class="popup-open-unknown">${tr['map.checkSchedule'] || 'Check schedule'}</span>`;
+    }
+  }
+
   return `
     <div class="popup-card">
       <strong>${escapeHtml(c.name)}</strong>
       <div class="popup-loc">${escapeHtml(c.address || loc)}</div>
-      ${c.perpetual ? `<div class="popup-perpetual">${tr['msg.perpetual']}</div>` : ''}
+      <div style="margin-top:0.4rem;">
+        ${badge}
+        ${c.perpetual ? `<span class="popup-perpetual">${tr['msg.perpetual']}</span>` : ''}
+      </div>
       ${c.schedule ? `<div class="popup-schedule">${escapeHtml(c.schedule)}</div>` : ''}
       <a class="popup-directions" href="${directionsUrl}" target="_blank" rel="noopener">
         ${tr['msg.directions']}
@@ -1691,6 +1751,14 @@ function initPledgeForm() {
     const err = $('pledgeError');
     const data = Object.fromEntries(new FormData(e.target));
 
+    // Strip empty destination fields so the API doesn't see empty strings
+    if (!data.destination_type) {
+      delete data.destination_type;
+      delete data.destination_id;
+      delete data.destination_name;
+      delete data.destination_url;
+    }
+
     try {
       await api('/api/pledge', { method: 'POST', body: JSON.stringify(data) });
       e.target.style.display = 'none';
@@ -1699,6 +1767,285 @@ function initPledgeForm() {
       showStatus(err, 'err', t()['msg.pledgeErr']);
     }
   });
+}
+
+/* ============ HOUR COMPANION ============ */
+function initHourCompanion() {
+  const block = document.querySelector('.companion-block');
+  if (!block) return;
+
+  const typeInput = $('destinationType');
+  const idInput   = $('destinationId');
+  const nameInput = $('destinationName');
+  const urlInput  = $('destinationUrl');
+
+  const tabs   = block.querySelectorAll('.companion-tab');
+  const panes  = {
+    none:   null,
+    chapel: block.querySelector('.companion-pane-chapel'),
+    stream: block.querySelector('.companion-pane-stream'),
+  };
+
+  function clearSelection() {
+    typeInput.value = '';
+    idInput.value = '';
+    nameInput.value = '';
+    urlInput.value = '';
+    const selectedDisplay = $('companionChapelSelected');
+    if (selectedDisplay) { selectedDisplay.hidden = true; selectedDisplay.innerHTML = ''; }
+    block.querySelectorAll('.companion-stream-btn').forEach(b => b.classList.remove('selected'));
+  }
+
+  // Tab switching
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      Object.entries(panes).forEach(([key, el]) => {
+        if (!el) return;
+        if (key === tab.dataset.companion) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+      // Tab change clears any prior selection
+      clearSelection();
+    });
+  });
+
+  // ─── Chapel autocomplete ───
+  const chapelInput = $('companionChapelSearch');
+  const chapelBox   = $('companionChapelSuggestions');
+  const chapelSelected = $('companionChapelSelected');
+
+  if (chapelInput) {
+    chapelInput.addEventListener('input', () => {
+      const q = chapelInput.value.toLowerCase().trim();
+      chapelBox.innerHTML = '';
+      if (q.length < 2) {
+        chapelBox.classList.remove('visible');
+        return;
+      }
+      // Search chapels (use the same dataset the map uses)
+      const matches = (state.chapels || [])
+        .filter(c =>
+          (c.name || '').toLowerCase().includes(q) ||
+          (c.city || '').toLowerCase().includes(q) ||
+          (c.country || '').toLowerCase().includes(q)
+        )
+        .slice(0, 8);
+
+      if (!matches.length) {
+        chapelBox.innerHTML = `<div class="companion-suggestion" style="color:var(--ink-faint);font-style:italic;">${t()['msg.noResults'] || 'No matches'}</div>`;
+        chapelBox.classList.add('visible');
+        return;
+      }
+
+      chapelBox.innerHTML = matches.map(c => `
+        <div class="companion-suggestion" data-id="${c.id}" data-name="${escapeHtml(c.name)}" data-loc="${escapeHtml((c.city || '') + ', ' + (c.country || ''))}" data-lat="${c.lat}" data-lng="${c.lng}">
+          <strong>${escapeHtml(c.name)}</strong>
+          <small>${escapeHtml([c.city, c.country].filter(Boolean).join(', '))}</small>
+        </div>
+      `).join('');
+      chapelBox.classList.add('visible');
+
+      chapelBox.querySelectorAll('.companion-suggestion').forEach(el => {
+        if (!el.dataset.id) return;
+        el.addEventListener('click', () => {
+          typeInput.value = 'chapel';
+          idInput.value   = el.dataset.id;
+          nameInput.value = `${el.dataset.name} — ${el.dataset.loc}`;
+          urlInput.value  = `https://www.google.com/maps?q=${el.dataset.lat},${el.dataset.lng}`;
+
+          chapelInput.value = el.dataset.name;
+          chapelBox.classList.remove('visible');
+          chapelBox.innerHTML = '';
+
+          chapelSelected.hidden = false;
+          chapelSelected.innerHTML = `
+            <button type="button" class="companion-clear" aria-label="Clear selection">×</button>
+            <strong>${escapeHtml(el.dataset.name)}</strong> — ${escapeHtml(el.dataset.loc)}
+          `;
+          chapelSelected.querySelector('.companion-clear').addEventListener('click', () => {
+            clearSelection();
+            chapelInput.value = '';
+          });
+        });
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.companion-pane-chapel')) chapelBox.classList.remove('visible');
+    });
+  }
+
+  // ─── Stream picker ───
+  block.querySelectorAll('.companion-stream-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      block.querySelectorAll('.companion-stream-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      typeInput.value = 'stream';
+      idInput.value   = '';
+      nameInput.value = btn.dataset.streamName;
+      urlInput.value  = btn.dataset.streamUrl;
+    });
+  });
+}
+
+/* ============ OPEN NOW (inline schedule parser) ============ */
+
+(function setupOpenNow() {
+  const DAY_TOKENS = {
+    mon: 1, monday: 1, lun: 1, lunes: 1, lundi: 1, lunedi: 1, segunda: 1,
+    tue: 2, tues: 2, tuesday: 2, mar: 2, martes: 2, mardi: 2, martedi: 2, terca: 2, 'terça': 2,
+    wed: 3, weds: 3, wednesday: 3, mie: 3, miercoles: 3, 'miércoles': 3, mer: 3, mercredi: 3, mercoledi: 3, quarta: 3,
+    thu: 4, thur: 4, thurs: 4, thursday: 4, jue: 4, jueves: 4, jeu: 4, jeudi: 4, gio: 4, giovedi: 4, quinta: 4,
+    fri: 5, friday: 5, vie: 5, viernes: 5, ven: 5, vendredi: 5, venerdi: 5, sexta: 5,
+    sat: 6, saturday: 6, sab: 6, sabado: 6, 'sábado': 6, samedi: 6, sabato: 6,
+    sun: 0, sunday: 0, dom: 0, domingo: 0, dimanche: 0, domenica: 0,
+  };
+
+  function chapelLocalDate(lng, now) {
+    const offset = Math.round((lng || 0) / 15);
+    const utcMs = now.getTime() + (now.getTimezoneOffset() * 60_000);
+    return new Date(utcMs + (offset * 3_600_000));
+  }
+
+  function parseTime(s) {
+    if (!s) return null;
+    const m = /^(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.?m\.?|p\.?m\.?)?/i.exec(s.trim());
+    if (!m) return null;
+    let h = parseInt(m[1], 10);
+    const min = m[2] ? parseInt(m[2], 10) : 0;
+    const mer = (m[3] || '').toLowerCase().replace(/\./g, '');
+    if (mer.startsWith('p') && h < 12) h += 12;
+    if (mer.startsWith('a') && h === 12) h = 0;
+    if (h < 0 || h > 24 || min < 0 || min >= 60) return null;
+    return h + (min / 60);
+  }
+
+  function parseDayRange(s) {
+    const t = s.toLowerCase().trim();
+    if (DAY_TOKENS[t] !== undefined) return [DAY_TOKENS[t], DAY_TOKENS[t]];
+    const m = /^([a-zà-úáéíóúçñ]+)\s*[-–—]\s*([a-zà-úáéíóúçñ]+)$/i.exec(t)
+           || /^([a-zà-úáéíóúçñ]+)\s+(?:to|through|au|à|a|fino al|até|hasta)\s+([a-zà-úáéíóúçñ]+)$/i.exec(t);
+    if (m && DAY_TOKENS[m[1]] !== undefined && DAY_TOKENS[m[2]] !== undefined) {
+      return [DAY_TOKENS[m[1]], DAY_TOKENS[m[2]]];
+    }
+    return null;
+  }
+
+  function dayInRange(dow, start, end) {
+    if (start <= end) return dow >= start && dow <= end;
+    return dow >= start || dow <= end;
+  }
+
+  window.__isOpenNow = function(scheduleText, chapelLng, perpetual, now) {
+    if (perpetual) return true;
+    if (!scheduleText) return null;
+    const text = String(scheduleText).toLowerCase().trim();
+    if (!text) return null;
+    now = now || new Date();
+
+    if (/(^|\s)24\s*[/\-x]\s*7(\s|$)/.test(text)) return true;
+    if (/perpetual|always open|always-open|24 hours|24h(?!\d)|round[- ]?the[- ]?clock/.test(text)) return true;
+    if (/24\s*horas|24\s*heures|24\s*ore|sempre aberto|siempre abierto|toujours ouvert/.test(text)) return true;
+
+    const local = chapelLocalDate(chapelLng || 0, now);
+    const dow = local.getDay();
+    const hour = local.getHours() + (local.getMinutes() / 60);
+
+    const clauses = text.split(/[;,]|\s+(?:and|y|et|e)\s+/i);
+    let foundAnyClause = false;
+
+    for (const rawClause of clauses) {
+      const clause = rawClause.trim();
+      if (!clause) continue;
+
+      let dayRange = null;
+      if (/\b(daily|every day|todos los dias|tous les jours|ogni giorno|todos os dias)\b/.test(clause)) {
+        dayRange = [0, 6];
+      } else if (/\b(weekday|monday[- ]?friday|m[-– ]?f)\b/.test(clause)) {
+        dayRange = [1, 5];
+      } else if (/\b(weekend)\b/.test(clause)) {
+        dayRange = [6, 0];
+      } else {
+        const drMatch = clause.match(/\b([a-zà-úáéíóúçñ]+)\s*(?:[-–—]|\sto\s|\sthrough\s|\sau\s|\sa\s|\sfino al\s|\saté\s|\shasta\s)\s*([a-zà-úáéíóúçñ]+)\b/i);
+        if (drMatch) {
+          const r = parseDayRange(drMatch[0]);
+          if (r) dayRange = r;
+        }
+        if (!dayRange) {
+          const singleMatch = clause.match(/\b([a-zà-úáéíóúçñ]+)\b/i);
+          if (singleMatch && DAY_TOKENS[singleMatch[1].toLowerCase()] !== undefined) {
+            const d = DAY_TOKENS[singleMatch[1].toLowerCase()];
+            dayRange = [d, d];
+          }
+        }
+      }
+
+      const timeMatch = clause.match(
+        /(\d{1,2}(?::\d{2})?\s*(?:am|pm|a\.?m\.?|p\.?m\.?|h)?)\s*(?:[-–—]|\sto\s|\sau\s|\sa\s|\sal\s|\sat\s|\sá\s|\sà\s)\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm|a\.?m\.?|p\.?m\.?|h)?)/i
+      );
+      if (!timeMatch) continue;
+      const startTime = parseTime(timeMatch[1]);
+      let endTime = parseTime(timeMatch[2]);
+      if (startTime === null || endTime === null) continue;
+      if (endTime <= startTime) endTime += 24;
+
+      foundAnyClause = true;
+      const range = dayRange || [0, 6];
+      if (!dayInRange(dow, range[0], range[1])) continue;
+      const h = hour < startTime ? hour + 24 : hour;
+      if (h >= startTime && h < endTime) return true;
+    }
+
+    return foundAnyClause ? false : null;
+  };
+})();
+
+function initOpenNowFilter() {
+  const toggle = $('openNowToggle');
+  const countEl = $('openNowCount');
+  if (!toggle) return;
+
+  function refresh() {
+    const isFilterOn = toggle.checked;
+    const now = new Date();
+    let openCount = 0;
+
+    // Update each marker's visibility + popup badge
+    for (const marker of state.allMarkers) {
+      const c = marker.chapelData || {};
+      const status = window.__isOpenNow
+        ? window.__isOpenNow(c.schedule, +c.lng, !!c.perpetual, now)
+        : null;
+      marker.chapelOpenStatus = status; // cache for popup builder
+
+      if (status === true) openCount++;
+
+      if (isFilterOn) {
+        if (status === true) {
+          if (!state.markersGroup.hasLayer(marker)) state.markersGroup.addLayer(marker);
+        } else {
+          state.markersGroup.removeLayer(marker);
+        }
+      } else {
+        if (!state.markersGroup.hasLayer(marker)) state.markersGroup.addLayer(marker);
+      }
+    }
+
+    if (countEl) {
+      countEl.textContent = isFilterOn ? `${openCount} open` : '';
+    }
+  }
+
+  toggle.addEventListener('change', refresh);
+
+  // Listen for chapel data being loaded; do an initial pass
+  const tryRefresh = () => {
+    if (state.allMarkers && state.allMarkers.length) refresh();
+    else setTimeout(tryRefresh, 500);
+  };
+  tryRefresh();
 }
 
 function initContactForm() {
@@ -1885,6 +2232,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Forms
   initPledgeForm();
+  initHourCompanion();
+  initOpenNowFilter();
   initContactForm();
   initAddChapelForm();
   initShare();

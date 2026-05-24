@@ -104,15 +104,6 @@
         <svg class="btn-icon" width="14" height="14"><use href="#orn-plus"/></svg>
         <span data-i18n="btn.addChapel">Add Chapel</span>
       </button>
-      <a href="/about" class="btn btn-ghost">
-        <span data-i18n="nav.about">About</span>
-      </a>
-      <a href="/streams" class="btn btn-ghost">
-        <span data-i18n="nav.streams">Live Streams</span>
-      </a>
-      <button id="musicToggle" class="btn btn-icon-only" data-i18n-aria="btn.musicPlay" aria-label="Toggle music">
-        <svg class="btn-icon" width="16" height="16" id="musicIcon"><use href="#orn-music"/></svg>
-      </button>
       <audio id="bgMusic" loop preload="none">
         <source src="204-stay%20with%20me.mp3" type="audio/mpeg">
       </audio>
@@ -140,6 +131,11 @@
 <!-- ═══ MAP ═══ -->
 <section class="map-section">
   <div class="map-frame">
+    <label class="map-filter" for="openNowToggle" title="Show only chapels currently open">
+      <input type="checkbox" id="openNowToggle" />
+      <label for="openNowToggle" data-i18n="map.openNowLabel">Open right now</label>
+      <span class="filter-count" id="openNowCount"></span>
+    </label>
     <div id="map" role="region" aria-label="World map of Eucharistic Adoration chapels"></div>
   </div>
   <p class="map-caption">
@@ -238,6 +234,44 @@
       <input id="pledgeTime" type="datetime-local" name="time" required />
       <label class="visually-hidden" for="pledgeIntention">Prayer intention</label>
       <textarea id="pledgeIntention" name="intention" rows="3" data-i18n-placeholder="pledge.intention" placeholder="Your prayer intention (optional)"></textarea>
+
+      <!-- Hour Companion: optional destination picker -->
+      <div class="companion-block">
+        <p class="companion-label" data-i18n="companion.label">Where will you pray? <span class="companion-optional" data-i18n="companion.optional">(optional)</span></p>
+        <div class="companion-tabs" role="tablist">
+          <button type="button" class="companion-tab active" data-companion="none" data-i18n="companion.tabNone">No destination yet</button>
+          <button type="button" class="companion-tab" data-companion="chapel" data-i18n="companion.tabChapel">A chapel</button>
+          <button type="button" class="companion-tab" data-companion="stream" data-i18n="companion.tabStream">A live stream</button>
+        </div>
+
+        <!-- Hidden — chapel autocomplete -->
+        <div class="companion-pane companion-pane-chapel hidden">
+          <input type="text" id="companionChapelSearch" data-i18n-placeholder="companion.chapelSearchPh" placeholder="Search by city, country, or chapel name" autocomplete="off"/>
+          <div class="companion-suggestions" id="companionChapelSuggestions" role="listbox"></div>
+          <p class="companion-selected" id="companionChapelSelected" hidden></p>
+        </div>
+
+        <!-- Hidden — stream picker -->
+        <div class="companion-pane companion-pane-stream hidden">
+          <div class="companion-stream-grid">
+            <button type="button" class="companion-stream-btn" data-stream-name="EWTN · 24/7 Live Adoration" data-stream-url="https://www.youtube.com/watch?v=SDRgXmiWkM0">
+              <span class="companion-stream-name">EWTN</span>
+              <span class="companion-stream-source">24/7 Live Adoration</span>
+            </button>
+            <button type="button" class="companion-stream-btn" data-stream-name="Shalom World Prayer" data-stream-url="https://www.youtube.com/channel/UCIFjeNtkyUCoxoPOxXkarTA">
+              <span class="companion-stream-name">Shalom World Prayer</span>
+              <span class="companion-stream-source">Global · 24/7</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden form values posted to API -->
+        <input type="hidden" name="destination_type" id="destinationType" value="" />
+        <input type="hidden" name="destination_id"   id="destinationId"   value="" />
+        <input type="hidden" name="destination_name" id="destinationName" value="" />
+        <input type="hidden" name="destination_url"  id="destinationUrl"  value="" />
+      </div>
+
       <button type="submit" class="btn btn-primary btn-large">
         <svg class="btn-icon" width="14" height="14"><use href="#orn-candle"/></svg>
         <span data-i18n="pledge.submit">Pledge My Hour</span>
