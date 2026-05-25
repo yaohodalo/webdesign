@@ -822,9 +822,12 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   padding: 4px;
   /* Solid dark background — prevents any element behind from showing through during iframe load */
   background: linear-gradient(135deg, #2a221a, #15110d, #2a221a);
+  /* Heavy drop shadow so the player reads as clearly floating above content, not blending into it */
   box-shadow:
-    0 20px 56px rgba(21, 17, 13, 0.75),
-    0 0 0 1px rgba(255, 248, 225, 0.3) inset;
+    0 24px 56px rgba(0, 0, 0, 0.55),
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 248, 225, 0.35) inset,
+    0 0 0 2px rgba(0, 0, 0, 0.6);
   /* Animation: simple fade+slide, no transform conflict */
   animation: floating-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
   /* GPU layer + isolation for bulletproof stacking on iOS Safari */
@@ -877,13 +880,33 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   font-weight: 500;
 }
 
-/* Mobile: smaller floating player, bottom-center */
+/* Mobile: small picture-in-picture style mini-player anchored bottom-right */
 @media (max-width: 640px) {
   .tabernacle-frame.floating {
-    width: calc(100vw - 16px);
-    max-width: 320px;
-    bottom: 12px;
-    right: 8px;
+    /* Genuinely small — like YouTube's PiP, not nearly-full-width */
+    width: 240px;
+    max-width: 80vw;
+    bottom: 16px;
+    right: 12px;
+    padding: 3px;
+    /* Much stronger drop shadow on mobile so it cleanly separates from hero/content behind it */
+    box-shadow:
+      0 24px 48px rgba(0, 0, 0, 0.7),
+      0 8px 16px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 248, 225, 0.4) inset,
+      0 0 0 2px rgba(0, 0, 0, 0.8);
+  }
+  /* Smaller chrome bar on mobile */
+  .tabernacle-frame.floating .floating-chrome {
+    padding: 4px 4px 6px;
+  }
+  .tabernacle-frame.floating .floating-title {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
+  .tabernacle-frame.floating .floating-btn {
+    width: 22px;
+    height: 22px;
   }
 }
 .tabernacle-frame::after {
