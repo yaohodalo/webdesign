@@ -211,6 +211,36 @@ const translations = {
     'map.openNowLabel': "Open right now",
     'map.openNow': "Open now",
     'map.checkSchedule': "Check schedule",
+    'modal.contactSection': "Your Contact Information",
+    'modal.parishSection': "Parish Information",
+    'modal.addressFull': "Full street address (e.g. 123 Main St, Springfield, IL, USA)",
+    'modal.findOnMap': "Find on Map",
+    'modal.dragPinHint': "Drag the pin to fine-tune the chapel's location.",
+    'modal.addressTooShort': "Please enter a more complete address.",
+    'modal.findingAddress': "Finding address on map…",
+    'modal.addressNotFound': "Address not found. Please be more specific.",
+    'modal.addressFound': "Location found! Drag the pin if needed.",
+    'modal.geocodeError': "Could not find that address.",
+    'modal.timesSection': "Adoration Times",
+    'modal.timesHint': "When is the Blessed Sacrament exposed? Add a row per regular time.",
+    'modal.addAnotherTime': "+ Add another time",
+    'modal.codeRequired': "A code is required to access this chapel (visitors must contact the parish)",
+    'modal.freq': "Frequency",
+    'modal.day': "Day",
+    'modal.startTime': "Start",
+    'modal.endTime': "End",
+    'modal.missingFields': "Please complete all required fields.",
+    'modal.confirmLocation': 'Please click "Find on Map" first to confirm the location.',
+    'msg.codeRequired': "Code required — contact the parish for access",
+    'msg.variousTimes': "Various times — contact parish",
+    'map.closedNow': "Closed now",
+    'day.sun': "Sun",
+    'day.mon': "Mon",
+    'day.tue': "Tue",
+    'day.wed': "Wed",
+    'day.thu': "Thu",
+    'day.fri': "Fri",
+    'day.sat': "Sat",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -412,6 +442,36 @@ const translations = {
     'map.openNowLabel': "Abierto ahora",
     'map.openNow': "Abierto ahora",
     'map.checkSchedule': "Consultar horario",
+    'modal.contactSection': "Tu información de contacto",
+    'modal.parishSection': "Información de la parroquia",
+    'modal.addressFull': "Dirección completa (ej. 123 Main St, Springfield, IL, USA)",
+    'modal.findOnMap': "Buscar en el mapa",
+    'modal.dragPinHint': "Arrastra el pin para ajustar la ubicación de la capilla.",
+    'modal.addressTooShort': "Por favor ingresa una dirección más completa.",
+    'modal.findingAddress': "Buscando la dirección en el mapa…",
+    'modal.addressNotFound': "Dirección no encontrada. Sé más específico.",
+    'modal.addressFound': "¡Ubicación encontrada! Arrastra el pin si es necesario.",
+    'modal.geocodeError': "No se pudo encontrar esa dirección.",
+    'modal.timesSection': "Horarios de Adoración",
+    'modal.timesHint': "¿Cuándo se expone el Santísimo Sacramento? Agrega una fila por cada horario regular.",
+    'modal.addAnotherTime': "+ Agregar otro horario",
+    'modal.codeRequired': "Se requiere un código para acceder a esta capilla (contactar a la parroquia)",
+    'modal.freq': "Frecuencia",
+    'modal.day': "Día",
+    'modal.startTime': "Inicio",
+    'modal.endTime': "Fin",
+    'modal.missingFields': "Por favor completa todos los campos requeridos.",
+    'modal.confirmLocation': 'Haz clic en "Buscar en el mapa" primero para confirmar la ubicación.',
+    'msg.codeRequired': "Se requiere código — contactar la parroquia para acceder",
+    'msg.variousTimes': "Horarios variados — contactar parroquia",
+    'map.closedNow': "Cerrado ahora",
+    'day.sun': "Dom",
+    'day.mon': "Lun",
+    'day.tue': "Mar",
+    'day.wed': "Mié",
+    'day.thu': "Jue",
+    'day.fri': "Vie",
+    'day.sat': "Sáb",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -613,6 +673,36 @@ const translations = {
     'map.openNowLabel': "Ouvert maintenant",
     'map.openNow': "Ouvert maintenant",
     'map.checkSchedule': "Consulter l'horaire",
+    'modal.contactSection': "Vos coordonnées",
+    'modal.parishSection': "Informations sur la paroisse",
+    'modal.addressFull': "Adresse complète (ex. 123 Main St, Springfield, IL, USA)",
+    'modal.findOnMap': "Trouver sur la carte",
+    'modal.dragPinHint': "Déplacez l'épingle pour ajuster l'emplacement de la chapelle.",
+    'modal.addressTooShort': "Veuillez saisir une adresse plus complète.",
+    'modal.findingAddress': "Recherche de l'adresse sur la carte…",
+    'modal.addressNotFound': "Adresse introuvable. Veuillez être plus précis.",
+    'modal.addressFound': "Emplacement trouvé ! Déplacez l'épingle si nécessaire.",
+    'modal.geocodeError': "Impossible de trouver cette adresse.",
+    'modal.timesSection': "Horaires d'Adoration",
+    'modal.timesHint': "Quand le Saint-Sacrement est-il exposé ? Ajoutez une ligne par horaire régulier.",
+    'modal.addAnotherTime': "+ Ajouter un autre horaire",
+    'modal.codeRequired': "Un code est requis pour accéder à cette chapelle (contacter la paroisse)",
+    'modal.freq': "Fréquence",
+    'modal.day': "Jour",
+    'modal.startTime': "Début",
+    'modal.endTime': "Fin",
+    'modal.missingFields': "Veuillez compléter tous les champs obligatoires.",
+    'modal.confirmLocation': "Cliquez d'abord sur « Trouver sur la carte » pour confirmer l'emplacement.",
+    'msg.codeRequired': "Code requis — contacter la paroisse pour y accéder",
+    'msg.variousTimes': "Horaires variés — contacter la paroisse",
+    'map.closedNow': "Fermé maintenant",
+    'day.sun': "Dim",
+    'day.mon': "Lun",
+    'day.tue': "Mar",
+    'day.wed': "Mer",
+    'day.thu': "Jeu",
+    'day.fri': "Ven",
+    'day.sat': "Sam",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -814,6 +904,36 @@ const translations = {
     'map.openNowLabel': "Aperto ora",
     'map.openNow': "Aperto ora",
     'map.checkSchedule': "Verifica l'orario",
+    'modal.contactSection': "I tuoi recapiti",
+    'modal.parishSection': "Informazioni sulla parrocchia",
+    'modal.addressFull': "Indirizzo completo (es. 123 Main St, Springfield, IL, USA)",
+    'modal.findOnMap': "Trova sulla mappa",
+    'modal.dragPinHint': "Trascina il segnaposto per regolare la posizione della cappella.",
+    'modal.addressTooShort': "Inserisci un indirizzo più completo.",
+    'modal.findingAddress': "Ricerca dell'indirizzo sulla mappa…",
+    'modal.addressNotFound': "Indirizzo non trovato. Sii più specifico.",
+    'modal.addressFound': "Posizione trovata! Trascina il segnaposto se necessario.",
+    'modal.geocodeError': "Impossibile trovare questo indirizzo.",
+    'modal.timesSection': "Orari di Adorazione",
+    'modal.timesHint': "Quando viene esposto il Santissimo Sacramento? Aggiungi una riga per ogni orario regolare.",
+    'modal.addAnotherTime': "+ Aggiungi un altro orario",
+    'modal.codeRequired': "È necessario un codice per accedere a questa cappella (contattare la parrocchia)",
+    'modal.freq': "Frequenza",
+    'modal.day': "Giorno",
+    'modal.startTime': "Inizio",
+    'modal.endTime': "Fine",
+    'modal.missingFields': "Completa tutti i campi obbligatori.",
+    'modal.confirmLocation': 'Clicca prima su "Trova sulla mappa" per confermare la posizione.',
+    'msg.codeRequired': "Codice richiesto — contattare la parrocchia per accedere",
+    'msg.variousTimes': "Orari vari — contattare la parrocchia",
+    'map.closedNow': "Chiuso ora",
+    'day.sun': "Dom",
+    'day.mon': "Lun",
+    'day.tue': "Mar",
+    'day.wed': "Mer",
+    'day.thu': "Gio",
+    'day.fri': "Ven",
+    'day.sat': "Sab",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -1015,6 +1135,36 @@ const translations = {
     'map.openNowLabel': "Aberto agora",
     'map.openNow': "Aberto agora",
     'map.checkSchedule': "Ver horário",
+    'modal.contactSection': "Os seus contactos",
+    'modal.parishSection': "Informações da paróquia",
+    'modal.addressFull': "Morada completa (ex. 123 Main St, Springfield, IL, USA)",
+    'modal.findOnMap': "Encontrar no mapa",
+    'modal.dragPinHint': "Arraste o pino para ajustar a localização da capela.",
+    'modal.addressTooShort': "Por favor introduza uma morada mais completa.",
+    'modal.findingAddress': "A procurar morada no mapa…",
+    'modal.addressNotFound': "Morada não encontrada. Por favor seja mais específico.",
+    'modal.addressFound': "Localização encontrada! Arraste o pino se necessário.",
+    'modal.geocodeError': "Não foi possível encontrar essa morada.",
+    'modal.timesSection': "Horários de Adoração",
+    'modal.timesHint': "Quando é exposto o Santíssimo Sacramento? Adicione uma linha por horário regular.",
+    'modal.addAnotherTime': "+ Adicionar outro horário",
+    'modal.codeRequired': "É necessário um código para aceder a esta capela (contactar a paróquia)",
+    'modal.freq': "Frequência",
+    'modal.day': "Dia",
+    'modal.startTime': "Início",
+    'modal.endTime': "Fim",
+    'modal.missingFields': "Por favor preencha todos os campos obrigatórios.",
+    'modal.confirmLocation': 'Clique em "Encontrar no mapa" primeiro para confirmar a localização.',
+    'msg.codeRequired': "Código necessário — contactar a paróquia para aceder",
+    'msg.variousTimes': "Horários variados — contactar paróquia",
+    'map.closedNow': "Fechado agora",
+    'day.sun': "Dom",
+    'day.mon': "Seg",
+    'day.tue': "Ter",
+    'day.wed': "Qua",
+    'day.thu': "Qui",
+    'day.fri': "Sex",
+    'day.sat': "Sáb",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
@@ -1202,16 +1352,34 @@ function chapelPopupHtml(c) {
   const loc = [c.city, c.country].filter(Boolean).join(', ');
   const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`;
 
-  // Open-now badge — checked lazily so we get fresh time on each popup open
+  // Status priority: perpetual > structured slots > legacy schedule text > unknown
   let badge = '';
-  if (window.__isOpenNow) {
-    const status = window.__isOpenNow(c.schedule, +c.lng, !!c.perpetual);
-    if (status === true) {
+  if (c.perpetual) {
+    // Perpetual already implies open — don't duplicate with "Open now"
+    badge = `<span class="popup-perpetual">${tr['msg.perpetual'] || '24/7 Perpetual'}</span>`;
+  } else if (Array.isArray(c.adoration_times) && c.adoration_times.length && window.__isOpenStructured) {
+    const open = window.__isOpenStructured(c.adoration_times, +c.lng);
+    if (open === true) {
       badge = `<span class="popup-open-now">${tr['map.openNow'] || 'Open now'}</span>`;
-    } else if (status === null && c.schedule) {
+    } else if (open === false) {
+      badge = `<span class="popup-open-closed">${tr['map.closedNow'] || 'Closed now'}</span>`;
+    }
+  } else if (c.schedule && window.__isOpenNow) {
+    // Legacy chapel with free-text schedule — best-effort, may be wrong
+    const status = window.__isOpenNow(c.schedule, +c.lng, false);
+    if (status === null) {
       badge = `<span class="popup-open-unknown">${tr['map.checkSchedule'] || 'Check schedule'}</span>`;
     }
   }
+
+  // Format the structured times for display (if any)
+  const timesHtml = Array.isArray(c.adoration_times) && c.adoration_times.length
+    ? `<div class="popup-times">${formatTimesForPopup(c.adoration_times, tr)}</div>`
+    : (c.schedule ? `<div class="popup-schedule">${escapeHtml(c.schedule)}</div>` : '');
+
+  const codeBadge = c.code_required
+    ? `<div class="popup-code-required">${tr['msg.codeRequired'] || 'Code required — contact the parish for access'}</div>`
+    : '';
 
   return `
     <div class="popup-card">
@@ -1219,14 +1387,47 @@ function chapelPopupHtml(c) {
       <div class="popup-loc">${escapeHtml(c.address || loc)}</div>
       <div style="margin-top:0.4rem;">
         ${badge}
-        ${c.perpetual ? `<span class="popup-perpetual">${tr['msg.perpetual']}</span>` : ''}
       </div>
-      ${c.schedule ? `<div class="popup-schedule">${escapeHtml(c.schedule)}</div>` : ''}
+      ${timesHtml}
+      ${codeBadge}
       <a class="popup-directions" href="${directionsUrl}" target="_blank" rel="noopener">
         ${tr['msg.directions']}
       </a>
     </div>
   `;
+}
+
+// Render structured times as "Mon 7:00 AM–7:00 PM" lines, grouped by day
+function formatTimesForPopup(slots, tr) {
+  const dayNames = [
+    tr['day.sun'] || 'Sun', tr['day.mon'] || 'Mon', tr['day.tue'] || 'Tue',
+    tr['day.wed'] || 'Wed', tr['day.thu'] || 'Thu', tr['day.fri'] || 'Fri',
+    tr['day.sat'] || 'Sat',
+  ];
+  const variousSlot = slots.find(s => s.various_times);
+  if (variousSlot && slots.length === 1) {
+    return `<em>${tr['msg.variousTimes'] || 'Various times — contact parish'}</em>`;
+  }
+
+  const lines = slots
+    .filter(s => !s.various_times)
+    .sort((a, b) => (a.day_of_week ?? 7) - (b.day_of_week ?? 7))
+    .map(s => {
+      const day = dayNames[s.day_of_week] || '';
+      const start = formatTimeAmPm(s.start_time);
+      const end = formatTimeAmPm(s.end_time);
+      return `${day} ${start}–${end}`;
+    });
+  return lines.map(l => `<div>${escapeHtml(l)}</div>`).join('');
+}
+
+function formatTimeAmPm(hhmm) {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(n => parseInt(n, 10));
+  if (!Number.isFinite(h)) return hhmm;
+  const h12 = ((h + 11) % 12) + 1;
+  const suffix = h < 12 ? 'AM' : 'PM';
+  return `${h12}:${String(m).padStart(2, '0')} ${suffix}`;
 }
 
 function escapeHtml(s) {
@@ -2006,6 +2207,40 @@ function initHourCompanion() {
 
     return foundAnyClause ? false : null;
   };
+
+  // ─── Structured times — accurate check, no parsing ───
+  // Slots: [{ frequency, day_of_week, start_time: 'HH:MM', end_time: 'HH:MM', various_times }]
+  // Returns: true | false | null (null = various-times-only, can't determine)
+  window.__isOpenStructured = function(slots, chapelLng, now) {
+    if (!Array.isArray(slots) || slots.length === 0) return null;
+    now = now || new Date();
+    const local = chapelLocalDate(chapelLng || 0, now);
+    const dow = local.getDay();
+    const hour = local.getHours() + (local.getMinutes() / 60);
+
+    let foundConcreteSlot = false;
+    for (const slot of slots) {
+      if (slot.various_times) continue;
+      foundConcreteSlot = true;
+      if (slot.day_of_week !== dow) continue;
+      const start = parseHHMM(slot.start_time);
+      const end   = parseHHMM(slot.end_time);
+      if (start === null || end === null) continue;
+      const realEnd = end <= start ? end + 24 : end;
+      const h = hour < start ? hour + 24 : hour;
+      if (h >= start && h < realEnd) return true;
+    }
+    return foundConcreteSlot ? false : null;
+  };
+
+  function parseHHMM(s) {
+    if (!s || typeof s !== 'string') return null;
+    const m = /^(\d{2}):(\d{2})$/.exec(s);
+    if (!m) return null;
+    const h = parseInt(m[1], 10), min = parseInt(m[2], 10);
+    if (h < 0 || h > 23 || min < 0 || min > 59) return null;
+    return h + min/60;
+  }
 })();
 
 function initOpenNowFilter() {
@@ -2018,13 +2253,20 @@ function initOpenNowFilter() {
     const now = new Date();
     let openCount = 0;
 
-    // Update each marker's visibility + popup badge
     for (const marker of state.allMarkers) {
       const c = marker.chapelData || {};
-      const status = window.__isOpenNow
-        ? window.__isOpenNow(c.schedule, +c.lng, !!c.perpetual, now)
-        : null;
-      marker.chapelOpenStatus = status; // cache for popup builder
+      let status;
+      // Priority: perpetual > structured times > legacy text parser
+      if (c.perpetual) {
+        status = true;
+      } else if (Array.isArray(c.adoration_times) && c.adoration_times.length && window.__isOpenStructured) {
+        status = window.__isOpenStructured(c.adoration_times, +c.lng, now);
+      } else if (c.schedule && window.__isOpenNow) {
+        status = window.__isOpenNow(c.schedule, +c.lng, false, now);
+      } else {
+        status = null;
+      }
+      marker.chapelOpenStatus = status;
 
       if (status === true) openCount++;
 
@@ -2046,7 +2288,6 @@ function initOpenNowFilter() {
 
   toggle.addEventListener('change', refresh);
 
-  // Listen for chapel data being loaded; do an initial pass
   const tryRefresh = () => {
     if (state.allMarkers && state.allMarkers.length) refresh();
     else setTimeout(tryRefresh, 500);
@@ -2084,38 +2325,238 @@ function initContactForm() {
   });
 }
 
+/* ============ ADD CHAPEL MODAL ============ */
+
+const DAY_LABELS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const FREQ_LABELS_EN = {
+  weekly: 'Weekly',
+  biweekly: 'Biweekly',
+  monthly: 'Monthly',
+  first: 'First of month',
+  last: 'Last of month',
+};
+
+// Generate every 30-minute time of day as {value: 'HH:MM', label: '7:00 AM'}
+function buildTimeOptions() {
+  const out = [];
+  for (let h = 0; h < 24; h++) {
+    for (const m of [0, 30]) {
+      const v = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      const h12 = ((h + 11) % 12) + 1;
+      const suffix = h < 12 ? 'AM' : 'PM';
+      const label = `${h12}:${String(m).padStart(2,'0')} ${suffix}`;
+      out.push({ value: v, label });
+    }
+  }
+  return out;
+}
+const TIME_OPTIONS = buildTimeOptions();
+
+// Render a single time-slot row as a DOM element
+function buildTimeSlotRow(slot = {}) {
+  const wrap = document.createElement('div');
+  wrap.className = 'time-slot';
+  wrap.dataset.frequency = slot.frequency || 'weekly';
+  if (slot.various_times) wrap.classList.add('is-various');
+
+  const tr = (typeof t === 'function' ? t() : {}) || {};
+
+  const freqOpts = ['weekly','biweekly','monthly','first','last']
+    .map(v => `<option value="${v}" ${slot.frequency === v ? 'selected' : ''}>${FREQ_LABELS_EN[v]}</option>`).join('');
+
+  const dayOpts = DAY_LABELS_EN
+    .map((name, i) => `<option value="${i}" ${slot.day_of_week === i ? 'selected' : ''}>${name}</option>`).join('');
+
+  const timeOpts = (selected) =>
+    TIME_OPTIONS.map(o => `<option value="${o.value}" ${o.value === selected ? 'selected' : ''}>${o.label}</option>`).join('');
+
+  wrap.innerHTML = `
+    <div class="time-slot-field">
+      <span class="time-slot-label" data-i18n="modal.freq">Frequency</span>
+      <select class="ts-frequency">
+        ${freqOpts}
+      </select>
+    </div>
+    <div class="time-slot-field">
+      <span class="time-slot-label" data-i18n="modal.day">Day</span>
+      <select class="ts-day">${dayOpts}</select>
+    </div>
+    <div class="time-slot-field">
+      <span class="time-slot-label" data-i18n="modal.startTime">Start</span>
+      <select class="ts-start">${timeOpts(slot.start_time || '07:00')}</select>
+    </div>
+    <div class="time-slot-field">
+      <span class="time-slot-label" data-i18n="modal.endTime">End</span>
+      <select class="ts-end">${timeOpts(slot.end_time || '19:00')}</select>
+    </div>
+    <button type="button" class="time-slot-remove" aria-label="Remove this time">×</button>
+  `;
+
+  wrap.querySelector('.time-slot-remove').addEventListener('click', () => {
+    wrap.remove();
+  });
+
+  return wrap;
+}
+
+// Collect all the structured time slots from the DOM
+function collectTimeSlots() {
+  return Array.from(document.querySelectorAll('#adorationTimesList .time-slot')).map(el => {
+    return {
+      frequency: el.querySelector('.ts-frequency').value,
+      day_of_week: parseInt(el.querySelector('.ts-day').value, 10),
+      start_time: el.querySelector('.ts-start').value,
+      end_time:   el.querySelector('.ts-end').value,
+      various_times: false,
+    };
+  });
+}
+
+let addressMapInstance = null;
+let addressMarker = null;
+
+// Initialize / show the mini-map with the given coordinates
+function showAddressMap(lat, lng) {
+  const wrap = $('addressMapWrap');
+  if (!wrap) return;
+  wrap.classList.remove('hidden');
+
+  // Invalidate hidden lat/lng inputs
+  $('chapelLat').value = lat.toFixed(6);
+  $('chapelLng').value = lng.toFixed(6);
+
+  if (!addressMapInstance) {
+    addressMapInstance = L.map('addressMap', {
+      center: [lat, lng],
+      zoom: 16,
+      scrollWheelZoom: false,
+    });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap, © CARTO',
+      maxZoom: 19,
+    }).addTo(addressMapInstance);
+  } else {
+    addressMapInstance.setView([lat, lng], 16);
+  }
+
+  if (!addressMarker) {
+    addressMarker = L.marker([lat, lng], { draggable: true }).addTo(addressMapInstance);
+    addressMarker.on('dragend', () => {
+      const ll = addressMarker.getLatLng();
+      $('chapelLat').value = ll.lat.toFixed(6);
+      $('chapelLng').value = ll.lng.toFixed(6);
+    });
+  } else {
+    addressMarker.setLatLng([lat, lng]);
+  }
+
+  // Leaflet needs to recalc size after the wrap becomes visible
+  setTimeout(() => addressMapInstance.invalidateSize(), 100);
+}
+
 function initAddChapelForm() {
   const addBtn = $('addChapelBtn');
   const modal = $('addChapelModal');
   const closeBtn = $('closeAddChapel');
   const footerAdd = $('footerAddChapel');
 
-  const open = () => { modal.style.display = 'flex'; };
+  const open = () => {
+    modal.style.display = 'flex';
+    // Add one empty time slot if none exists yet
+    const list = $('adorationTimesList');
+    if (list && list.children.length === 0) {
+      list.appendChild(buildTimeSlotRow());
+    }
+  };
   const close = () => { modal.style.display = 'none'; };
 
   addBtn?.addEventListener('click', open);
   footerAdd?.addEventListener('click', e => { e.preventDefault(); open(); });
   closeBtn?.addEventListener('click', close);
 
+  // Add-another-time button
+  $('addTimeSlotBtn')?.addEventListener('click', () => {
+    $('adorationTimesList').appendChild(buildTimeSlotRow());
+  });
+
+  // 24/7 perpetual checkbox grays out the time list (still allowed to add, but not needed)
+  $('chapelPerpetual')?.addEventListener('change', e => {
+    const list = $('adorationTimesList');
+    const addSlotBtn = $('addTimeSlotBtn');
+    if (e.target.checked) {
+      list.style.opacity = '0.4';
+      list.style.pointerEvents = 'none';
+      if (addSlotBtn) { addSlotBtn.style.opacity = '0.4'; addSlotBtn.disabled = true; }
+    } else {
+      list.style.opacity = '';
+      list.style.pointerEvents = '';
+      if (addSlotBtn) { addSlotBtn.style.opacity = ''; addSlotBtn.disabled = false; }
+    }
+  });
+
+  // "Find on Map" button — geocode the address and reveal the mini-map
+  $('findOnMapBtn')?.addEventListener('click', async () => {
+    const addr = $('chapelAddress').value.trim();
+    const city = document.querySelector('#chapelForm [name="city"]').value.trim();
+    const country = document.querySelector('#chapelForm [name="country"]').value.trim();
+    const status = $('addressStatus');
+    const full = [addr, city, country].filter(Boolean).join(', ');
+
+    if (full.length < 5) {
+      status.className = 'address-status error';
+      status.textContent = t()['modal.addressTooShort'] || 'Please enter more of the address.';
+      return;
+    }
+
+    status.className = 'address-status';
+    status.textContent = t()['modal.findingAddress'] || 'Looking up address…';
+
+    try {
+      const res = await fetch(`/api/geocode?q=${encodeURIComponent(full)}`);
+      if (res.status === 404) {
+        status.className = 'address-status error';
+        status.textContent = t()['modal.addressNotFound'] || 'Address not found. Please be more specific.';
+        return;
+      }
+      if (!res.ok) throw new Error('Geocoding failed');
+      const data = await res.json();
+      status.className = 'address-status success';
+      status.textContent = t()['modal.addressFound'] || 'Found — drag the pin to refine.';
+      showAddressMap(data.lat, data.lng);
+    } catch (ex) {
+      status.className = 'address-status error';
+      status.textContent = t()['modal.geocodeError'] || 'Could not look up address. Please try again.';
+    }
+  });
+
   $('chapelForm')?.addEventListener('submit', async e => {
     e.preventDefault();
     const err = $('chapelError');
     const fd = new FormData(e.target);
+
+    const perpetual = fd.get('perpetual') === 'yes';
+    const lat = parseFloat(fd.get('lat'));
+    const lng = parseFloat(fd.get('lng'));
+
     const payload = {
       name: fd.get('name'),
       city: fd.get('city'),
       country: fd.get('country'),
       address: fd.get('address') || null,
-      schedule: fd.get('schedule') || null,
       submitter_email: fd.get('submitter_email') || null,
-      lat: parseFloat(fd.get('lat')),
-      lng: parseFloat(fd.get('lng')),
-      perpetual: fd.get('perpetual') === 'yes',
+      lat: Number.isFinite(lat) ? lat : null,
+      lng: Number.isFinite(lng) ? lng : null,
+      perpetual,
+      code_required: fd.get('code_required') === 'yes',
+      adoration_times: perpetual ? [] : collectTimeSlots(),
     };
 
-    if (!payload.name || !payload.city || !payload.country ||
-        !Number.isFinite(payload.lat) || !Number.isFinite(payload.lng)) {
-      showStatus(err, 'err', 'Please fill all required fields and valid coordinates.');
+    if (!payload.name || !payload.city || !payload.country) {
+      showStatus(err, 'err', t()['modal.missingFields'] || 'Please fill all required fields.');
+      return;
+    }
+    if (payload.lat === null || payload.lng === null) {
+      showStatus(err, 'err', t()['modal.confirmLocation'] || 'Please confirm the chapel location on the map first (click "Find on Map").');
       return;
     }
 
@@ -2123,6 +2564,10 @@ function initAddChapelForm() {
       await api('/api/chapel', { method: 'POST', body: JSON.stringify(payload) });
       close();
       e.target.reset();
+      // Reset map/slot UI
+      $('adorationTimesList').innerHTML = '';
+      $('addressMapWrap').classList.add('hidden');
+      $('addressStatus').textContent = '';
       alert(t()['msg.chapelOk']);
     } catch (ex) {
       showStatus(err, 'err', t()['msg.chapelErr']);

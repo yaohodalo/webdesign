@@ -438,25 +438,60 @@
     </div>
     <h2 id="addChapelTitle" data-i18n="modal.addTitle">Add a Chapel</h2>
     <p class="modal-sub" data-i18n="modal.addSub">Help grow the worldwide adoration community by adding your chapel.</p>
+
     <form id="chapelForm" novalidate class="prose-form">
+
+      <!-- ── Contact ── -->
+      <h3 class="form-section-title" data-i18n="modal.contactSection">Your Contact Information</h3>
+      <input name="submitter_email" type="email" maxlength="200" data-i18n-placeholder="modal.yourEmail" placeholder="Your email (optional)" />
+
+      <!-- ── Parish info ── -->
+      <h3 class="form-section-title" data-i18n="modal.parishSection">Parish Information</h3>
+      <input name="name" required maxlength="200" data-i18n-placeholder="modal.chapelName" placeholder="Parish or Chapel Name" />
       <div class="form-row">
-        <input name="name" required maxlength="200" data-i18n-placeholder="modal.chapelName" placeholder="Chapel Name" />
         <input name="city" required maxlength="120" data-i18n-placeholder="modal.city" placeholder="City" />
-      </div>
-      <div class="form-row">
         <input name="country" required maxlength="120" data-i18n-placeholder="modal.country" placeholder="Country" />
-        <input name="submitter_email" type="email" maxlength="200" data-i18n-placeholder="modal.yourEmail" placeholder="Your email (optional)" />
       </div>
-      <div class="form-row">
-        <input name="lat" required inputmode="decimal" data-i18n-placeholder="modal.lat" placeholder="Latitude (e.g. 51.5074)" />
-        <input name="lng" required inputmode="decimal" data-i18n-placeholder="modal.lng" placeholder="Longitude (e.g. -0.1278)" />
+
+      <!-- ── Address + mini-map ── -->
+      <input id="chapelAddress" name="address" required maxlength="500" data-i18n-placeholder="modal.addressFull" placeholder="Full street address (e.g. 123 Main St, Springfield, IL, USA)" />
+
+      <div class="address-actions">
+        <button type="button" id="findOnMapBtn" class="btn btn-ghost btn-small" data-i18n="modal.findOnMap">Find on Map</button>
+        <span class="address-status" id="addressStatus"></span>
       </div>
-      <input name="address" maxlength="300" data-i18n-placeholder="modal.address" placeholder="Address (optional)" />
-      <input name="schedule" maxlength="200" data-i18n-placeholder="modal.schedule" placeholder="Adoration schedule (e.g. Mon–Fri 7am–7pm)" />
+
+      <!-- Mini-map confirmation, hidden until geocoding succeeds -->
+      <div id="addressMapWrap" class="address-map-wrap hidden">
+        <p class="address-map-hint" data-i18n="modal.dragPinHint">Drag the pin to fine-tune the chapel's location.</p>
+        <div id="addressMap" class="address-map"></div>
+        <input type="hidden" name="lat" id="chapelLat" />
+        <input type="hidden" name="lng" id="chapelLng" />
+      </div>
+
+      <!-- ── Adoration times ── -->
+      <h3 class="form-section-title" data-i18n="modal.timesSection">Adoration Times</h3>
+      <p class="form-section-hint" data-i18n="modal.timesHint">When is the Blessed Sacrament exposed? Add a row per regular time.</p>
+
       <label class="checkbox-row">
-        <input type="checkbox" name="perpetual" value="yes" />
-        <span data-i18n="modal.perpetual">24/7 Perpetual Adoration</span>
+        <input type="checkbox" name="perpetual" id="chapelPerpetual" value="yes" />
+        <span data-i18n="modal.perpetual">24/7 Perpetual Adoration (no need to add times below)</span>
       </label>
+
+      <div id="adorationTimesList" class="adoration-times-list">
+        <!-- time slots inserted by JS; one empty row by default -->
+      </div>
+      <button type="button" id="addTimeSlotBtn" class="btn btn-ghost btn-small btn-add-slot" data-i18n="modal.addAnotherTime">+ Add another time</button>
+
+      <!-- ── Access ── -->
+      <label class="checkbox-row">
+        <input type="checkbox" name="code_required" value="yes" />
+        <span data-i18n="modal.codeRequired">A code is required to access this chapel (visitors must contact the parish)</span>
+      </label>
+
+      <!-- Hidden field for raw form serialization; actual data added by JS -->
+      <input type="hidden" name="adoration_times" id="adorationTimesJson" value="[]" />
+
       <button type="submit" class="btn btn-primary btn-large" data-i18n="modal.submitChapel">Submit Chapel</button>
       <p class="modal-note" data-i18n="modal.note">Submissions are reviewed before appearing on the map.</p>
       <p class="form-error" id="chapelError" hidden></p>

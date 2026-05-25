@@ -10,7 +10,9 @@ export default async function handler(req, res) {
 
   try {
     const { rows } = await sql`
-      SELECT id, name, email, pledge_time, intention, created_at
+      SELECT id, name, email, pledge_time, intention,
+             destination_type, destination_id, destination_name, destination_url,
+             created_at
       FROM pledges
       ORDER BY pledge_time DESC
       LIMIT 500

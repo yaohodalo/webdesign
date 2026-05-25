@@ -12,8 +12,9 @@ CREATE TABLE IF NOT EXISTS chapels (
   address      TEXT,
   lat          DOUBLE PRECISION NOT NULL,
   lng          DOUBLE PRECISION NOT NULL,
-  schedule     TEXT,
+  schedule     TEXT,   -- legacy free-text; kept for older entries
   perpetual    BOOLEAN DEFAULT FALSE,
+  code_required BOOLEAN DEFAULT FALSE,  -- whether visitor must obtain a code from the parish
   status       TEXT NOT NULL DEFAULT 'pending', -- pending | approved | rejected
   submitter_email TEXT,
   created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -22,6 +23,30 @@ CREATE TABLE IF NOT EXISTS chapels (
 
 CREATE INDEX IF NOT EXISTS idx_chapels_status  ON chapels(status);
 CREATE INDEX IF NOT EXISTS idx_chapels_country ON chapels(country);
+
+-- Migration for existing deployments
+ALTER TABLE chapels ADD COLUMN IF NOT EXISTS code_required BOOLEAN DEFAULT FALSE;
+
+-- ============================================
+-- ADORATION TIMES (structured schedule slots)
+-- Each chapel can have many time slots.
+-- ============================================
+CREATE TABLE IF NOT EXISTS adoration_times (
+  id            SERIAL PRIMARY KEY,
+  chapel_id     INTEGER NOT NULL REFERENCES chapels(id) ON DELETE CASCADE,
+  -- frequency: 'weekly' | 'biweekly' | 'monthly' | 'first' | 'last' | 'various'
+  frequency     TEXT NOT NULL DEFAULT 'weekly',
+  -- day_of_week: 0 = Sunday … 6 = Saturday; NULL when frequency = 'various'
+  day_of_week   SMALLINT,
+  -- start_time / end_time: stored as 'HH:MM' strings in the chapel's LOCAL time
+  -- We accept that local-time interpretation uses an approximation of timezone
+  -- from longitude until/unless a per-chapel timezone column is added.
+  start_time    TEXT,
+  end_time      TEXT,
+  various_times BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_adoration_times_chapel ON adoration_times(chapel_id);
 
 -- PLEDGES
 CREATE TABLE IF NOT EXISTS pledges (
