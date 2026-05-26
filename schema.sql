@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS chapels (
   schedule     TEXT,   -- legacy free-text; kept for older entries
   perpetual    BOOLEAN DEFAULT FALSE,
   code_required BOOLEAN DEFAULT FALSE,  -- whether visitor must obtain a code from the parish
+  notes        TEXT,   -- free-text schedule context (e.g. "starts after 8:30 Mass")
   status       TEXT NOT NULL DEFAULT 'pending', -- pending | approved | rejected
   submitter_email TEXT,
   created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -26,6 +27,7 @@ CREATE INDEX IF NOT EXISTS idx_chapels_country ON chapels(country);
 
 -- Migration for existing deployments
 ALTER TABLE chapels ADD COLUMN IF NOT EXISTS code_required BOOLEAN DEFAULT FALSE;
+ALTER TABLE chapels ADD COLUMN IF NOT EXISTS notes TEXT;
 
 -- ============================================
 -- ADORATION TIMES (structured schedule slots)

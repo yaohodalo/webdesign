@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
   try {
     const { rows: chapels } = await sql`
-      SELECT id, name, city, country, address, lat, lng, schedule, perpetual, code_required
+      SELECT id, name, city, country, address, lat, lng, schedule, perpetual, code_required, notes
       FROM chapels
       WHERE status = 'approved'
       ORDER BY country, city

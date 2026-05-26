@@ -2494,9 +2494,19 @@ a.stream-card:hover {
   background: var(--page-bg-soft);
   border-left: 3px solid var(--gold);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr auto;
+  /* 5 fields (Freq | From | To | Start | End) + remove button */
+  grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr auto;
   gap: 0.5rem;
   align-items: end;
+}
+/* When Daily is selected, From/To fields are hidden via JS — the grid stays the same;
+   the empty columns collapse cleanly because display:none on the field removes them from layout */
+.time-slot.is-daily {
+  grid-template-columns: 1.3fr 1fr 1fr auto;
+}
+.time-slot.is-daily .ts-from-field,
+.time-slot.is-daily .ts-to-field {
+  display: none !important;
 }
 .time-slot.is-various {
   grid-template-columns: 1fr auto;
@@ -2577,8 +2587,15 @@ a.stream-card:hover {
     grid-template-columns: 1fr 1fr;
     gap: 0.6rem;
   }
+  .time-slot.is-daily {
+    grid-template-columns: 1fr 1fr;
+  }
   .time-slot.is-various {
     grid-template-columns: 1fr auto;
+  }
+  /* Frequency takes full width on mobile; other fields paired */
+  .time-slot .ts-freq-field {
+    grid-column: 1 / -1;
   }
   .time-slot-remove {
     grid-column: 2;
@@ -2629,4 +2646,23 @@ a.stream-card:hover {
   font-size: 0.82rem;
   font-style: italic;
   color: var(--ink);
+}
+
+.popup-notes {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--page-bg-soft);
+  border-left: 3px solid var(--ink-ghost);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.popup-notes strong {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-right: 0.4rem;
 }

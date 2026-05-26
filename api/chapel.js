@@ -12,10 +12,11 @@ export default async function handler(req, res) {
   const body = req.body || {};
 
   // ─── Validate required text fields ───
-  const name        = str(body.name,    { max: 200 });
-  const city        = str(body.city,    { max: 120 });
-  const country     = str(body.country, { max: 120 });
+  const name           = str(body.name,    { max: 200 });
+  const city           = str(body.city,    { max: 120 });
+  const country        = str(body.country, { max: 120 });
   const submitterEmail = body.submitter_email ? email(body.submitter_email) : null;
+  const notes          = body.notes ? str(body.notes, { max: 1000 }) : null;
 
   if (!name || !city || !country) {
     return res.status(400).json({ error: 'Required fields: name, city, country' });
@@ -27,7 +28,6 @@ export default async function handler(req, res) {
   let lng = num(body.lng, { min: -180, max: 180 });
 
   if (lat === null || lng === null) {
-    // No coords provided; try to geocode the address (or fall back to "name, city, country")
     const query = address || `${name}, ${city}, ${country}`;
     const geocoded = await geocodeAddress(query);
     if (!geocoded) {
@@ -39,32 +39,31 @@ export default async function handler(req, res) {
     lng = geocoded.lng;
   }
 
-  // ─── Flags ───
   const perpetual    = bool(body.perpetual);
   const codeRequired = bool(body.code_required);
 
   // ─── Structured time slots ───
-  // Expected shape: [{ frequency, day_of_week, start_time, end_time, various_times }, ...]
-  let timeSlots = [];
+  // Frontend shape per row: { frequency, day_from, day_to, start_time, end_time, various_times }
+  // Backend expands day_from→day_to into individual day_of_week rows in the DB.
+  const dbRows = [];
   if (Array.isArray(body.adoration_times)) {
-    timeSlots = body.adoration_times
-      .map(slot => sanitizeSlot(slot))
-      .filter(Boolean);
+    for (const raw of body.adoration_times) {
+      const expanded = expandSlot(raw);
+      for (const r of expanded) dbRows.push(r);
+    }
   }
 
   try {
-    // Insert chapel
     const { rows } = await sql`
       INSERT INTO chapels (name, city, country, address, lat, lng,
-                           perpetual, code_required, status, submitter_email)
+                           perpetual, code_required, notes, status, submitter_email)
       VALUES (${name}, ${city}, ${country}, ${address}, ${lat}, ${lng},
-              ${perpetual}, ${codeRequired}, 'pending', ${submitterEmail})
+              ${perpetual}, ${codeRequired}, ${notes}, 'pending', ${submitterEmail})
       RETURNING id
     `;
     const chapelId = rows[0].id;
 
-    // Insert time slots
-    for (const slot of timeSlots) {
+    for (const slot of dbRows) {
       await sql`
         INSERT INTO adoration_times (chapel_id, frequency, day_of_week, start_time, end_time, various_times)
         VALUES (${chapelId}, ${slot.frequency}, ${slot.day_of_week},
@@ -72,10 +71,8 @@ export default async function handler(req, res) {
       `;
     }
 
-    // Notify admin
-    const slotsLines = timeSlots.length
-      ? timeSlots.map(formatSlotForEmail).join('<br/>')
-      : '(none provided)';
+    // Format for email notification — group by time-range so admin sees logical chunks
+    const summaryLines = summariseForEmail(dbRows);
 
     notify({
       subject: `🛐 New chapel submitted: ${name}`,
@@ -93,8 +90,14 @@ export default async function handler(req, res) {
           </table>
           <h3 style="color:#7a5f1f;margin-top:24px;">Adoration Times</h3>
           <div style="font-family:Georgia,serif;line-height:1.7;color:#38312B;">
-            ${slotsLines}
+            ${summaryLines || '(none provided)'}
           </div>
+          ${notes ? `
+            <h3 style="color:#7a5f1f;margin-top:24px;">Notes</h3>
+            <div style="font-family:Georgia,serif;font-style:italic;color:#38312B;">
+              ${escapeHtml(notes)}
+            </div>` : ''
+          }
           <p style="margin-top:20px;">
             <a href="https://wouldyoujoinmeforonehour.org/admin.html"
                style="color:#7a5f1f;font-weight:600;">Review in Admin →</a>
@@ -111,43 +114,109 @@ export default async function handler(req, res) {
 }
 
 // ─── Helpers ───
-function sanitizeSlot(raw) {
-  if (!raw || typeof raw !== 'object') return null;
-  const various = !!raw.various_times;
-  const allowed = ['weekly', 'biweekly', 'monthly', 'first', 'last', 'various'];
-  const frequency = allowed.includes(raw.frequency) ? raw.frequency : 'weekly';
 
-  if (various) {
-    return {
+// Expand a single submission row into 1+ DB rows.
+// Daily frequency → 7 rows (one per day). Weekly with day_from-day_to → that range.
+// Various times → 1 row with flag set, no day.
+export function expandSlot(raw) {
+  if (!raw || typeof raw !== 'object') return [];
+
+  // "Various times — contact parish" escape hatch
+  if (raw.various_times) {
+    return [{
       frequency: 'various',
       day_of_week: null,
       start_time: null,
       end_time: null,
       various_times: true,
-    };
+    }];
   }
 
-  const dow = parseInt(raw.day_of_week, 10);
-  if (!Number.isInteger(dow) || dow < 0 || dow > 6) return null;
+  const allowed = ['daily', 'weekly'];
+  const frequency = allowed.includes(raw.frequency) ? raw.frequency : 'weekly';
 
-  // Times stored as 'HH:MM' strings (e.g. '07:00', '19:30')
   const startOk = /^\d{2}:\d{2}$/.test(raw.start_time || '');
   const endOk   = /^\d{2}:\d{2}$/.test(raw.end_time   || '');
-  if (!startOk || !endOk) return null;
+  if (!startOk || !endOk) return [];
 
-  return {
-    frequency,
-    day_of_week: dow,
+  // Daily: every day 0-6
+  if (frequency === 'daily') {
+    const out = [];
+    for (let d = 0; d <= 6; d++) {
+      out.push({
+        frequency: 'daily',
+        day_of_week: d,
+        start_time: raw.start_time,
+        end_time: raw.end_time,
+        various_times: false,
+      });
+    }
+    return out;
+  }
+
+  // Weekly: expand day_from..day_to (inclusive). Support wraparound (e.g. Fri→Mon).
+  const from = parseInt(raw.day_from, 10);
+  const to   = parseInt(raw.day_to,   10);
+  if (!Number.isInteger(from) || from < 0 || from > 6) return [];
+  if (!Number.isInteger(to)   || to   < 0 || to   > 6) return [];
+
+  const days = [];
+  if (from <= to) {
+    for (let d = from; d <= to; d++) days.push(d);
+  } else {
+    // wraparound (e.g. Fri=5 to Mon=1 → 5,6,0,1)
+    for (let d = from; d <= 6; d++) days.push(d);
+    for (let d = 0; d <= to; d++) days.push(d);
+  }
+
+  return days.map(d => ({
+    frequency: 'weekly',
+    day_of_week: d,
     start_time: raw.start_time,
     end_time: raw.end_time,
     various_times: false,
-  };
+  }));
 }
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-function formatSlotForEmail(slot) {
-  if (slot.various_times) return `• Various times — contact parish`;
-  const day = DAY_NAMES[slot.day_of_week] || '?';
-  const freq = slot.frequency !== 'weekly' ? ` (${slot.frequency})` : '';
-  return `• ${day} ${slot.start_time}–${slot.end_time}${freq}`;
+
+// Group consecutive days with identical times into ranges for clean display.
+function summariseForEmail(rows) {
+  if (!rows.length) return '';
+  const various = rows.find(r => r.various_times);
+  if (various) return '<div>• Various times — contact parish</div>';
+
+  // Group by (start_time, end_time)
+  const groups = new Map();
+  for (const r of rows) {
+    const key = `${r.start_time}|${r.end_time}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(r.day_of_week);
+  }
+
+  const lines = [];
+  for (const [timeKey, days] of groups) {
+    const [start, end] = timeKey.split('|');
+    days.sort((a, b) => a - b);
+    const range = formatDayRange(days);
+    lines.push(`<div>• ${range}: ${start}–${end}</div>`);
+  }
+  return lines.join('');
+}
+
+function formatDayRange(days) {
+  if (days.length === 7) return 'Daily';
+  // Detect consecutive
+  let isConsecutive = true;
+  for (let i = 1; i < days.length; i++) {
+    if (days[i] !== days[i - 1] + 1) { isConsecutive = false; break; }
+  }
+  if (isConsecutive && days.length > 1) {
+    return `${DAY_NAMES[days[0]]}–${DAY_NAMES[days[days.length - 1]]}`;
+  }
+  return days.map(d => DAY_NAMES[d]).join(', ');
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
 }

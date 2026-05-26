@@ -22,6 +22,7 @@ export default async function handler(req, res) {
   const lng       = num(body.lng, { min: -180, max: 180 });
   const address   = body.address  ? str(body.address,  { max: 500 }) : null;
   const schedule  = body.schedule ? str(body.schedule, { max: 200 }) : null;
+  const notes     = body.notes    ? str(body.notes,    { max: 1000 }) : null;
   const perpetual    = bool(body.perpetual);
   const codeRequired = bool(body.code_required);
 
@@ -39,6 +40,7 @@ export default async function handler(req, res) {
           lng            = ${lng},
           address        = ${address},
           schedule       = ${schedule},
+          notes          = ${notes},
           perpetual      = ${perpetual},
           code_required  = ${codeRequired}
       WHERE id = ${numId}
@@ -48,12 +50,15 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Chapel not found' });
     }
 
-    // If client sent a new adoration_times array, replace the slots entirely
+    // Replace adoration_times if a new set was sent
     if (Array.isArray(body.adoration_times)) {
       await sql`DELETE FROM adoration_times WHERE chapel_id = ${numId}`;
+      const dbRows = [];
       for (const raw of body.adoration_times) {
-        const slot = sanitizeSlot(raw);
-        if (!slot) continue;
+        const expanded = expandSlot(raw);
+        for (const r of expanded) dbRows.push(r);
+      }
+      for (const slot of dbRows) {
         await sql`
           INSERT INTO adoration_times (chapel_id, frequency, day_of_week, start_time, end_time, various_times)
           VALUES (${numId}, ${slot.frequency}, ${slot.day_of_week},
@@ -69,18 +74,46 @@ export default async function handler(req, res) {
   }
 }
 
-function sanitizeSlot(raw) {
-  if (!raw || typeof raw !== 'object') return null;
-  const various = !!raw.various_times;
-  const allowed = ['weekly', 'biweekly', 'monthly', 'first', 'last', 'various'];
-  const frequency = allowed.includes(raw.frequency) ? raw.frequency : 'weekly';
-  if (various) {
-    return { frequency: 'various', day_of_week: null, start_time: null, end_time: null, various_times: true };
+function expandSlot(raw) {
+  if (!raw || typeof raw !== 'object') return [];
+
+  if (raw.various_times) {
+    return [{ frequency: 'various', day_of_week: null, start_time: null, end_time: null, various_times: true }];
   }
-  const dow = parseInt(raw.day_of_week, 10);
-  if (!Number.isInteger(dow) || dow < 0 || dow > 6) return null;
+
+  const allowed = ['daily', 'weekly'];
+  const frequency = allowed.includes(raw.frequency) ? raw.frequency : 'weekly';
+
   const startOk = /^\d{2}:\d{2}$/.test(raw.start_time || '');
   const endOk   = /^\d{2}:\d{2}$/.test(raw.end_time   || '');
-  if (!startOk || !endOk) return null;
-  return { frequency, day_of_week: dow, start_time: raw.start_time, end_time: raw.end_time, various_times: false };
+  if (!startOk || !endOk) return [];
+
+  if (frequency === 'daily') {
+    const out = [];
+    for (let d = 0; d <= 6; d++) {
+      out.push({ frequency: 'daily', day_of_week: d, start_time: raw.start_time, end_time: raw.end_time, various_times: false });
+    }
+    return out;
+  }
+
+  const from = parseInt(raw.day_from, 10);
+  const to   = parseInt(raw.day_to,   10);
+  if (!Number.isInteger(from) || from < 0 || from > 6) return [];
+  if (!Number.isInteger(to)   || to   < 0 || to   > 6) return [];
+
+  const days = [];
+  if (from <= to) {
+    for (let d = from; d <= to; d++) days.push(d);
+  } else {
+    for (let d = from; d <= 6; d++) days.push(d);
+    for (let d = 0; d <= to; d++) days.push(d);
+  }
+
+  return days.map(d => ({
+    frequency: 'weekly',
+    day_of_week: d,
+    start_time: raw.start_time,
+    end_time: raw.end_time,
+    various_times: false,
+  }));
 }

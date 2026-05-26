@@ -241,6 +241,14 @@ const translations = {
     'day.thu': "Thu",
     'day.fri': "Fri",
     'day.sat': "Sat",
+    'modal.fromDay': "From day",
+    'modal.toDay': "To day",
+    'modal.notesSection': "Additional Notes",
+    'modal.notesHint': 'Anything else visitors should know? For example: "Adoration starts after the 8:30 AM Mass" or "Closed during Holy Week."',
+    'modal.notesLabel': "Notes",
+    'modal.notesPh': "Optional notes about hours, access, or special arrangements",
+    'msg.daily': "Daily",
+    'msg.note': "Note",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -472,6 +480,14 @@ const translations = {
     'day.thu': "Jue",
     'day.fri': "Vie",
     'day.sat': "Sáb",
+    'modal.fromDay': "Desde el día",
+    'modal.toDay': "Hasta el día",
+    'modal.notesSection': "Notas adicionales",
+    'modal.notesHint': '¿Algo más que los visitantes deberían saber? Por ejemplo: "La Adoración comienza después de la Misa de las 8:30 AM" o "Cerrado durante Semana Santa".',
+    'modal.notesLabel': "Notas",
+    'modal.notesPh': "Notas opcionales sobre horarios, acceso o arreglos especiales",
+    'msg.daily': "Diariamente",
+    'msg.note': "Nota",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -703,6 +719,14 @@ const translations = {
     'day.thu': "Jeu",
     'day.fri': "Ven",
     'day.sat': "Sam",
+    'modal.fromDay': "Du jour",
+    'modal.toDay': "Au jour",
+    'modal.notesSection': "Notes supplémentaires",
+    'modal.notesHint': "Y a-t-il autre chose que les visiteurs devraient savoir ? Par exemple : « L'Adoration commence après la Messe de 8h30 » ou « Fermé pendant la Semaine sainte ».",
+    'modal.notesLabel': "Notes",
+    'modal.notesPh': "Notes facultatives sur les horaires, l'accès ou des arrangements particuliers",
+    'msg.daily': "Quotidien",
+    'msg.note': "Note",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -934,6 +958,14 @@ const translations = {
     'day.thu': "Gio",
     'day.fri': "Ven",
     'day.sat': "Sab",
+    'modal.fromDay': "Dal giorno",
+    'modal.toDay': "Al giorno",
+    'modal.notesSection': "Note aggiuntive",
+    'modal.notesHint': 'Qualcos\'altro che i visitatori dovrebbero sapere? Per esempio: "L\'Adorazione inizia dopo la Messa delle 8:30" o "Chiuso durante la Settimana Santa".',
+    'modal.notesLabel': "Note",
+    'modal.notesPh': "Note opzionali su orari, accesso o disposizioni speciali",
+    'msg.daily': "Quotidiano",
+    'msg.note': "Nota",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -1165,6 +1197,14 @@ const translations = {
     'day.thu': "Qui",
     'day.fri': "Sex",
     'day.sat': "Sáb",
+    'modal.fromDay': "A partir do dia",
+    'modal.toDay': "Até o dia",
+    'modal.notesSection': "Notas adicionais",
+    'modal.notesHint': 'Algo mais que os visitantes devem saber? Por exemplo: "A Adoração começa após a Missa das 8h30" ou "Fechado durante a Semana Santa".',
+    'modal.notesLabel': "Notas",
+    'modal.notesPh': "Notas opcionais sobre horários, acesso ou arranjos especiais",
+    'msg.daily': "Diariamente",
+    'msg.note': "Nota",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
@@ -1381,6 +1421,10 @@ function chapelPopupHtml(c) {
     ? `<div class="popup-code-required">${tr['msg.codeRequired'] || 'Code required — contact the parish for access'}</div>`
     : '';
 
+  const notesLine = c.notes
+    ? `<div class="popup-notes"><strong>${tr['msg.note'] || 'Note'}:</strong> ${escapeHtml(c.notes)}</div>`
+    : '';
+
   return `
     <div class="popup-card">
       <strong>${escapeHtml(c.name)}</strong>
@@ -1389,6 +1433,7 @@ function chapelPopupHtml(c) {
         ${badge}
       </div>
       ${timesHtml}
+      ${notesLine}
       ${codeBadge}
       <a class="popup-directions" href="${directionsUrl}" target="_blank" rel="noopener">
         ${tr['msg.directions']}
@@ -1404,21 +1449,51 @@ function formatTimesForPopup(slots, tr) {
     tr['day.wed'] || 'Wed', tr['day.thu'] || 'Thu', tr['day.fri'] || 'Fri',
     tr['day.sat'] || 'Sat',
   ];
+  const dailyLabel = tr['msg.daily'] || 'Daily';
+
   const variousSlot = slots.find(s => s.various_times);
   if (variousSlot && slots.length === 1) {
     return `<em>${tr['msg.variousTimes'] || 'Various times — contact parish'}</em>`;
   }
 
-  const lines = slots
-    .filter(s => !s.various_times)
-    .sort((a, b) => (a.day_of_week ?? 7) - (b.day_of_week ?? 7))
-    .map(s => {
-      const day = dayNames[s.day_of_week] || '';
-      const start = formatTimeAmPm(s.start_time);
-      const end = formatTimeAmPm(s.end_time);
-      return `${day} ${start}–${end}`;
-    });
+  // Group slots by (start_time, end_time) — same time means same logical schedule block
+  const groups = new Map();
+  for (const s of slots) {
+    if (s.various_times) continue;
+    const key = `${s.start_time}|${s.end_time}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(s.day_of_week);
+  }
+
+  const lines = [];
+  for (const [timeKey, days] of groups) {
+    const [start, end] = timeKey.split('|');
+    days.sort((a, b) => a - b);
+    const dayLabel = formatDaysCompact(days, dayNames, dailyLabel);
+    const startStr = formatTimeAmPm(start);
+    const endStr   = formatTimeAmPm(end);
+    lines.push(`${dayLabel} ${startStr}–${endStr}`);
+  }
   return lines.map(l => `<div>${escapeHtml(l)}</div>`).join('');
+}
+
+// Render an array of day-of-week numbers as a compact label:
+// [0,1,2,3,4,5,6] → "Daily"
+// [1,2,3,4,5]     → "Mon–Fri"
+// [1,3,5]         → "Mon, Wed, Fri"
+function formatDaysCompact(days, dayNames, dailyLabel) {
+  if (!days.length) return '';
+  if (days.length === 7) return dailyLabel;
+
+  // Check if days form a contiguous range
+  let isConsecutive = true;
+  for (let i = 1; i < days.length; i++) {
+    if (days[i] !== days[i - 1] + 1) { isConsecutive = false; break; }
+  }
+  if (isConsecutive && days.length > 1) {
+    return `${dayNames[days[0]]}–${dayNames[days[days.length - 1]]}`;
+  }
+  return days.map(d => dayNames[d]).join(', ');
 }
 
 function formatTimeAmPm(hhmm) {
@@ -1701,27 +1776,45 @@ function initFloatingVideo() {
   });
 
   // Track whether the user has actually scrolled the live section into view at least once.
-  // Without this, the video would float over the hero on initial page load (since the live
-  // section is below the viewport at start, intersection ratio = 0 = "out of view").
   let hasBeenSeen = false;
 
-  // IntersectionObserver: when live section scrolls out of view → float; when it comes back → dock
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (entry.intersectionRatio > 0.5) {
-          // Live section is in view: mark as seen, and if it was floating, dock it back
-          hasBeenSeen = true;
-          deactivate();
-          dismissed = false; // re-arm so it floats again next time
-        } else if (entry.intersectionRatio < 0.1 && hasBeenSeen) {
-          // Only float if the user has already scrolled to and past the live section
-          activate();
-        }
-      }
-    }, { threshold: [0.1, 0.5] });
-    io.observe(liveSec);
+  // Helper: is the live section's TOP currently above the viewport? (user has scrolled past it)
+  function liveSectionScrolledPast() {
+    const rect = liveSec.getBoundingClientRect();
+    return rect.bottom < 100; // bottom of live section is above the visible area
   }
+
+  // Helper: is the live section currently visible at all?
+  function liveSectionVisible() {
+    const rect = liveSec.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    // At least the bottom 30% of section needs to be in viewport to count as "seen"
+    return rect.top < viewportHeight * 0.7 && rect.bottom > viewportHeight * 0.3;
+  }
+
+  // Use simple scroll listener — deterministic, no IO quirks
+  let scrollRAF = null;
+  function onScroll() {
+    if (scrollRAF) return;
+    scrollRAF = requestAnimationFrame(() => {
+      scrollRAF = null;
+      if (liveSectionVisible()) {
+        hasBeenSeen = true;
+        if (isFloating) {
+          deactivate();
+          dismissed = false;
+        }
+      } else if (hasBeenSeen && liveSectionScrolledPast() && !dismissed) {
+        // Only float when user has SCROLLED PAST the live section,
+        // not when it's still below the fold on initial page load
+        if (frame.querySelector('iframe')) activate();
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  // Don't call onScroll() on init — that's the bug. Only respond to actual user scroll.
 
   // Drag support — mouse + touch
   function startDrag(clientX, clientY, e) {
@@ -2329,11 +2422,8 @@ function initContactForm() {
 
 const DAY_LABELS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const FREQ_LABELS_EN = {
+  daily:  'Daily',
   weekly: 'Weekly',
-  biweekly: 'Biweekly',
-  monthly: 'Monthly',
-  first: 'First of month',
-  last: 'Last of month',
 };
 
 // Generate every 30-minute time of day as {value: 'HH:MM', label: '7:00 AM'}
@@ -2352,45 +2442,77 @@ function buildTimeOptions() {
 }
 const TIME_OPTIONS = buildTimeOptions();
 
-// Render a single time-slot row as a DOM element
+// Render a single time-slot row as a DOM element.
+// New shape: Frequency (Daily | Weekly), From Day, To Day, Start, End.
+// "Daily" hides the day pickers since it implies every day.
 function buildTimeSlotRow(slot = {}) {
   const wrap = document.createElement('div');
   wrap.className = 'time-slot';
-  wrap.dataset.frequency = slot.frequency || 'weekly';
-  if (slot.various_times) wrap.classList.add('is-various');
+  const freq = slot.frequency === 'daily' ? 'daily' : 'weekly';
+  wrap.dataset.frequency = freq;
 
-  const tr = (typeof t === 'function' ? t() : {}) || {};
+  const freqOpts = ['weekly', 'daily']
+    .map(v => `<option value="${v}" ${freq === v ? 'selected' : ''}>${FREQ_LABELS_EN[v]}</option>`).join('');
 
-  const freqOpts = ['weekly','biweekly','monthly','first','last']
-    .map(v => `<option value="${v}" ${slot.frequency === v ? 'selected' : ''}>${FREQ_LABELS_EN[v]}</option>`).join('');
-
-  const dayOpts = DAY_LABELS_EN
-    .map((name, i) => `<option value="${i}" ${slot.day_of_week === i ? 'selected' : ''}>${name}</option>`).join('');
+  const dayOpts = (selected) => DAY_LABELS_EN
+    .map((name, i) => `<option value="${i}" ${selected === i ? 'selected' : ''}>${name}</option>`).join('');
 
   const timeOpts = (selected) =>
     TIME_OPTIONS.map(o => `<option value="${o.value}" ${o.value === selected ? 'selected' : ''}>${o.label}</option>`).join('');
 
+  // Sensible defaults: if no day_from set, default to Monday (1)
+  const dayFrom = Number.isInteger(slot.day_from) ? slot.day_from : 1;
+  const dayTo   = Number.isInteger(slot.day_to)   ? slot.day_to   : 5;
+
   wrap.innerHTML = `
-    <div class="time-slot-field">
+    <div class="time-slot-field ts-freq-field">
       <span class="time-slot-label" data-i18n="modal.freq">Frequency</span>
-      <select class="ts-frequency">
-        ${freqOpts}
-      </select>
+      <select class="ts-frequency">${freqOpts}</select>
     </div>
-    <div class="time-slot-field">
-      <span class="time-slot-label" data-i18n="modal.day">Day</span>
-      <select class="ts-day">${dayOpts}</select>
+    <div class="time-slot-field ts-from-field">
+      <span class="time-slot-label" data-i18n="modal.fromDay">From day</span>
+      <select class="ts-day-from">${dayOpts(dayFrom)}</select>
     </div>
-    <div class="time-slot-field">
+    <div class="time-slot-field ts-to-field">
+      <span class="time-slot-label" data-i18n="modal.toDay">To day</span>
+      <select class="ts-day-to">${dayOpts(dayTo)}</select>
+    </div>
+    <div class="time-slot-field ts-start-field">
       <span class="time-slot-label" data-i18n="modal.startTime">Start</span>
       <select class="ts-start">${timeOpts(slot.start_time || '07:00')}</select>
     </div>
-    <div class="time-slot-field">
+    <div class="time-slot-field ts-end-field">
       <span class="time-slot-label" data-i18n="modal.endTime">End</span>
       <select class="ts-end">${timeOpts(slot.end_time || '19:00')}</select>
     </div>
     <button type="button" class="time-slot-remove" aria-label="Remove this time">×</button>
   `;
+
+  // Show/hide day pickers based on frequency
+  const freqSelect = wrap.querySelector('.ts-frequency');
+  const fromField  = wrap.querySelector('.ts-from-field');
+  const toField    = wrap.querySelector('.ts-to-field');
+  function updateVisibility() {
+    const isDaily = freqSelect.value === 'daily';
+    fromField.style.display = isDaily ? 'none' : '';
+    toField.style.display   = isDaily ? 'none' : '';
+    wrap.dataset.frequency  = freqSelect.value;
+    wrap.classList.toggle('is-daily', isDaily);
+  }
+  freqSelect.addEventListener('change', updateVisibility);
+  updateVisibility();
+
+  // Auto-update "To day" when "From day" changes (UX nicety:
+  // if user picks From=Sunday and To is still default Friday, that's fine;
+  // but if To < From numerically, jump To to match From so users don't accidentally
+  // submit an empty range. Otherwise leave alone — they may want a custom span.)
+  const fromSelect = wrap.querySelector('.ts-day-from');
+  const toSelect   = wrap.querySelector('.ts-day-to');
+  fromSelect.addEventListener('change', () => {
+    // Don't force anything — wraparound (Fri→Mon) is legitimate.
+    // But if To equals current From (single-day before change), keep them in sync.
+    // No automatic change otherwise — preserve user intent.
+  });
 
   wrap.querySelector('.time-slot-remove').addEventListener('click', () => {
     wrap.remove();
@@ -2402,13 +2524,18 @@ function buildTimeSlotRow(slot = {}) {
 // Collect all the structured time slots from the DOM
 function collectTimeSlots() {
   return Array.from(document.querySelectorAll('#adorationTimesList .time-slot')).map(el => {
-    return {
-      frequency: el.querySelector('.ts-frequency').value,
-      day_of_week: parseInt(el.querySelector('.ts-day').value, 10),
+    const frequency = el.querySelector('.ts-frequency').value;
+    const slot = {
+      frequency,
       start_time: el.querySelector('.ts-start').value,
       end_time:   el.querySelector('.ts-end').value,
       various_times: false,
     };
+    if (frequency === 'weekly') {
+      slot.day_from = parseInt(el.querySelector('.ts-day-from').value, 10);
+      slot.day_to   = parseInt(el.querySelector('.ts-day-to').value, 10);
+    }
+    return slot;
   });
 }
 

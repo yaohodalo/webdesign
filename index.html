@@ -489,6 +489,14 @@
         <span data-i18n="modal.codeRequired">A code is required to access this chapel (visitors must contact the parish)</span>
       </label>
 
+      <!-- ── Notes ── -->
+      <h3 class="form-section-title" data-i18n="modal.notesSection">Additional Notes</h3>
+      <p class="form-section-hint" data-i18n="modal.notesHint">Anything else visitors should know? For example: "Adoration starts after the 8:30 AM Mass" or "Closed during Holy Week."</p>
+      <label class="visually-hidden" for="chapelNotes" data-i18n="modal.notesLabel">Notes</label>
+      <textarea id="chapelNotes" name="notes" rows="3" maxlength="1000"
+                data-i18n-placeholder="modal.notesPh"
+                placeholder="Optional notes about hours, access, or special arrangements"></textarea>
+
       <!-- Hidden field for raw form serialization; actual data added by JS -->
       <input type="hidden" name="adoration_times" id="adorationTimesJson" value="[]" />
 
