@@ -36,7 +36,8 @@ ALTER TABLE chapels ADD COLUMN IF NOT EXISTS notes TEXT;
 CREATE TABLE IF NOT EXISTS adoration_times (
   id            SERIAL PRIMARY KEY,
   chapel_id     INTEGER NOT NULL REFERENCES chapels(id) ON DELETE CASCADE,
-  -- frequency: 'weekly' | 'biweekly' | 'monthly' | 'first' | 'last' | 'various'
+  -- frequency: 'daily' | 'weekly' | 'various'
+  -- (older entries may use 'biweekly', 'monthly', 'first', 'last' — still valid in DB)
   frequency     TEXT NOT NULL DEFAULT 'weekly',
   -- day_of_week: 0 = Sunday … 6 = Saturday; NULL when frequency = 'various'
   day_of_week   SMALLINT,
@@ -83,16 +84,11 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   handled     BOOLEAN DEFAULT FALSE
 );
 
--- SEED: 10 originally-featured chapels (now physical, pre-approved)
-INSERT INTO chapels (name, city, country, lat, lng, perpetual, status, approved_at) VALUES
-  ('Sisters of Divine Mercy',                 'Calgary',       'Canada',    51.088191, -114.196839, true,  'approved', NOW()),
-  ('Shalom World Chapel',                     'Edinburg, TX',  'USA',       27.211164,  -98.126185, true,  'approved', NOW()),
-  ('EWTN Chapel',                             'Irondale, AL',  'USA',       33.533602,  -86.675057, true,  'approved', NOW()),
-  ('St Benedict''s Burwood',                  'Victoria',      'Australia', -37.848311, 145.096218, false, 'approved', NOW()),
-  ('Monastery of the Immaculate Conception',  'Paprotnia',     'Poland',    52.202124,  20.419678,  true,  'approved', NOW()),
-  ('Tyburn Convent',                          'London',        'UK',        51.512721,  -0.166909,  true,  'approved', NOW()),
-  ('Maria Vision',                            'Rome',          'Italy',     44.349347,  13.014269,  false, 'approved', NOW()),
-  ('Cathedral of the Good Shepherd',          'Singapore',     'Singapore',  1.296718, 103.850904,  false, 'approved', NOW()),
-  ('Ermita de Nuestra Señora de Bienvenida',  'Toledo',        'Spain',     39.819158,  -5.163416,  false, 'approved', NOW()),
-  ('St Mary Mother of God Church',            'Middletown, NJ','USA',       40.413438, -74.103321,  false, 'approved', NOW())
-ON CONFLICT DO NOTHING;
+-- ============================================
+-- No seed data is loaded by this schema.
+-- Chapels are submitted through the public form (/api/chapel) and approved
+-- through the admin moderation page (/admin.html).
+-- An earlier version of this file included 10 seed chapels including some
+-- online broadcasters (EWTN, Shalom World, Maria Vision) that don't belong
+-- on the physical map. These have been removed.
+-- ============================================
