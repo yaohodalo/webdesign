@@ -2627,7 +2627,20 @@ function initAddChapelForm() {
     const city = document.querySelector('#chapelForm [name="city"]').value.trim();
     const country = document.querySelector('#chapelForm [name="country"]').value.trim();
     const status = $('addressStatus');
-    const full = [addr, city, country].filter(Boolean).join(', ');
+
+    // Smart query building:
+    // - If the address looks substantial (has a comma or 15+ chars), use it alone.
+    //   A real address like "771 Ashbury Street, San Francisco, CA 94117" already contains
+    //   city/state/country; adding the form's separate city/country fields just confuses
+    //   the geocoder, especially if they conflict or have typos.
+    // - Otherwise (short or vague address like "Sacred Heart Parish"), append city/country
+    //   as a hint to help the geocoder narrow down.
+    let full;
+    if (addr.includes(',') || addr.length >= 15) {
+      full = addr;
+    } else {
+      full = [addr, city, country].filter(Boolean).join(', ');
+    }
 
     if (full.length < 5) {
       status.className = 'address-status error';
@@ -2641,6 +2654,22 @@ function initAddChapelForm() {
     try {
       const res = await fetch(`/api/geocode?q=${encodeURIComponent(full)}`);
       if (res.status === 404) {
+        // Retry once with the broader query (address + city + country) before giving up.
+        // This handles the case where the user typed an address that doesn't quite
+        // match OSM's database but the combined form is enough to find a result.
+        if (addr.includes(',') || addr.length >= 15) {
+          const fallback = [addr, city, country].filter(Boolean).join(', ');
+          if (fallback !== full) {
+            const retry = await fetch(`/api/geocode?q=${encodeURIComponent(fallback)}`);
+            if (retry.ok) {
+              const data = await retry.json();
+              status.className = 'address-status success';
+              status.textContent = t()['modal.addressFound'] || 'Found — drag the pin to refine.';
+              showAddressMap(data.lat, data.lng);
+              return;
+            }
+          }
+        }
         status.className = 'address-status error';
         status.textContent = t()['modal.addressNotFound'] || 'Address not found. Please be more specific.';
         return;
