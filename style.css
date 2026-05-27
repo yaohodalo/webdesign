@@ -2542,7 +2542,24 @@ a.stream-card:hover {
   background-position: right 8px center;
   padding-right: 24px;
 }
-.time-slot select:focus {
+.time-slot input[type="time"] {
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  background: var(--card-bg);
+  border: var(--line-fine);
+  border-radius: 0;
+  color: var(--ink);
+  margin: 0;
+  /* Let native time picker show; just style the container */
+}
+.time-slot input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(50%) sepia(60%) saturate(400%) hue-rotate(15deg) brightness(70%);
+  cursor: pointer;
+}
+.time-slot select:focus,
+.time-slot input[type="time"]:focus {
   outline: none;
   border-color: var(--gold);
   box-shadow: 0 0 0 2px var(--gold-faint);

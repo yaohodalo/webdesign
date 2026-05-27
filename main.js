@@ -2479,11 +2479,11 @@ function buildTimeSlotRow(slot = {}) {
     </div>
     <div class="time-slot-field ts-start-field">
       <span class="time-slot-label" data-i18n="modal.startTime">Start</span>
-      <select class="ts-start">${timeOpts(slot.start_time || '07:00')}</select>
+      <input type="time" class="ts-start" value="${slot.start_time || '07:00'}" step="300" required />
     </div>
     <div class="time-slot-field ts-end-field">
       <span class="time-slot-label" data-i18n="modal.endTime">End</span>
-      <select class="ts-end">${timeOpts(slot.end_time || '19:00')}</select>
+      <input type="time" class="ts-end" value="${slot.end_time || '19:00'}" step="300" required />
     </div>
     <button type="button" class="time-slot-remove" aria-label="Remove this time">×</button>
   `;
