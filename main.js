@@ -249,6 +249,23 @@ const translations = {
     'modal.notesPh': "Optional notes about hours, access, or special arrangements",
     'msg.daily': "Daily",
     'msg.note': "Note",
+    'btn.music': "Music",
+    'streams.watchLive': "Watch Live",
+    'map.resetView': "Worldwide view",
+    'streams.reportBroken': "Report broken",
+    'streams.visitSite': "Visit Site",
+    'streams.kolbeSource': "Marytown · Libertyville, Illinois · 24/7",
+    'streams.kolbeDesc': "Run by the Conventual Franciscan Friars, dedicated to St. Maximilian Kolbe (martyred at Auschwitz). 24/7 Perpetual Eucharistic Adoration in the Our Lady of the Blessed Sacrament Chapel.",
+    'streams.slupskSource': "Poor Clares · Słupsk, Poland",
+    'streams.slupskDesc': "Live Eucharistic Adoration from the cloistered Poor Clare Sisters of Słupsk, Poland.",
+    'streams.krakowSource': "Divine Mercy Shrine · Kraków-Łagiewniki, Poland",
+    'streams.krakowDesc': "Adoration from the Shrine of Divine Mercy in Kraków-Łagiewniki — where St. Faustina Kowalska received her visions of Jesus and is now buried.",
+    'streams.lourdesSource': "Miami, Florida, USA",
+    'streams.lourdesDesc': "A parish in Miami offering livestreamed Perpetual Eucharistic Adoration to viewers around the world.",
+    'streams.divineMercyCalgarySource': "Calgary, Alberta, Canada",
+    'streams.divineMercyCalgaryDesc': "A community of religious sisters in Calgary offering Eucharistic Adoration and devotion to the Divine Mercy.",
+    'streams.stBenedictSource': "Benedictine Parish · Melbourne, Australia",
+    'streams.stBenedictDesc': "Perpetual Adoration livestreamed from St Benedict's Parish in Burwood, Victoria.",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -488,6 +505,23 @@ const translations = {
     'modal.notesPh': "Notas opcionales sobre horarios, acceso o arreglos especiales",
     'msg.daily': "Diariamente",
     'msg.note': "Nota",
+    'btn.music': "Música",
+    'streams.watchLive': "Ver en vivo",
+    'map.resetView': "Vista mundial",
+    'streams.reportBroken': "Reportar enlace roto",
+    'streams.visitSite': "Visitar sitio",
+    'streams.kolbeSource': "Marytown · Libertyville, Illinois · 24/7",
+    'streams.kolbeDesc': "Dirigido por los Frailes Franciscanos Conventuales, dedicado a San Maximiliano Kolbe (martirizado en Auschwitz). Adoración Eucarística Perpetua 24/7 en la Capilla de Nuestra Señora del Santísimo Sacramento.",
+    'streams.slupskSource': "Hermanas Clarisas · Słupsk, Polonia",
+    'streams.slupskDesc': "Adoración Eucarística en vivo desde las Clarisas de clausura de Słupsk, Polonia.",
+    'streams.krakowSource': "Santuario de la Divina Misericordia · Kraków-Łagiewniki, Polonia",
+    'streams.krakowDesc': "Adoración desde el Santuario de la Divina Misericordia en Kraków-Łagiewniki — donde Sta. Faustina Kowalska recibió sus visiones de Jesús y está sepultada.",
+    'streams.lourdesSource': "Miami, Florida, EE.UU.",
+    'streams.lourdesDesc': "Una parroquia en Miami que ofrece Adoración Eucarística Perpetua transmitida en vivo a espectadores de todo el mundo.",
+    'streams.divineMercyCalgarySource': "Calgary, Alberta, Canadá",
+    'streams.divineMercyCalgaryDesc': "Una comunidad de religiosas en Calgary que ofrece Adoración Eucarística y devoción a la Divina Misericordia.",
+    'streams.stBenedictSource': "Parroquia Benedictina · Melbourne, Australia",
+    'streams.stBenedictDesc': "Adoración Perpetua transmitida desde la Parroquia de San Benito en Burwood, Victoria.",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -727,6 +761,23 @@ const translations = {
     'modal.notesPh': "Notes facultatives sur les horaires, l'accès ou des arrangements particuliers",
     'msg.daily': "Quotidien",
     'msg.note': "Note",
+    'btn.music': "Musique",
+    'streams.watchLive': "Regarder en direct",
+    'map.resetView': "Vue mondiale",
+    'streams.reportBroken': "Signaler lien rompu",
+    'streams.visitSite': "Visiter le site",
+    'streams.kolbeSource': "Marytown · Libertyville, Illinois · 24/7",
+    'streams.kolbeDesc': "Dirigé par les Frères Franciscains Conventuels, dédié à St. Maximilien Kolbe (martyrisé à Auschwitz). Adoration Eucharistique Perpétuelle 24/7 dans la Chapelle de Notre-Dame du Saint Sacrement.",
+    'streams.slupskSource': "Sœurs Clarisses · Słupsk, Pologne",
+    'streams.slupskDesc': "Adoration Eucharistique en direct depuis les Sœurs Clarisses cloîtrées de Słupsk, Pologne.",
+    'streams.krakowSource': "Sanctuaire de la Divine Miséricorde · Kraków-Łagiewniki, Pologne",
+    'streams.krakowDesc': "Adoration depuis le Sanctuaire de la Divine Miséricorde à Kraków-Łagiewniki — où Ste. Faustine Kowalska a reçu ses visions de Jésus et est enterrée.",
+    'streams.lourdesSource': "Miami, Floride, USA",
+    'streams.lourdesDesc': "Une paroisse à Miami offrant l'Adoration Eucharistique Perpétuelle en direct aux spectateurs du monde entier.",
+    'streams.divineMercyCalgarySource': "Calgary, Alberta, Canada",
+    'streams.divineMercyCalgaryDesc': "Une communauté de religieuses à Calgary offrant l'Adoration Eucharistique et la dévotion à la Divine Miséricorde.",
+    'streams.stBenedictSource': "Paroisse Bénédictine · Melbourne, Australie",
+    'streams.stBenedictDesc': "Adoration Perpétuelle diffusée depuis la Paroisse Saint-Benoît à Burwood, Victoria.",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -966,6 +1017,23 @@ const translations = {
     'modal.notesPh': "Note opzionali su orari, accesso o disposizioni speciali",
     'msg.daily': "Quotidiano",
     'msg.note': "Nota",
+    'btn.music': "Musica",
+    'streams.watchLive': "Guarda dal vivo",
+    'map.resetView': "Vista mondiale",
+    'streams.reportBroken': "Segnala link rotto",
+    'streams.visitSite': "Visita il sito",
+    'streams.kolbeSource': "Marytown · Libertyville, Illinois · 24/7",
+    'streams.kolbeDesc': "Gestito dai Frati Francescani Conventuali, dedicato a San Massimiliano Kolbe (martirizzato ad Auschwitz). Adorazione Eucaristica Perpetua 24/7 nella Cappella della Nostra Signora del Santissimo Sacramento.",
+    'streams.slupskSource': "Sorelle Clarisse · Słupsk, Polonia",
+    'streams.slupskDesc': "Adorazione Eucaristica in diretta dalle Clarisse di clausura di Słupsk, Polonia.",
+    'streams.krakowSource': "Santuario della Divina Misericordia · Kraków-Łagiewniki, Polonia",
+    'streams.krakowDesc': "Adorazione dal Santuario della Divina Misericordia a Kraków-Łagiewniki — dove S. Faustina Kowalska ricevette le sue visioni di Gesù e ora è sepolta.",
+    'streams.lourdesSource': "Miami, Florida, USA",
+    'streams.lourdesDesc': "Una parrocchia a Miami che offre Adorazione Eucaristica Perpetua trasmessa in diretta a spettatori in tutto il mondo.",
+    'streams.divineMercyCalgarySource': "Calgary, Alberta, Canada",
+    'streams.divineMercyCalgaryDesc': "Una comunità di religiose a Calgary che offre Adorazione Eucaristica e devozione alla Divina Misericordia.",
+    'streams.stBenedictSource': "Parrocchia Benedettina · Melbourne, Australia",
+    'streams.stBenedictDesc': "Adorazione Perpetua trasmessa dalla Parrocchia di San Benedetto a Burwood, Victoria.",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -1205,6 +1273,23 @@ const translations = {
     'modal.notesPh': "Notas opcionais sobre horários, acesso ou arranjos especiais",
     'msg.daily': "Diariamente",
     'msg.note': "Nota",
+    'btn.music': "Música",
+    'streams.watchLive': "Assistir ao vivo",
+    'map.resetView': "Vista mundial",
+    'streams.reportBroken': "Reportar link quebrado",
+    'streams.visitSite': "Visitar site",
+    'streams.kolbeSource': "Marytown · Libertyville, Illinois · 24/7",
+    'streams.kolbeDesc': "Administrado pelos Frades Franciscanos Conventuais, dedicado a São Maximiliano Kolbe (martirizado em Auschwitz). Adoração Eucarística Perpétua 24/7 na Capela de Nossa Senhora do Santíssimo Sacramento.",
+    'streams.slupskSource': "Irmãs Clarissas · Słupsk, Polónia",
+    'streams.slupskDesc': "Adoração Eucarística ao vivo das Clarissas de clausura de Słupsk, Polónia.",
+    'streams.krakowSource': "Santuário da Divina Misericórdia · Kraków-Łagiewniki, Polónia",
+    'streams.krakowDesc': "Adoração do Santuário da Divina Misericórdia em Kraków-Łagiewniki — onde Sta. Faustina Kowalska recebeu as suas visões de Jesus e está sepultada.",
+    'streams.lourdesSource': "Miami, Flórida, EUA",
+    'streams.lourdesDesc': "Uma paróquia em Miami que oferece Adoração Eucarística Perpétua transmitida ao vivo para espectadores em todo o mundo.",
+    'streams.divineMercyCalgarySource': "Calgary, Alberta, Canadá",
+    'streams.divineMercyCalgaryDesc': "Uma comunidade de religiosas em Calgary que oferece Adoração Eucarística e devoção à Divina Misericórdia.",
+    'streams.stBenedictSource': "Paróquia Beneditina · Melbourne, Austrália",
+    'streams.stBenedictDesc': "Adoração Perpétua transmitida da Paróquia de São Bento em Burwood, Victoria.",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
@@ -1289,13 +1374,10 @@ function detectInitialLanguage() {
 function updateMusicButton() {
   if (!state.music || !state.musicBtn) return;
   const isPaused = state.music.paused;
-  const iconEl = $('musicIcon');
-  if (iconEl) {
-    const useEl = iconEl.querySelector('use');
-    if (useEl) useEl.setAttribute('href', isPaused ? '#orn-music' : '#orn-pause');
-  }
+  // Toggle the playing state class — CSS shows/hides the play vs pause icon
+  state.musicBtn.classList.toggle('is-playing', !isPaused);
   const ariaKey = isPaused ? 'btn.musicPlay' : 'btn.musicPause';
-  state.musicBtn.setAttribute('aria-label', t()[ariaKey] || '');
+  state.musicBtn.setAttribute('aria-label', t()[ariaKey] || (isPaused ? 'Play music' : 'Pause music'));
   state.musicBtn.dataset.i18nAria = ariaKey;
 }
 
@@ -1556,6 +1638,19 @@ async function initMap() {
   buildLegend().addTo(state.map);
 
   for (const c of state.chapels) addChapelMarker(c);
+
+  // Reset to worldwide view — click button or double-click empty map
+  const DEFAULT_VIEW = { center: [20, 0], zoom: 2 };
+  function resetMapView() {
+    state.map.closePopup();
+    state.map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 0.8 });
+  }
+  $('resetMapView')?.addEventListener('click', resetMapView);
+  // Double-click on the map (when not clicking a marker) also resets view.
+  // Leaflet's default dblclick behavior is zoom-in, which is the opposite of what we want
+  // for users buried deep in a city. Disable that and bind reset instead.
+  state.map.doubleClickZoom.disable();
+  state.map.on('dblclick', resetMapView);
 
   initSearch();
 }
@@ -1914,7 +2009,30 @@ function showUserLocation(lat, lng) {
   userLocationMarker = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(state.map);
 }
 
+// Countries that use Imperial (miles, feet) rather than metric.
+// US is the big one; UK uses miles for road distance; Liberia and Myanmar are the other holdouts.
+const IMPERIAL_COUNTRIES = new Set(['US', 'USA', 'UK', 'GB', 'LR', 'MM']);
+
+function userUsesImperial() {
+  // 1. If we have the user's country from geolocation, trust that
+  const c = (state.userCountryCode || '').toUpperCase();
+  if (c) return IMPERIAL_COUNTRIES.has(c);
+  // 2. Fall back to browser locale (e.g. 'en-US', 'en-GB', 'es-MX')
+  const locale = (navigator.language || 'en-US').toUpperCase();
+  for (const code of IMPERIAL_COUNTRIES) {
+    if (locale.endsWith('-' + code) || locale === code) return true;
+  }
+  return false;
+}
+
 function formatDistance(meters) {
+  if (userUsesImperial()) {
+    const feet = meters * 3.28084;
+    if (feet < 1000) return `${Math.round(feet)} ft`;
+    const miles = meters / 1609.344;
+    if (miles < 100) return `${miles.toFixed(1)} mi`;
+    return `${Math.round(miles).toLocaleString()} mi`;
+  }
   if (meters < 1000) return `${Math.round(meters)} m`;
   if (meters < 100000) return `${(meters / 1000).toFixed(1)} km`;
   return `${Math.round(meters / 1000).toLocaleString()} km`;
@@ -1962,10 +2080,24 @@ function initNearby() {
     panel.scrollIntoView({ behavior: 'smooth' });
 
     navigator.geolocation.getCurrentPosition(
-      pos => {
+      async pos => {
         const tr = t();
         const { latitude: lat, longitude: lng } = pos.coords;
         showUserLocation(lat, lng);
+
+        // Detect the user's country (ISO code) so we know whether to display miles or km.
+        // This is best-effort — if it fails, fall back to browser locale.
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=3`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.address?.country_code) {
+              state.userCountryCode = data.address.country_code.toUpperCase();
+            }
+          }
+        } catch (e) {
+          // Silent fallback — locale-based detection still works
+        }
 
         if (!state.allMarkers.length) {
           list.innerHTML = `<div class="nearby-empty">${escapeHtml(tr['nearby.empty'])}</div>`;

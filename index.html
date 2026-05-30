@@ -115,6 +115,18 @@
   </div>
 </header>
 
+<!-- Floating music toggle — bottom-left so it doesn't collide with the live video mini-player on the right -->
+<button id="musicToggle" class="music-floating-btn" aria-label="Play sacred music" type="button">
+  <svg class="music-icon music-icon-play" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path fill="currentColor" d="M8 5 L8 19 L19 12 Z"/>
+  </svg>
+  <svg class="music-icon music-icon-pause" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="6" y="5" width="4" height="14" fill="currentColor"/>
+    <rect x="14" y="5" width="4" height="14" fill="currentColor"/>
+  </svg>
+  <span class="music-label" data-i18n="btn.music">Music</span>
+</button>
+
 <!-- ═══ HERO with photograph ═══ -->
 <section class="hero">
   <div class="hero-image-wrap">
@@ -140,6 +152,13 @@
       <label for="openNowToggle" data-i18n="map.openNowLabel">Open right now</label>
       <span class="filter-count" id="openNowCount"></span>
     </label>
+    <button type="button" id="resetMapView" class="map-reset-btn" title="Reset to worldwide view">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 12a9 9 0 1 0 9-9"/>
+        <path d="M3 4v5h5"/>
+      </svg>
+      <span data-i18n="map.resetView">Worldwide view</span>
+    </button>
     <div id="map" role="region" aria-label="World map of Eucharistic Adoration chapels"></div>
   </div>
   <p class="map-caption">
@@ -414,10 +433,7 @@
   </div>
   <div class="footer-colophon">
     <p>
-      <span data-i18n="footer.bottom">© 2026 WouldYouJoinMeForOneHour.org · Built for the Glory of God</span>
-      &nbsp;·&nbsp;
-      <a href="/admin.html">Admin</a>
-    </p>
+      <span data-i18n="footer.bottom">© 2026 WouldYouJoinMeForOneHour.org · Built for the Glory of God</span></p>
   </div>
 </footer>
 
