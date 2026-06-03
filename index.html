@@ -274,18 +274,45 @@
           <p class="companion-selected" id="companionChapelSelected" hidden></p>
         </div>
 
-        <!-- Hidden — stream picker -->
+        <!-- Hidden — stream picker: 5 most recognizable streams + link to full list -->
         <div class="companion-pane companion-pane-stream hidden">
           <div class="companion-stream-grid">
-            <button type="button" class="companion-stream-btn" data-stream-name="EWTN · 24/7 Live Adoration" data-stream-url="https://www.youtube.com/watch?v=SDRgXmiWkM0">
+            <button type="button" class="companion-stream-btn"
+              data-stream-name="EWTN · Live Adoration"
+              data-stream-url="https://www.youtube.com/@EWTN/live">
               <span class="companion-stream-name">EWTN</span>
-              <span class="companion-stream-source">24/7 Live Adoration</span>
+              <span class="companion-stream-source">Live Adoration · USA</span>
             </button>
-            <button type="button" class="companion-stream-btn" data-stream-name="Shalom World Prayer" data-stream-url="https://www.youtube.com/channel/UCIFjeNtkyUCoxoPOxXkarTA">
+
+            <button type="button" class="companion-stream-btn"
+              data-stream-name="Shalom World Prayer"
+              data-stream-url="https://www.youtube.com/@ShalomMedia/live">
               <span class="companion-stream-name">Shalom World Prayer</span>
               <span class="companion-stream-source">Global · 24/7</span>
             </button>
+
+            <button type="button" class="companion-stream-btn"
+              data-stream-name="Tyburn Convent"
+              data-stream-url="https://adoration.tyburnconvent.org.uk/">
+              <span class="companion-stream-name">Tyburn Convent</span>
+              <span class="companion-stream-source">London, UK · 24/7</span>
+            </button>
+
+            <button type="button" class="companion-stream-btn"
+              data-stream-name="National Shrine of St. Maximilian Kolbe"
+              data-stream-url="https://kolbeshrine.org/chapel-live-stream">
+              <span class="companion-stream-name">St. Maximilian Kolbe</span>
+              <span class="companion-stream-source">Libertyville, IL · 24/7</span>
+            </button>
+
+            <button type="button" class="companion-stream-btn"
+              data-stream-name="Shrine of Divine Mercy, Kraków"
+              data-stream-url="https://www.youtube.com/watch?v=e9p21FoxPro">
+              <span class="companion-stream-name">Divine Mercy, Kraków</span>
+              <span class="companion-stream-source">Poland · St. Faustina's Shrine</span>
+            </button>
           </div>
+          <a href="/streams" class="companion-stream-more" data-i18n="companion.moreStreams">More streams on the Live Streams page →</a>
         </div>
 
         <!-- Hidden form values posted to API -->

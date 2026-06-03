@@ -266,6 +266,7 @@ const translations = {
     'streams.divineMercyCalgaryDesc': "A community of religious sisters in Calgary offering Eucharistic Adoration and devotion to the Divine Mercy.",
     'streams.stBenedictSource': "Benedictine Parish · Melbourne, Australia",
     'streams.stBenedictDesc': "Perpetual Adoration livestreamed from St Benedict's Parish in Burwood, Victoria.",
+    'companion.moreStreams': "More streams on the Live Streams page →",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -522,6 +523,7 @@ const translations = {
     'streams.divineMercyCalgaryDesc': "Una comunidad de religiosas en Calgary que ofrece Adoración Eucarística y devoción a la Divina Misericordia.",
     'streams.stBenedictSource': "Parroquia Benedictina · Melbourne, Australia",
     'streams.stBenedictDesc': "Adoración Perpetua transmitida desde la Parroquia de San Benito en Burwood, Victoria.",
+    'companion.moreStreams': "Más transmisiones en la página de Transmisiones en vivo →",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -778,6 +780,7 @@ const translations = {
     'streams.divineMercyCalgaryDesc': "Une communauté de religieuses à Calgary offrant l'Adoration Eucharistique et la dévotion à la Divine Miséricorde.",
     'streams.stBenedictSource': "Paroisse Bénédictine · Melbourne, Australie",
     'streams.stBenedictDesc': "Adoration Perpétuelle diffusée depuis la Paroisse Saint-Benoît à Burwood, Victoria.",
+    'companion.moreStreams': "Plus de diffusions sur la page Diffusions en direct →",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -1034,6 +1037,7 @@ const translations = {
     'streams.divineMercyCalgaryDesc': "Una comunità di religiose a Calgary che offre Adorazione Eucaristica e devozione alla Divina Misericordia.",
     'streams.stBenedictSource': "Parrocchia Benedettina · Melbourne, Australia",
     'streams.stBenedictDesc': "Adorazione Perpetua trasmessa dalla Parrocchia di San Benedetto a Burwood, Victoria.",
+    'companion.moreStreams': "Altre dirette sulla pagina Dirette →",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -1290,6 +1294,7 @@ const translations = {
     'streams.divineMercyCalgaryDesc': "Uma comunidade de religiosas em Calgary que oferece Adoração Eucarística e devoção à Divina Misericórdia.",
     'streams.stBenedictSource': "Paróquia Beneditina · Melbourne, Austrália",
     'streams.stBenedictDesc': "Adoração Perpétua transmitida da Paróquia de São Bento em Burwood, Victoria.",
+    'companion.moreStreams': "Mais transmissões na página de Transmissões ao vivo →",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
