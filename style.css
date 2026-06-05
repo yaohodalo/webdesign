@@ -213,35 +213,40 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   z-index: 500;
 }
 
-.header-inner {
-  max-width: 1400px;
+/* New stacked, centered header layout — logo prominent on top, then search, then actions */
+.header-v2 .header-inner {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-2) var(--space-4);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-2);
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: var(--space-2);
 }
 
-.header-brand {
+.header-v2 .header-brand {
   border-bottom: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding-bottom: 0;
+  margin-bottom: 4px;
 }
-.header-brand:hover { border-bottom: none; }
-.site-logo {
-  height: 56px;
+.header-v2 .header-brand:hover { border-bottom: none; }
+
+.header-v2 .site-logo {
+  height: 80px;
   width: auto;
+  display: block;
 }
 
-/* Search */
-.header-search {
+/* Search: full-width but capped, centered */
+.header-v2 .header-search {
   position: relative;
-  max-width: 460px;
   width: 100%;
-  justify-self: center;
+  max-width: 560px;
 }
-.header-search input {
+.header-v2 .header-search input {
   width: 100%;
   font-family: var(--font-sans);
   font-size: 0.95rem;
@@ -252,21 +257,78 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   color: var(--ink);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.header-search input::placeholder { color: var(--ink-faint); }
-.header-search input:focus {
+.header-v2 .header-search input::placeholder { color: var(--ink-faint); }
+.header-v2 .header-search input:focus {
   outline: none;
   border-color: var(--gold);
   box-shadow: 0 0 0 3px var(--gold-faint);
 }
-.search-icon {
-  position: absolute;
-  left: 0.85rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--gold-deep);
+
+/* Actions: centered horizontally, wrap nicely. Sized to fit 5 buttons in one row on desktop */
+.header-v2 .header-actions {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 
+/* On medium-narrow screens (tablets), allow buttons to wrap to 2 rows cleanly */
+@media (max-width: 900px) {
+  .header-v2 .header-actions {
+    gap: 0.35rem;
+  }
+  .header-v2 .header-actions .btn {
+    font-size: 0.72rem;
+    padding: 0.45rem 0.7rem;
+  }
+}
+
+/* Mobile: logo a bit smaller, tighter spacing */
+@media (max-width: 640px) {
+  .header-v2 .header-inner {
+    padding: var(--space-2) var(--space-3);
+    gap: 0.6rem;
+  }
+  .header-v2 .site-logo {
+    height: 62px;
+  }
+  .header-v2 .header-search input {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.85rem 0.6rem 2.2rem;
+  }
+  .header-v2 .header-actions {
+    gap: 0.35rem;
+  }
+}
+
+/* Icon-only button variant (for "Add Chapel" + button in the header) */
+.btn-icon-only {
+  background: transparent;
+  border: 1px solid var(--ink-ghost);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--gold-deep);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.btn-icon-only:hover {
+  border-color: var(--gold);
+  background: var(--gold-faint);
+  color: var(--ink);
+}
+.btn-icon-only .btn-icon {
+  margin: 0;
+}
+
+/* Suggestions dropdown — keep current behavior */
 .suggestions {
   position: absolute;
   top: calc(100% + 4px);
@@ -291,6 +353,58 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 .suggestion-item:last-child { border-bottom: none; }
 .suggestion-item:hover { background: var(--page-bg-soft); }
 
+.search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold-deep);
+  display: flex;
+}
+
+/* Old header layout (kept for /about and /streams pages which still use it) */
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-3);
+  align-items: center;
+}
+.header-brand {
+  border-bottom: none;
+  display: block;
+  padding-bottom: 0;
+}
+.header-brand:hover { border-bottom: none; }
+.site-logo {
+  height: 56px;
+  width: auto;
+}
+.header-search {
+  position: relative;
+  max-width: 460px;
+  width: 100%;
+  justify-self: center;
+}
+.header-search input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  padding: 0.7rem 1rem 0.7rem 2.4rem;
+  background: var(--card-bg);
+  border: var(--line-fine);
+  border-radius: 0;
+  color: var(--ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.header-search input::placeholder { color: var(--ink-faint); }
+.header-search input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-faint);
+}
 .header-actions {
   display: flex;
   align-items: center;
@@ -2873,4 +2987,75 @@ a.stream-card:hover {
   color: var(--gold-deep);
   border-color: var(--ink-ghost);
   background: var(--page-bg-soft);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE UX FIX — map controls and legend must NEVER bleed into the header
+   ──────────────────────────────────────────────────────────────────────────
+   The sticky header needs to win the z-index war over Leaflet's controls,
+   especially when scrolling on mobile where everything gets visually
+   compressed and the map can be partially visible behind the header.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Header always wins over any map element */
+.header-v2 {
+  z-index: 1000 !important;
+  /* Slightly opaque background so map underneath doesn't bleed through during scroll */
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Cap all Leaflet controls below the header */
+.leaflet-control-container,
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control-zoom,
+.leaflet-control-attribution {
+  z-index: 400 !important;
+}
+
+/* Our custom map overlays (filter, reset button) — same cap */
+.map-filter,
+.map-reset-btn {
+  z-index: 400 !important;
+}
+
+/* The legend ("CHAPELS · Adoration Chapel") was positioned bottom-right by default
+   but on mobile it can creep up into the search area during weird scrolls.
+   Force it to stay bottom-right within the map. */
+.leaflet-control-legend,
+.map-legend {
+  z-index: 400 !important;
+}
+
+/* Make sure the map frame itself doesn't escape its container */
+.map-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mobile: stack the map filter and reset button vertically on the LEFT side,
+   away from the top-right where users tap for zoom. Add more top margin
+   so they don't sit immediately below the sticky header */
+@media (max-width: 640px) {
+  .map-filter {
+    top: 8px;
+    left: 8px;
+    font-size: 0.72rem;
+    padding: 0.4rem 0.55rem;
+  }
+  .map-reset-btn {
+    top: 8px;
+    margin-top: 42px; /* below the filter */
+    left: 8px;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.5rem;
+  }
+  /* Hide the legend on very small screens — it's noise */
+  .leaflet-control-legend,
+  .map-legend {
+    display: none !important;
+  }
 }

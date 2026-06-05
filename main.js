@@ -2981,6 +2981,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initContactForm();
   initAddChapelForm();
   initShare();
+  initFooterEnhancements();
 
   // Live Adoration embed (lazy-loaded when scrolled into view)
   initLiveAdorationEmbed();
@@ -2994,3 +2995,39 @@ document.addEventListener('DOMContentLoaded', async () => {
   initNearby();
   loadStats();
 });
+
+// Auto-update the year in the footer and wire up the "Add a Chapel" footer link
+function initFooterEnhancements() {
+  // Update copyright year automatically
+  const year = new Date().getFullYear();
+  document.querySelectorAll('.footer-year').forEach(el => {
+    el.textContent = year;
+  });
+
+  // Footer "Add a Chapel" link opens the modal (only works on home page where the modal exists)
+  document.querySelectorAll('#footerAddChapel').forEach(link => {
+    link.addEventListener('click', e => {
+      const modal = document.getElementById('chapelModal');
+      if (modal) {
+        e.preventDefault();
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } else {
+        // On about/streams pages, the modal isn't present — redirect to home with hash
+        e.preventDefault();
+        window.location.href = '/?addChapel=1';
+      }
+    });
+  });
+
+  // If the URL has ?addChapel=1 on the home page, open the modal after load
+  if (window.location.search.includes('addChapel=1')) {
+    const modal = document.getElementById('chapelModal');
+    if (modal) {
+      setTimeout(() => {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }, 300);
+    }
+  }
+}
