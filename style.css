@@ -253,9 +253,10 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 .header-v2 .header-brand:hover { border-bottom: none; }
 
 .header-v2 .site-logo {
-  height: 120px;
+  height: 180px;
   width: auto;
   display: block;
+  max-width: 90vw;  /* never exceed phone width */
 }
 
 /* Search: full-width but capped, centered */
@@ -310,7 +311,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
     gap: 0.6rem;
   }
   .header-v2 .site-logo {
-    height: 90px;
+    height: 140px;
   }
   .header-v2 .header-search input {
     font-size: 0.9rem;
@@ -3075,5 +3076,56 @@ a.stream-card:hover {
   .leaflet-control-legend,
   .map-legend {
     display: none !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEADER TAGLINE — small italic line under the logo, every page
+   Tells first-time visitors what the site is about without preaching.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.site-tagline {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--gold-deep);
+  letter-spacing: 0.02em;
+  text-align: center;
+  /* Use small caps spacing for subtle elegance, but keep normal case readable */
+}
+@media (max-width: 640px) {
+  .site-tagline {
+    font-size: 0.72rem;
+    margin-top: 0.25rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO EXPLAINER — catechetical sentence between title and verse
+   For first-time visitors who don't yet know what Eucharistic Adoration is.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hero-explainer {
+  max-width: 640px;
+  margin: 1.5rem auto 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--cream);
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  letter-spacing: 0.01em;
+  /* Slightly muted vs the headline so it reads as supporting copy */
+  opacity: 0.96;
+}
+
+@media (max-width: 640px) {
+  .hero-explainer {
+    font-size: 0.88rem;
+    margin: 1.1rem auto 1rem;
+    padding: 0 0.5rem;
+    line-height: 1.55;
   }
 }

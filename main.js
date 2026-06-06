@@ -267,6 +267,8 @@ const translations = {
     'streams.stBenedictSource': "Benedictine Parish · Melbourne, Australia",
     'streams.stBenedictDesc': "Perpetual Adoration livestreamed from St Benedict's Parish in Burwood, Victoria.",
     'companion.moreStreams': "More streams on the Live Streams page →",
+    'header.tagline': "A worldwide community before the Blessed Sacrament",
+    'hero.explainer': "Eucharistic Adoration is prayer before the Blessed Sacrament — the Real Presence of Jesus Christ in the consecrated Host, exposed for the faithful to behold, contemplate, and love. This site helps you find a chapel, pledge an hour, or join live Adoration broadcasts worldwide.",
     verses: [
       '"Could you not watch with me one hour?" — Matthew 26:40',
       '"Be still and know that I am God." — Psalm 46:10',
@@ -524,6 +526,8 @@ const translations = {
     'streams.stBenedictSource': "Parroquia Benedictina · Melbourne, Australia",
     'streams.stBenedictDesc': "Adoración Perpetua transmitida desde la Parroquia de San Benito en Burwood, Victoria.",
     'companion.moreStreams': "Más transmisiones en la página de Transmisiones en vivo →",
+    'header.tagline': "Una comunidad mundial ante el Santísimo Sacramento",
+    'hero.explainer': "La Adoración Eucarística es la oración ante el Santísimo Sacramento — la Presencia Real de Jesucristo en la Hostia consagrada, expuesta para que los fieles la contemplen, mediten y amen. Este sitio te ayuda a encontrar una capilla, comprometer una hora, o unirte a las transmisiones en vivo de Adoración en todo el mundo.",
     verses: [
       '"¿No habéis podido velar conmigo una hora?" — Mateo 26:40',
       '"Estad quietos y conoced que yo soy Dios." — Salmo 46:10',
@@ -781,6 +785,8 @@ const translations = {
     'streams.stBenedictSource': "Paroisse Bénédictine · Melbourne, Australie",
     'streams.stBenedictDesc': "Adoration Perpétuelle diffusée depuis la Paroisse Saint-Benoît à Burwood, Victoria.",
     'companion.moreStreams': "Plus de diffusions sur la page Diffusions en direct →",
+    'header.tagline': "Une communauté mondiale devant le Saint-Sacrement",
+    'hero.explainer': "L’Adoration Eucharistique est la prière devant le Saint-Sacrement — la Présence Réelle de Jésus-Christ dans l’Hostie consacrée, exposée pour que les fidèles la contemplent, la méditent et l’aiment. Ce site vous aide à trouver une chapelle, à promettre une heure, ou à rejoindre les diffusions en direct de l’Adoration dans le monde entier.",
     verses: [
       '"N\'avez-vous pas pu veiller une heure avec moi ?" — Matthieu 26:40',
       '"Arrêtez, et sachez que je suis Dieu." — Psaume 46:10',
@@ -1038,6 +1044,8 @@ const translations = {
     'streams.stBenedictSource': "Parrocchia Benedettina · Melbourne, Australia",
     'streams.stBenedictDesc': "Adorazione Perpetua trasmessa dalla Parrocchia di San Benedetto a Burwood, Victoria.",
     'companion.moreStreams': "Altre dirette sulla pagina Dirette →",
+    'header.tagline': "Una comunità mondiale davanti al Santissimo Sacramento",
+    'hero.explainer': "L’Adorazione Eucaristica è la preghiera davanti al Santissimo Sacramento — la Presenza Reale di Gesù Cristo nell’Ostia consacrata, esposta affinché i fedeli la contemplino, la meditino e la amino. Questo sito ti aiuta a trovare una cappella, impegnare un’ora, o unirti alle dirette di Adorazione in tutto il mondo.",
     verses: [
       '"Non siete riusciti a vegliare un\'ora con me?" — Matteo 26:40',
       '"Fermatevi e sappiate che io sono Dio." — Salmo 46:10',
@@ -1295,6 +1303,8 @@ const translations = {
     'streams.stBenedictSource': "Paróquia Beneditina · Melbourne, Austrália",
     'streams.stBenedictDesc': "Adoração Perpétua transmitida da Paróquia de São Bento em Burwood, Victoria.",
     'companion.moreStreams': "Mais transmissões na página de Transmissões ao vivo →",
+    'header.tagline': "Uma comunidade mundial diante do Santíssimo Sacramento",
+    'hero.explainer': "A Adoração Eucarística é a oração diante do Santíssimo Sacramento — a Presença Real de Jesus Cristo na Hóstia consagrada, exposta para que os fiéis a contemplem, meditem e amem. Este site ajuda você a encontrar uma capela, comprometer uma hora, ou participar das transmissões ao vivo de Adoração em todo o mundo.",
     verses: [
       '"Não pudestes vigiar uma hora comigo?" — Mateus 26:40',
       '"Aquietai-vos e sabei que eu sou Deus." — Salmo 46:10',
