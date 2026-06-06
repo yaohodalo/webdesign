@@ -188,16 +188,34 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   padding: 0.6rem 0;
   overflow: hidden;
   position: relative;
+  /* GPU compositor layer — keeps the animation off the main thread */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .verse-track {
   display: inline-block;
   white-space: nowrap;
-  animation: verse-scroll 90s linear infinite;
+  animation: verse-scroll 60s linear infinite;
   padding-left: 100%;
+  /* These hint the browser to put the animation on the GPU compositor */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 @keyframes verse-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+/* Respect reduced-motion preferences (iOS accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  .verse-track {
+    animation: none;
+    padding-left: 0;
+    text-align: center;
+    display: block;
+  }
 }
 
 
@@ -235,7 +253,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 .header-v2 .header-brand:hover { border-bottom: none; }
 
 .header-v2 .site-logo {
-  height: 80px;
+  height: 120px;
   width: auto;
   display: block;
 }
@@ -292,7 +310,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
     gap: 0.6rem;
   }
   .header-v2 .site-logo {
-    height: 62px;
+    height: 90px;
   }
   .header-v2 .header-search input {
     font-size: 0.9rem;
