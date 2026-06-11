@@ -182,7 +182,7 @@
   </div>
 </header>
 
-<!-- Floating music toggle — bottom-left so it doesn't collide with the live video mini-player on the right -->
+
 <button id="musicToggle" class="music-floating-btn" aria-label="Play sacred music" type="button">
   <svg class="music-icon music-icon-play" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
     <path fill="currentColor" d="M8 5 L8 19 L19 12 Z"/>
@@ -326,7 +326,7 @@
       <label class="visually-hidden" for="pledgeIntention">Prayer intention</label>
       <textarea id="pledgeIntention" name="intention" rows="3" data-i18n-placeholder="pledge.intention" placeholder="Your prayer intention (optional)"></textarea>
 
-      <!-- Hour Companion: optional destination picker -->
+   
       <div class="companion-block">
         <p class="companion-label" data-i18n="companion.label">Where will you pray? <span class="companion-optional" data-i18n="companion.optional">(optional)</span></p>
         <div class="companion-tabs" role="tablist">
@@ -335,14 +335,14 @@
           <button type="button" class="companion-tab" data-companion="stream" data-i18n="companion.tabStream">A live stream</button>
         </div>
 
-        <!-- Hidden — chapel autocomplete -->
+     
         <div class="companion-pane companion-pane-chapel hidden">
           <input type="text" id="companionChapelSearch" data-i18n-placeholder="companion.chapelSearchPh" placeholder="Search by city, country, or chapel name" autocomplete="off"/>
           <div class="companion-suggestions" id="companionChapelSuggestions" role="listbox"></div>
           <p class="companion-selected" id="companionChapelSelected" hidden></p>
         </div>
 
-        <!-- Hidden — stream picker: 5 most recognizable streams + link to full list -->
+       
         <div class="companion-pane companion-pane-stream hidden">
           <div class="companion-stream-grid">
             <button type="button" class="companion-stream-btn"
@@ -383,7 +383,7 @@
           <a href="/streams" class="companion-stream-more" data-i18n="companion.moreStreams">More streams on the Live Streams page →</a>
         </div>
 
-        <!-- Hidden form values posted to API -->
+      
         <input type="hidden" name="destination_type" id="destinationType" value="" />
         <input type="hidden" name="destination_id"   id="destinationId"   value="" />
         <input type="hidden" name="destination_name" id="destinationName" value="" />
@@ -399,6 +399,45 @@
     <p id="thanks" class="thanks-msg hidden" data-i18n="pledge.thanks">
       Thank you. Your hour has been pledged. Join adorers worldwide at your appointed time.
     </p>
+
+    <button type="button" id="sharePledge" class="share-pledge-btn">Share &amp; invite a friend</button>
+
+<style>
+  .share-pledge-btn {
+    display: inline-block; margin-top: 1rem; padding: 0.7rem 1.5rem;
+    border: 1px solid #7a5f1f; background: transparent; color: #7a5f1f;
+    border-radius: 999px; font: inherit; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .share-pledge-btn:hover { background: #7a5f1f; color: #fff; }
+</style>
+
+<script>
+(function () {
+  var btn = document.getElementById('sharePledge');
+  if (!btn) return;
+  var shareData = {
+    title: 'Would You Join Me for One Hour?',
+    text: 'I pledged an hour before the Blessed Sacrament. Would you join me for one hour?',
+    url: 'https://wouldyoujoinmeforonehour.org/'
+  };
+  btn.addEventListener('click', async function () {
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      var text = shareData.text + ' ' + shareData.url;
+      try {
+        await navigator.clipboard.writeText(text);
+        var original = btn.textContent;
+        btn.textContent = 'Invitation copied — paste it anywhere';
+        setTimeout(function () { btn.textContent = original; }, 2500);
+      } catch (e) {
+        window.prompt('Copy this invitation:', text);
+      }
+    }
+  });
+})();
+</script>
   </div>
 </section>
 
@@ -621,6 +660,79 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="main.js" defer></script>
+
+<!-- Keeps the music and the live stream from ever playing at the same time -->
+<script>
+(function () {
+  function audios() {
+    return Array.prototype.slice.call(document.querySelectorAll('audio'));
+  }
+
+  // 1) Never let the music autoplay — it starts only when the visitor chooses it.
+  function tameAudio() {
+    audios().forEach(function (a) { a.autoplay = false; a.removeAttribute('autoplay'); });
+  }
+
+  function pauseMusic() {
+    audios().forEach(function (a) { try { a.pause(); } catch (e) {} });
+  }
+
+  var ytPlayers = [];
+  function pauseStreams() {
+    ytPlayers.forEach(function (p) { try { p.pauseVideo(); } catch (e) {} });
+  }
+
+  // 2) Starting the music pauses the stream.
+  function wireAudio() {
+    audios().forEach(function (a) { a.addEventListener('play', pauseStreams); });
+  }
+
+  // 3) Prepare YouTube iframes so we can detect when the stream is playing.
+  function prepareFrames() {
+    var frames = Array.prototype.slice.call(document.querySelectorAll('iframe'))
+      .filter(function (f) { return /youtube(-nocookie)?\.com/.test(f.src); });
+    frames.forEach(function (f, i) {
+      if (!f.id) f.id = 'yt-stream-' + i;
+      if (f.src.indexOf('enablejsapi=1') === -1) {
+        f.src += (f.src.indexOf('?') === -1 ? '?' : '&') + 'enablejsapi=1';
+      }
+    });
+    return frames;
+  }
+
+  function initPlayers(frames) {
+    frames.forEach(function (f) {
+      ytPlayers.push(new YT.Player(f.id, {
+        events: {
+          onStateChange: function (e) {
+            if (e.data === YT.PlayerState.PLAYING) pauseMusic();  // stream plays -> music stops
+          }
+        }
+      }));
+    });
+  }
+
+  function loadAPI(frames) {
+    if (!frames.length) return;
+    window.onYouTubeIframeAPIReady = function () { initPlayers(frames); };
+    if (window.YT && window.YT.Player) { initPlayers(frames); }
+    else {
+      var tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+  }
+
+  function start() {
+    tameAudio();
+    wireAudio();
+    loadAPI(prepareFrames());
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+</script>
 
 </body>
 </html>
