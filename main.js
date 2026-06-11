@@ -2207,10 +2207,40 @@ function initPledgeForm() {
     }
 
     try {
-      await api('/api/pledge', { method: 'POST', body: JSON.stringify(data) });
+      // Use raw fetch instead of api() so we can capture the full response body
+      // including diagnostics that the server returns
+      const res = await fetch('/api/pledge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const responseBody = await res.json();
+
+      // DIAGNOSTIC: dump server-side trace to the browser console so we can debug emails
+      console.log('═══════════════════════════════════════════════════════════');
+      console.log('PLEDGE DIAGNOSTICS — share this with Claude to fix emails');
+      console.log('═══════════════════════════════════════════════════════════');
+      console.log('Status:', res.status);
+      console.log('Response:', responseBody);
+      if (responseBody?.diagnostics) {
+        console.log('--- ENV ---');
+        console.log(responseBody.diagnostics.env);
+        console.log('--- STEPS ---');
+        responseBody.diagnostics.steps.forEach((s, i) => console.log(' ' + (i+1) + '. ' + s));
+        console.log('--- EMAILS ---');
+        console.log('Admin attempted:', responseBody.diagnostics.emails.adminAttempted);
+        console.log('Admin result:', responseBody.diagnostics.emails.adminResult);
+        console.log('User attempted:', responseBody.diagnostics.emails.userAttempted);
+        console.log('User result:', responseBody.diagnostics.emails.userResult);
+      }
+      console.log('═══════════════════════════════════════════════════════════');
+
+      if (!res.ok) throw new Error(responseBody?.error || 'Request failed');
+
       e.target.style.display = 'none';
       $('thanks').classList.remove('hidden');
     } catch (ex) {
+      console.error('Pledge submission error:', ex);
       showStatus(err, 'err', t()['msg.pledgeErr']);
     }
   });
