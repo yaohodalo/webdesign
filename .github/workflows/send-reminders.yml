@@ -1,0 +1,24 @@
+name: Send pledge reminders
+
+# Run every hour at minute 0 (e.g. 1:00, 2:00, 3:00 UTC)
+# The cron endpoint finds pledges happening in the next 23-25 hours and emails reminders.
+on:
+  schedule:
+    - cron: '0 * * * *'
+  # Also allow manual triggering from the Actions tab for testing
+  workflow_dispatch:
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the reminder endpoint
+        run: |
+          curl --fail \
+            --silent \
+            --show-error \
+            --request POST \
+            --header "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --header "Content-Type: application/json" \
+            --data '{}' \
+            https://wouldyoujoinmeforonehour.org/api/pledge
