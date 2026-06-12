@@ -155,7 +155,7 @@
     </div>
 
     <nav class="header-actions" aria-label="Primary actions">
-      <button id="startAdoration" class="btn btn-primary">
+      <button id="startAdoration" class="btn btn-ghost">
         <svg class="btn-icon" width="14" height="14"><use href="#orn-play"/></svg>
         <span data-i18n="btn.start">Start Adoration</span>
       </button>
@@ -208,6 +208,10 @@
     </h1>
     <p class="hero-explainer" data-i18n="hero.explainer">Eucharistic Adoration is prayer before the Blessed Sacrament — the Real Presence of Jesus Christ in the consecrated Host, exposed for the faithful to behold, contemplate, and love. This site helps you find a chapel, pledge an hour, or join live Adoration broadcasts worldwide.</p>
     <p class="hero-verse" data-i18n="hero.verse">"Could you not watch with me one hour?" — Matthew 26:40</p>
+    <button type="button" class="btn btn-primary btn-large hero-cta" style="margin-top: 1.5rem;" onclick="document.getElementById('findChapel').click()">
+      <svg class="btn-icon" width="16" height="16"><use href="#orn-pin"/></svg>
+      <span data-i18n="hero.cta">Find Adoration Chapels Near Me</span>
+    </button>
   </div>
   <p class="hero-attribution" data-i18n-html="hero.attribution">Photo courtesy of St. Anthony &amp; St. Mary Parishes, Menomonee Falls, WI</p>
 </section>
@@ -400,7 +404,7 @@
       Thank you. Your hour has been pledged. Join adorers worldwide at your appointed time.
     </p>
 
-    <button type="button" id="sharePledge" class="share-pledge-btn">Share &amp; invite a friend</button>
+    <button type="button" id="sharePledge" class="share-pledge-btn" hidden>Share &amp; invite a friend</button>
 
 <style>
   .share-pledge-btn {
@@ -410,12 +414,28 @@
     transition: background .2s, color .2s;
   }
   .share-pledge-btn:hover { background: #7a5f1f; color: #fff; }
+  .share-pledge-btn[hidden] { display: none; }
 </style>
 
 <script>
 (function () {
   var btn = document.getElementById('sharePledge');
+  var thanks = document.getElementById('thanks');
   if (!btn) return;
+
+  // Show the share button only after a successful pledge — i.e. once the
+  // thank-you message becomes visible. Works whether the thank-you is
+  // revealed by removing a "hidden" class or by changing its inline style.
+  if (thanks) {
+    var isThanksVisible = function () {
+      return !thanks.classList.contains('hidden') &&
+             window.getComputedStyle(thanks).display !== 'none';
+    };
+    var sync = function () { btn.hidden = !isThanksVisible(); };
+    new MutationObserver(sync).observe(thanks, { attributes: true, attributeFilter: ['class', 'style'] });
+    sync();
+  }
+
   var shareData = {
     title: 'Would You Join Me for One Hour?',
     text: 'I pledged an hour before the Blessed Sacrament. Would you join me for one hour?',

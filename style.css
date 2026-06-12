@@ -1928,9 +1928,11 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
   border-bottom: 2px solid var(--gold);
 }
 
-/* About hero — quiet typographic, no photo */
+/* About hero — quiet typographic, no photo
+   Trimmed vertical padding so the title appears closer to the header
+   and the essay below isn't pushed too far down. */
 .about-hero {
-  padding: var(--space-7) var(--space-3) var(--space-5);
+  padding: var(--space-4) var(--space-3) var(--space-3);
   background: var(--page-bg);
   text-align: center;
 }
@@ -2060,7 +2062,7 @@ p.section-eyebrow { margin: 0 0 var(--space-2); }
 /* Mobile responsive */
 @media (max-width: 768px) {
   .about-hero {
-    padding: var(--space-5) var(--space-2) var(--space-4);
+    padding: var(--space-3) var(--space-2) var(--space-2);
   }
   .essay-section {
     padding: var(--space-4) var(--space-2) var(--space-5);

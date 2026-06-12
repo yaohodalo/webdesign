@@ -76,27 +76,38 @@ async function handlePledge(req, res) {
     const formattedTime = formatPledgeTime(pledgeTime);
     const safeName = escapeHtml(name);
 
-    // Admin notification (fire and forget — we already proved this works)
-    notify({
-      subject: '🕯️ New pledge from ' + name,
-      html: '<div style="font-family:Georgia,serif;max-width:600px;">' +
-            '<h2 style="color:#7a5f1f;border-bottom:2px solid #b8923a;padding-bottom:8px;">New Hour Pledged</h2>' +
-            '<table style="border-collapse:collapse;width:100%;">' +
-            row('Name', name) +
-            row('Email', userEmail || '(not provided)') +
-            row('Pledge Time', formattedTime) +
-            row('Intention', intention || '(none)') +
-            (destType ? row('Praying at', destType === 'chapel' ? destName + ' (chapel)' : destName + ' (live stream)') : '') +
-            '</table></div>',
-    }).catch(e => console.error('[pledge] admin notify failed:', e));
+    // CRITICAL: must AWAIT these emails on Vercel serverless.
+    // Without await, the function returns 201 immediately and Vercel kills
+    // the execution before the email actually sends.
+    // We wrap in try/catch so an email failure doesn't 500 the user's pledge.
+    try {
+      await notify({
+        subject: '🕯️ New pledge from ' + name,
+        html: '<div style="font-family:Georgia,serif;max-width:600px;">' +
+              '<h2 style="color:#7a5f1f;border-bottom:2px solid #b8923a;padding-bottom:8px;">New Hour Pledged</h2>' +
+              '<table style="border-collapse:collapse;width:100%;">' +
+              row('Name', name) +
+              row('Email', userEmail || '(not provided)') +
+              row('Pledge Time', formattedTime) +
+              row('Intention', intention || '(none)') +
+              (destType ? row('Praying at', destType === 'chapel' ? destName + ' (chapel)' : destName + ' (live stream)') : '') +
+              '</table></div>',
+      });
+    } catch (e) {
+      console.error('[pledge] admin notify failed:', e);
+    }
 
     // User confirmation (only if they provided an email)
     if (userEmail) {
-      sendEmail({
-        to: userEmail,
-        subject: 'Your hour of Adoration is pledged',
-        html: buildUserConfirmationEmail({ name: safeName, formattedTime, intention, destType, destName, destUrl }),
-      }).catch(e => console.error('[pledge] user confirmation failed:', e));
+      try {
+        await sendEmail({
+          to: userEmail,
+          subject: 'Your hour of Adoration is pledged',
+          html: buildUserConfirmationEmail({ name: safeName, formattedTime, intention, destType, destName, destUrl }),
+        });
+      } catch (e) {
+        console.error('[pledge] user confirmation failed:', e);
+      }
     }
 
     return res.status(201).json({ ok: true });

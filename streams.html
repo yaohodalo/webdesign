@@ -1,34 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8KVN7FGY9Q"></script>
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8KVN7FGY9Q');
-  </script>
-
-  <!-- Vercel Web Analytics -->
-  <script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
-
-<link rel="canonical" href="https://wouldyoujoinmeforonehour.org/streams" />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="Would You Join Me for One Hour?" />
-<meta property="og:title" content="Live Adoration Streams — Would You Join Me for One Hour?" />
-<meta property="og:description" content="Watch live Eucharistic Adoration broadcasts from EWTN, Shalom World, Tyburn Convent, Divine Mercy Kraków, and other verified Catholic streams worldwide — 24/7." />
-<meta property="og:url" content="https://wouldyoujoinmeforonehour.org/streams" />
-<meta property="og:image" content="https://wouldyoujoinmeforonehour.org/images/hero-monstrance.jpg" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Live Adoration Streams — Would You Join Me for One Hour?" />
-<meta name="twitter:description" content="Watch live Eucharistic Adoration broadcasts from EWTN, Shalom World, Tyburn Convent, Divine Mercy Kraków, and other verified Catholic streams worldwide — 24/7." />
-<meta name="twitter:image" content="https://wouldyoujoinmeforonehour.org/images/hero-monstrance.jpg" />
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google" content="notranslate" />
@@ -84,6 +56,23 @@
     </nav>
   </div>
 </header>
+<!-- Background music audio (for the floating button) -->
+<audio id="bgMusic" loop preload="none">
+  <source src="/204-stay%20with%20me.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Floating music toggle — same as homepage -->
+<button id="musicToggle" class="music-floating-btn" aria-label="Play sacred music" type="button">
+  <svg class="music-icon music-icon-play" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path fill="currentColor" d="M8 5 L8 19 L19 12 Z"/>
+  </svg>
+  <svg class="music-icon music-icon-pause" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <rect x="6" y="5" width="4" height="14" fill="currentColor"/>
+    <rect x="14" y="5" width="4" height="14" fill="currentColor"/>
+  </svg>
+  <span class="music-label" data-i18n="btn.music">Music</span>
+</button>
+
 
 <!-- ═══ STREAMS HERO ═══ -->
 <section class="about-hero">
